@@ -20,7 +20,7 @@ function Header() {
         {/* 1. Logo */}
         <Link to="/" style={styles.logo}>
           <Phone size={28} />
-          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>MOBILE-SHOP</span>
+          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>ALMO REVIEW</span>
         </Link>
 
         {/* 2. Thanh tìm kiếm */}
@@ -59,7 +59,7 @@ function Header() {
 
 // CSS-in-JS cơ bản để bạn chạy được ngay
 const styles = {
-  nav: { background: '#ffd400', padding: '10px 0', position: 'sticky', top: 0, zIndex: 100 },
+  nav: { background: 'var(--background-main)', padding: '10px 0', position: 'sticky', top: 0, zIndex: 100 },
   container: { maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '20px', padding: '0 15px' },
   logo: { display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#000' },
   searchBox: { flex: 1, display: 'flex', background: '#fff', borderRadius: '4px', overflow: 'hidden' },

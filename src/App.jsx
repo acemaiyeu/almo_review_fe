@@ -3,10 +3,10 @@ import './App.css'
 import Header from './components/Header'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/clients/Home'
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const profile = useSelector((state) => state.profile)
   return (
     <>
       <Header />

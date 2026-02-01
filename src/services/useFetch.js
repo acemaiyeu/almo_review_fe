@@ -9,7 +9,7 @@ export const useFetch = (apiFunc, params = null) => {
     const fetchData = async () => {
       try {
         const result = await apiFunc(params);
-        setData(result);
+        setData(result?.data);
       } catch (error) {
         console.error("Lỗi API:", error);
       } finally {
