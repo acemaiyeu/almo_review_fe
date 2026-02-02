@@ -4,6 +4,7 @@ import Header from './components/Header'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/clients/Home'
 import { useSelector, useDispatch } from 'react-redux';
+import ProductDetail from './pages/clients/Products/ProductDetail'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -16,6 +17,7 @@ function App() {
           {/* <Route path="/cart" element={<CartPage />} /> */}
           <Route path="/orders" element={<div>Trang lịch sử đơn hàng</div>} />
           <Route path="/search" element={<div>Trang kết quả tìm kiếm</div>} />
+          <Route path="/product/:id" element={<ProductDetail/>} />
           {/* Trang 404 nếu không tìm thấy route */}
           <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
         </Routes>

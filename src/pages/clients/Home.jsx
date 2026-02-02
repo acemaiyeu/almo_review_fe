@@ -11,14 +11,13 @@ const Home = () => {
     { id: 4, name: 'Oppo Find X7 Ultra', price: 18500000, image: 'https://cdn.mobilecity.vn/mobilecity-vn/images/2024/01/oppo-find-x7-ultra-den.jpg' },
   ];
 const { data: products, loading } = useFetch(homeService.getProducts, 123);
-console.log(products)
   if (loading) return <div>Đang tải sản phẩm...</div>;
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>📱 Điện thoại mới nhất</h2>
       
       <div style={styles.grid}>
-        {products.map((item) => (
+        {products && products.map((item) => (
           <div key={item.id} style={styles.card}>
             <div style={styles.imageBox}>
                 <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy'/>

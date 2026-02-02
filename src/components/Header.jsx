@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, Phone, History } from 'lucide-react';
+import { ShoppingCart, Search, Phone, History, Package, User } from 'lucide-react';
 import { useState } from 'react';
 
 function Header() {
@@ -41,16 +41,20 @@ function Header() {
         <div style={styles.menu}>
           <Link to="/orders" style={styles.menuItem}>
             <History size={20} />
-            <span>Lịch sử đơn hàng</span>
+            <span>Lịch sử giảm giá</span>
+          </Link>
+          <Link to="/orders" style={styles.menuItem}>
+            <User size={20} />
+            <span>Đơn hàng của tôi</span>
           </Link>
 
-          <Link to="/cart" style={styles.cartBtn}>
+          {/* <Link to="/cart" style={styles.cartBtn}>
             <div style={{ position: 'relative' }}>
               <ShoppingCart size={24} />
               <span style={styles.badge}>3</span>
             </div>
             <span>Giỏ hàng</span>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </nav>
