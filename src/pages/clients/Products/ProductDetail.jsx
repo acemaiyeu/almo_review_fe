@@ -1,7 +1,18 @@
+import { useState } from 'react';
+import DisplayContent from '../../../app/ComponentSupport/DisplayContent';
 import '../../../style/ProductDetail.scss'
 
 const ProductDetail = () => {
-
+    const [product, setProduct] = useState({
+        id: null,
+        property: `<div className="product-detail-content-phone">
+                <div className="product-detail-content-title">Thông số kỹ thuật</div> <hr/
+            </div>`,
+        rate_descriptions: `
+            <div>
+            <h1>Màn hình: </h1> <br/> <p>Với độ phân giải lên đến 2k cùng với tấm màn AMOLED khiến cho người dùng khá thích</p></div>
+        `
+    })
     return (<div className="product-detail-container">
             <div className="product-detail-header">IPHONE 15 PRO MAX</div>
             <div className="product-detail-video-rate">
@@ -19,7 +30,9 @@ const ProductDetail = () => {
             </div>
              <div className="product-detail-fast-rate">
                 <div className="product-detail-fast-rate-title">Đánh giá nhanh</div>
-                <div className="product-detail-fast-rate-content"></div>
+                <div className="product-detail-fast-rate-content">
+                    <DisplayContent htmlFromEditor={product?.rate_descriptions ?? ""}/>
+                </div>
             </div>
             <div className="product-affilate-link-list">
                 <div className="product-affilate-link-item">
@@ -41,7 +54,7 @@ const ProductDetail = () => {
                     <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-shoppee">Mua hàng tại TiktokShop</a>
                 </div>
             </div>
-            <div className="product-detail-content-phone">
+            {/* <div className="product-detail-content-phone">
                 <div className="product-detail-content-title">Thông số kỹ thuật</div> <hr/>
                 <div className="product-detail-content-title">Màn hình</div>
                 <div className="product-detail-info-list">
@@ -115,7 +128,8 @@ const ProductDetail = () => {
                                                                         HD 1080p@25/30/60 fps</div>
                     </div>
                 </div>
-            </div>
+            </div> */}
+            <DisplayContent htmlFromEditor={product?.property ?? ""}/>
            
     </div>)
 }
