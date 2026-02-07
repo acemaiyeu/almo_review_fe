@@ -1,0 +1,100 @@
+.lucky-wheel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.wheel-wrapper {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto 30px;
+  border: 10px solid #f7175a;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+/* Mũi tên phải nằm chính xác ở giữa đỉnh */
+.wheel-pointer {
+  position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: rotate(178deg) translateX(50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 35px solid #f7175a;
+    z-index: 100;
+}
+
+/* Căn chỉnh lại nhãn chữ trong múi */
+.sector-label {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  width: 100px;
+  text-align: center;
+  font-weight: bold;
+  color: #f7175a;
+  /* Reset lại transform để chữ hướng về phía mũi tên */
+  transform: skewY(-18deg) rotate(36deg);
+}
+
+.wheel-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  /* Đảm bảo gốc quay bắt đầu từ 0 */
+  transform: rotate(0deg); 
+}
+
+.wheel-sector {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  transform-origin: 100% 100%;
+  left: 0;
+  top: 0;
+  border: 1px solid #f7175a15;
+}
+
+.spin-button {
+  background-color: #f7175a;
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #c41246;
+}
+
+.spin-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #c41246;
+}
+
+.spin-button:disabled {
+  background-color: #fca3bb;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.prize-msg {
+  margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #f7175a;
+    position: absolute;
+    top: 58%;
+    background-color: white;
+    padding: inherit;
+    box-shadow: 0px 0px 12px 0px #f7175ac9;
+    border-radius: 10px;
+}

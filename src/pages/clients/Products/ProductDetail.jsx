@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import DisplayContent from '../../../app/ComponentSupport/DisplayContent';
 import '../../../style/ProductDetail.scss'
+import LuckyWheel from '../../../app/ComponentSupport/LuckyWheel.jsx';
 
 const ProductDetail = () => {
     const [product, setProduct] = useState({
@@ -10,12 +11,19 @@ const ProductDetail = () => {
             </div>`,
         rate_descriptions: `
             <div>
-            <h1>Màn hình: </h1> <br/> <p>Với độ phân giải lên đến 2k cùng với tấm màn AMOLED khiến cho người dùng khá thích</p></div>
+            <h1>Màn hình: </h1><p>Với độ phân giải lên đến 2k cùng với tấm màn AMOLED khiến cho người dùng khá thích</p></div>
         `
     })
+    const handlePrizeReceived = (prize) => {
+    console.log("Dữ liệu nhận được từ con:", prize);
+    // Bạn có thể xử lý lưu vào database hoặc update giỏ hàng tại đây
+  };
     return (<div className="product-detail-container">
             <div className="product-detail-header">IPHONE 15 PRO MAX</div>
-            <div className="product-detail-video-rate">
+            <hr/>
+            <div className="product-box">
+                <div className="product-detail-video-rate">
+                    <div className="product-detail-video-rate-title">Video Review</div>
                 <video 
                     id="product-detail-video" 
                     src="..." 
@@ -34,7 +42,9 @@ const ProductDetail = () => {
                     <DisplayContent htmlFromEditor={product?.rate_descriptions ?? ""}/>
                 </div>
             </div>
-            <div className="product-affilate-link-list">
+            </div>
+           <div className="product-box">
+             <div className="product-affilate-link-list">
                 <div className="product-affilate-link-item">
                     <div className="product-affilate-link-item-logo">
                         <img className="product-affilate-link-item-img" src="https://play-lh.googleusercontent.com/vrrgAukb27gHzlI-lwHQoabie4ByvZKMN9QVN7jgd5KCFgEKCbQClsujkfqhExpfrUdS=w600-h300-pc0xffffff-pd" alt="logo-shoppee" loading='lazy'></img>
@@ -54,6 +64,10 @@ const ProductDetail = () => {
                     <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-shoppee">Mua hàng tại TiktokShop</a>
                 </div>
             </div>
+            <div className="product-promotion">
+                <LuckyWheel onResult={handlePrizeReceived} />
+            </div>
+           </div>
             {/* <div className="product-detail-content-phone">
                 <div className="product-detail-content-title">Thông số kỹ thuật</div> <hr/>
                 <div className="product-detail-content-title">Màn hình</div>
