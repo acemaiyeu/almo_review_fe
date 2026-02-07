@@ -86,7 +86,7 @@ class WordEditor extends Component {
 
   componentDidUpdate = (prevState) => {
     if (this.state.content !== prevState.content) {
-      this.props.getDataWord(this.state.content, this.props.index_details)
+      this.props.getDataWord(this.state.content)
     }
   }
   render() {
@@ -94,10 +94,10 @@ class WordEditor extends Component {
     return (
   <div style={{ width: "100%" }}>
     <h2 style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
-      Tên tiêu đề 
-      <span className="work-x-modal">
+      {/* Tên tiêu đề  */}
+      {/* <span className="work-x-modal">
         <i className="bi bi-x-circle"></i>
-      </span>
+      </span> */}
     </h2> 
     <div style={{ marginBottom: "20px" }}>
       <div ref={this.editorRef} style={{ height: "300px" }} />

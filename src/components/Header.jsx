@@ -20,7 +20,7 @@ function Header() {
         {/* 1. Logo */}
         <Link to="/" style={styles.logo}>
           <Phone size={28} />
-          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>ALMO REVIEW</span>
+          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Shop's Name</span>
         </Link>
 
         {/* 2. Thanh tìm kiếm */}
@@ -45,7 +45,7 @@ function Header() {
           </Link>
           <Link to="/orders" style={styles.menuItem}>
             <User size={20} />
-            <span>Đơn hàng của tôi</span>
+            <span>Tài khoản của tôi</span>
           </Link>
 
           {/* <Link to="/cart" style={styles.cartBtn}>
