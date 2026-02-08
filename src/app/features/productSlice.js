@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import axiosClient from '../../services/axiosClient';
 const productSlice = createSlice({
   name: 'products',
   initialState: {
     items: [], // Mặc định là mảng rỗng ở đây
     loading: false,
     error: null,
+    discount: 0
   },
   reducers: {
     // Đây là hàm setProducts bạn cần
@@ -24,5 +27,5 @@ const productSlice = createSlice({
 });
 
 // Đừng quên export action này ra để dùng
-export const { setProducts, clearProducts } = productSlice.actions;
+export const { setProducts, getDiscount, clearProducts } = productSlice.actions;
 export default productSlice.reducer;

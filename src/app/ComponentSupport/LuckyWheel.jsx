@@ -1,136 +1,121 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import '../../style/LuckyWheel.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDiscount } from '../features/productSlice';
+import axiosClient from '../../services/axiosClient';
+// Giả sử bạn có action getDiscount từ store
+// import { getDiscount } from '../../redux/actions/productActions'; 
 
-class LuckyWheel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      spinning: false,
-      rotation: 0,
-      result: null,
-    };
+const LuckyWheel = ({ onResult }) => {
+  const dispatch = useDispatch();
+  // Lấy dữ liệu từ redux store
+  const discountFromStore = useSelector((state) => state.product.discount);
 
-    this.prizes = [
-      { label: 'Giảm 30%', value: 30 },
-      { label: 'Giảm 35%', value: 35 },
-      { label: 'Giảm 40%', value: 40 },
-      { label: 'Giảm 45%', value: 45 },
-      { label: 'Giảm 50%', value: 50 }
-    ];
-  }
+  const [spinning, setSpinning] = useState(false);
+  const [rotation, setRotation] = useState(0);
+  const [result, setResult] = useState(null);
 
-  // handleSpin = () => {
-  //   if (this.state.spinning) return;
+  const prizes = [
+    { label: 'Giảm 30%', value: 30 },
+    { label: 'Giảm 35%', value: 35 },
+    { label: 'Giảm 40%', value: 40 },
+    { label: 'Giảm 45%', value: 45 },
+    { label: 'Giảm 50%', value: 50 }
+  ];
+  const handleSpin = () => {
+      axiosClient.post('/get-discount-product', {
+        product_id: 1
+      }).then((res) => {
 
-  //   this.setState({ spinning: true, result: null });
+        if (spinning) return;
 
-  //   // FIX CỨNG: Luôn dừng ở 'Giảm 35%' (index 1)
-  //   const targetIndex = 1; 
-  //   const prize = this.prizes[targetIndex];
-  //   const sectorAngle = 360 / this.prizes.length;
+    setSpinning(true);
+    setResult(null);
 
-  //   // LOGIC QUAY ĐỨNG CHÍNH XÁC:
-  //   // 1. Mỗi vòng quay là 360deg.
-  //   // 2. Để targetIndex nằm ở ĐỈNH (12h), ta cần quay ngược lại một khoảng bằng vị trí của nó.
-  //   // 3. Trừ đi (sectorAngle / 2) để mũi tên nằm giữa múi.
-  //   const currentRotation = this.state.rotation;
-  //   const offset = (targetIndex * sectorAngle) + (sectorAngle / 2);
-  //   const extraSpin = 1800; // Quay 5 vòng cho đẹp
+    // 1. Chỉ định mục tiêu (Ví dụ: Index 1 là Giảm 35%)
+    const targetIndex = prizes.findIndex((i) => i.value == res.data); 
+    const prize = prizes[targetIndex];
+    const sectorAngle = 360 / prizes.length; 
+
+    // 2. Tính toán góc quay
+    const extraSpin = 1800; // 5 vòng quay
+    const angleToCenterOfPrize = (targetIndex * sectorAngle) + (sectorAngle / 2);
     
-  //   // Công thức tính góc quay mới để dừng đúng đỉnh:
-  //   const newRotation = currentRotation + extraSpin + (360 - (currentRotation % 360)) - offset;
+    // Tính toán góc quay mới dựa trên góc hiện tại để không bị quay ngược về 0
+    const currentRotationBase = rotation - (rotation % 360);
+    const finalRotation = currentRotationBase + extraSpin + (360 - angleToCenterOfPrize - 90);
 
-  //   this.setState({ rotation: newRotation });
+    setRotation(finalRotation);
 
-  //   setTimeout(() => {
-  //     this.setState({ spinning: false, result: prize });
-  //     if (this.props.onResult) this.props.onResult(prize);
-  //   }, 3000);
-  // };
+    setTimeout(() => {
+      setSpinning(false);
+      setResult(prize);
+      
+      // Gửi action lên Redux nếu cần sau khi quay xong
+      // dispatch(getDiscount(prize.value)); 
+      
+      if (onResult) onResult(prize);
+    }, 3000);
+    
 
-handleSpin = () => {
-  if (this.state.spinning) return;
+      }).catch((e) => {
+        console.log(e)
+      })
+  };    
 
-  this.setState({ spinning: true, result: null });
+  const sectorAngle = 360 / prizes.length;
 
-  // 1. Chỉ định chính xác mục tiêu là Giảm 35% (Index 1)
-  const targetIndex = 0; 
-  const prize = this.prizes[targetIndex];
-  const sectorAngle = 360 / this.prizes.length; // 72 độ
+  return (
+    <div className="lucky-wheel-container">
+      <div className="wheel-wrapper">
+        <div className="wheel-pointer"></div>
 
-  // 2. Tính toán góc quay chuẩn
-  const extraSpin = 1800; // Quay 5 vòng để tạo hiệu ứng
-  
-  // Giải thích công thức:
-  // - (targetIndex * sectorAngle): Đưa vị trí bắt đầu của múi về trục 0 (3h)
-  // - (sectorAngle / 2): Đưa điểm giữa của múi về trục 0 (3h)
-  // - Cộng thêm 90 độ: Vì mũi tên nằm ở đỉnh (12h), ta phải quay thêm 90 độ để đưa cái đang ở "3h" lên "12h"
-  const angleToCenterOfPrize = (targetIndex * sectorAngle) + (sectorAngle / 2);
-  
-  // Chúng ta dùng dấu trừ vì vòng quay quay theo chiều kim đồng hồ
-  const finalRotation = this.state.rotation + extraSpin + (360 - (this.state.rotation % 360)) - angleToCenterOfPrize - 90;
-
-  this.setState({ rotation: finalRotation });
-
-  setTimeout(() => {
-    this.setState({ spinning: false, result: prize });
-    if (this.props.onResult) this.props.onResult(prize);
-  }, 3000);
-};
-  render() {
-    const { rotation, spinning, result } = this.state;
-    const sectorAngle = 360 / this.prizes.length;
-
-    return (
-      <div className="lucky-wheel-container">
-        <div className="wheel-wrapper">
-          {/* MŨI TÊN CHỈ ĐIỂM (FIXED TẠI ĐÂY) */}
-          <div className="wheel-pointer"></div>
-
-          <div
-            className="wheel-canvas"
-            style={{
-              transform: `rotate(${rotation}deg)`,
-              transition: 'transform 3s cubic-bezier(0.1, 0, 0.2, 1)'
-            }}
-          >
-            {this.prizes.map((prize, index) => {
-              const rotateDeg = index * sectorAngle;
-              const skewDeg = 90 - sectorAngle;
-              return (
+        <div
+          className="wheel-canvas"
+          style={{
+            transform: `rotate(${rotation}deg)`,
+            transition: 'transform 3s cubic-bezier(0.1, 0, 0.2, 1)'
+          }}
+        >
+          {prizes.map((prize, index) => {
+            const rotateDeg = index * sectorAngle;
+            const skewDeg = 90 - sectorAngle;
+            return (
+              <div
+                key={index}
+                className="wheel-sector"
+                style={{
+                  transform: `rotate(${rotateDeg}deg) skewY(${skewDeg}deg)`,
+                  backgroundColor: index % 2 === 0 ? '#ffffff' : '#fde8ef'
+                }}
+              >
                 <div
-                  key={index}
-                  className="wheel-sector"
+                  className="sector-label"
                   style={{
-                    transform: `rotate(${rotateDeg}deg) skewY(${skewDeg}deg)`,
-                    backgroundColor: index % 2 === 0 ? '#ffffff' : '#fde8ef'
+                    transform: `skewY(-${skewDeg}deg) rotate(${sectorAngle / 2}deg)`
                   }}
                 >
-                  <div
-                    className="sector-label"
-                    style={{
-                      transform: `skewY(-${skewDeg}deg) rotate(${sectorAngle / 2}deg)`
-                    }}
-                  >
-                    {prize.label}
-                  </div>
+                  {prize.label}
                 </div>
-              );
-            })}
-          </div>
-          <div className="wheel-center-dot"></div>
+              </div>
+            );
+          })}
         </div>
-
-        <button className="spin-button" onClick={this.handleSpin} disabled={spinning}>
-          {spinning ? 'ĐANG QUAY...' : 'NHẬN GIẢM GIÁ'}
-        </button>
-
-        {result && !spinning && (
-          <div className="prize-msg">Chúc mừng! Bạn nhận được <strong>{result.label} <br/></strong><i style={{fontSize: "0.8rem"}}>Cùng chờ quay may mắn tại Tiktok #ALmo</i></div>
-        )}
+        <div className="wheel-center-dot"></div>
       </div>
-    );
-  }
-}
+
+      <button className="spin-button" onClick={handleSpin} disabled={spinning}>
+        {spinning ? 'ĐANG QUAY...' : 'NHẬN GIẢM GIÁ'}
+      </button>
+
+      {result && !spinning && (
+        <div className="prize-msg">
+          Chúc mừng! Bạn nhận được <strong>{result.label} <br/></strong>
+          <i style={{fontSize: "0.8rem"}}>Cùng chờ quay may mắn tại Tiktok #ALmo</i>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default LuckyWheel;

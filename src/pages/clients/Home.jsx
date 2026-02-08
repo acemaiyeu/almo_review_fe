@@ -4,6 +4,9 @@ import homeService from '../../services/homeService.js'
 import { useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor.jsx';
 import DisplayContent from '../../app/ComponentSupport/DisplayContent.jsx';
+import DynamicIsland from './DynamicIsland.jsx';
+import { useDispatch } from 'react-redux';
+import { updateDynamic } from '../../app/features/dynamicIslandSlice.js';
 
 const Home = () => {
   // Dữ liệu giả (Mock Data) thay cho việc gọi API
@@ -13,15 +16,26 @@ const Home = () => {
     { id: 3, name: 'Xiaomi 14 Ultra', price: 21990000, image: 'https://cdn.tgdd.vn/Products/Images/42/322616/xiaomi-14-ultra-trang-thumb-600x600.jpg' },
     { id: 4, name: 'Oppo Find X7 Ultra', price: 18500000, image: 'https://cdn.mobilecity.vn/mobilecity-vn/images/2024/01/oppo-find-x7-ultra-den.jpg' },
   ];
-
+  
+ 
   const [ data_c, setData ] = useState("")
   const getDataWord = (value) => {
       setData(value)
   }
+  const dispatch = useDispatch();
+
+  const handleNotifiDynamic = () => {
+    // Truyền vào đúng cấu trúc action.payload.title và action.payload.content
+    dispatch(updateDynamic({
+      title: "Quay thưởng", 
+      content: "Bạn đã nhận được giảm giá 50% với sản phẩm IPHONE 17"
+    }));
+  };
 const { data: products, loading } = useFetch(homeService.getProducts, 123);
   if (loading) return <div>Đang tải sản phẩm...</div>;
   return (
     <div style={styles.container}>
+      {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
       <h2 style={styles.title}>📱 Điện thoại mới nhất</h2>
       <div style={styles.grid}>
         {products && products.map((item) => (
@@ -43,7 +57,7 @@ const { data: products, loading } = useFetch(homeService.getProducts, 123);
 };
 
 const styles = {
-  container: { padding: '20px 0', fontFamily: 'Arial, sans-serif' },
+  container: { padding: '20px 0', fontFamily: 'Arial, sans-serif', position: 'relative' },
   title: { fontSize: '22px', fontWeight: 'bold', marginBottom: '20px' },
   grid: { 
     display: 'grid', 

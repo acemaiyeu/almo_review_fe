@@ -9,6 +9,7 @@ import ProductDetail from './pages/clients/Products/ProductDetail'
 import { useLocation } from 'react-router-dom';
 import MenuAdmin from './pages/admin/MenuAdmin'
 import ManageProduct from './pages/admin/ManageProduct'
+import DynamicIsland from './pages/clients/DynamicIsland'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -16,12 +17,14 @@ function App() {
   const isAdminPage = location.pathname.startsWith('/admin');
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>
+       
       {isAdminPage ?<MenuAdmin /> : <Header />}
       {/* <Header /> */}
       <div 
       // style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}
       style={{paddingLeft: '10px',paddingRight: '10px'}}
       >
+        <DynamicIsland />
         <Routes>
           <Route path="/" element={<Home />} />
           {/* <Route path="/cart" element={<CartPage />} /> */}

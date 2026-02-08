@@ -2,10 +2,14 @@ import { useState } from 'react';
 import DisplayContent from '../../../app/ComponentSupport/DisplayContent';
 import '../../../style/ProductDetail.scss'
 import LuckyWheel from '../../../app/ComponentSupport/LuckyWheel.jsx';
+import { updateDynamic } from '../../../app/features/dynamicIslandSlice.js';
+import { useDispatch } from 'react-redux';
 
 const ProductDetail = () => {
+    const dispatch = useDispatch();
     const [product, setProduct] = useState({
         id: null,
+        name: "IPHONE 15 PROMAX",
         property: `<div className="product-detail-content-phone">
                 <div className="product-detail-content-title">Thông số kỹ thuật</div> <hr/
             </div>`,
@@ -14,8 +18,18 @@ const ProductDetail = () => {
             <h1>Màn hình: </h1><p>Với độ phân giải lên đến 2k cùng với tấm màn AMOLED khiến cho người dùng khá thích</p></div>
         `
     })
+        const sendNotifiDynamic = (content) => {
+        // Truyền vào đúng cấu trúc action.payload.title và action.payload.content
+        dispatch(updateDynamic({
+          title: "notifi", 
+          content: content
+        }));
+      };
     const handlePrizeReceived = (prize) => {
-    console.log("Dữ liệu nhận được từ con:", prize);
+    // console.log("Dữ liệu nhận được từ con:", prize);
+    sendNotifiDynamic(`Bạn nhận được giảm giá ${prize.label} cho sản phẩm: ${product.name}`)
+    
+    
     // Bạn có thể xử lý lưu vào database hoặc update giỏ hàng tại đây
   };
     return (<div className="product-detail-container">
