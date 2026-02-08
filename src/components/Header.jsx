@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Search, Phone, History, Package, User } from 'lucide-react';
 import { useState } from 'react';
+import '../style/Header.scss'
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -43,9 +44,23 @@ function Header() {
             <History size={20} />
             <span>Lịch sử giảm giá</span>
           </Link>
-          <Link to="/orders" style={styles.menuItem}>
+          <Link to="/orders" style={styles.menuItem} className="indentifi-position">
             <User size={20} />
-            <span>Tài khoản của tôi</span>
+            <span>Tài khoản của tôi
+              <div className="account-modal">
+                  <div className="account-list">
+                      <div className="account-item">
+                        <Link to="/profile">Thông tin tài khoản</Link>
+                      </div>
+                  </div>
+                   <div className="account-list">
+                    <div className="account-item">
+                        <span>Đăng xuất</span>
+                      </div>
+                      
+                  </div>
+              </div>
+            </span>
           </Link>
 
           {/* <Link to="/cart" style={styles.cartBtn}>
@@ -70,7 +85,7 @@ const styles = {
   input: { flex: 1, border: 'none', padding: '8px 12px', outline: 'none' },
   searchBtn: { border: 'none', background: 'none', padding: '0 10px', cursor: 'pointer' },
   menu: { display: 'flex', gap: '20px', alignItems: 'center' },
-  menuItem: { textDecoration: 'none', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '12px' },
+  menuItem: { textDecoration: 'none', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '1rem' },
   cartBtn: { textDecoration: 'none', color: '#000', display: 'flex', alignItems: 'center', gap: '8px', background: '#fff', padding: '5px 12px', borderRadius: '4px' },
   badge: { position: 'absolute', top: '-8px', right: '-8px', background: 'red', color: '#fff', fontSize: '10px', borderRadius: '50%', padding: '2px 5px' }
 };

@@ -2,8 +2,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
-const axiosClient = axios.create({
-  baseURL: 'http://localhost:8000/api/client/', // Thay bằng URL thật của bạn
+const axiosAuth = axios.create({
+  baseURL: 'http://localhost:8000/api/', // Thay bằng URL thật của bạn
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,7 +12,7 @@ const axiosClient = axios.create({
 
 // 2. Thiết lập Interceptor cho phía Gửi đi (Request)
 // Thường dùng để tự động gắn Token vào mỗi khi gửi API
-axiosClient.interceptors.request.use(
+axiosAuth.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -27,7 +27,7 @@ axiosClient.interceptors.request.use(
 
 // 3. Thiết lập Interceptor cho phía Nhận về (Response)
 // Giúp bạn xử lý dữ liệu hoặc bắt lỗi tập trung một chỗ
-axiosClient.interceptors.response.use(
+axiosAuth.interceptors.response.use(
   (response) => {
     return response.data;
   },
@@ -38,7 +38,9 @@ axiosClient.interceptors.response.use(
 
       switch (status) {
         case 401:
-          toast.error("Phiên đăng nhập đã kết thúc! Vui lòng đăng nhập để sử dụng tính năng này!");
+          if(localStorage.getItem('access_token')){
+            toast.error("Phiên đăng nhập đã kết thúc!");
+          }          
           localStorage.removeItem('access_token')
           localStorage.removeItem('expires_in')
           break;
@@ -63,4 +65,4 @@ axiosClient.interceptors.response.use(
   }
 );
 
-export default axiosClient;
+export default axiosAuth;

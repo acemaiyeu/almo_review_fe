@@ -4,6 +4,7 @@ import '../../../style/ProductDetail.scss'
 import LuckyWheel from '../../../app/ComponentSupport/LuckyWheel.jsx';
 import { updateDynamic } from '../../../app/features/dynamicIslandSlice.js';
 import { useDispatch } from 'react-redux';
+import { showDynamic } from '../../../app/ComponentSupport/functions.js';
 
 const ProductDetail = () => {
     const dispatch = useDispatch();
@@ -18,16 +19,9 @@ const ProductDetail = () => {
             <h1>Màn hình: </h1><p>Với độ phân giải lên đến 2k cùng với tấm màn AMOLED khiến cho người dùng khá thích</p></div>
         `
     })
-        const sendNotifiDynamic = (content) => {
-        // Truyền vào đúng cấu trúc action.payload.title và action.payload.content
-        dispatch(updateDynamic({
-          title: "notifi", 
-          content: content
-        }));
-      };
     const handlePrizeReceived = (prize) => {
     // console.log("Dữ liệu nhận được từ con:", prize);
-    sendNotifiDynamic(`Bạn nhận được giảm giá ${prize.label} cho sản phẩm: ${product.name}`)
+    showDynamic(dispatch,`Bạn nhận được giảm giá ${prize.label} cho sản phẩm: ${product.name}`)
     
     
     // Bạn có thể xử lý lưu vào database hoặc update giỏ hàng tại đây

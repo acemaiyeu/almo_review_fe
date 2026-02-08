@@ -3,13 +3,13 @@ import '../../style/LuckyWheel.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDiscount } from '../features/productSlice';
 import axiosClient from '../../services/axiosClient';
+import { toast } from 'react-toastify';
 // Giả sử bạn có action getDiscount từ store
 // import { getDiscount } from '../../redux/actions/productActions'; 
 
 const LuckyWheel = ({ onResult }) => {
   const dispatch = useDispatch();
   // Lấy dữ liệu từ redux store
-  const discountFromStore = useSelector((state) => state.product.discount);
 
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -24,9 +24,8 @@ const LuckyWheel = ({ onResult }) => {
   ];
   const handleSpin = () => {
       axiosClient.post('/get-discount-product', {
-        product_id: 1
+        product_id: 2
       }).then((res) => {
-
         if (spinning) return;
 
     setSpinning(true);
@@ -58,9 +57,7 @@ const LuckyWheel = ({ onResult }) => {
     }, 3000);
     
 
-      }).catch((e) => {
-        console.log(e)
-      })
+      }).catch()
   };    
 
   const sectorAngle = 360 / prizes.length;

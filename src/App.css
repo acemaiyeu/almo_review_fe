@@ -4,6 +4,8 @@
   --background-main-hover: #f7175a8a; 
   /* Use px, rem, or em for font size */
   --font-size-main: 16px; 
+  --text-white: #ffffff;
+  --bg-light: #f8f9fa;
 }
 
 #root {
@@ -16,6 +18,9 @@
     text-align: center;
     overflow: hidden;
     overflow-y: auto;
+}
+.indentifi-position{
+  position: relative;
 }
 
 .logo {

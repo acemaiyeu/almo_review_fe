@@ -7,11 +7,11 @@ const DynamicIsland = () => {
   const dispatch = useDispatch();
   const { content, notifi } = useSelector((state) => state.dynamic);
   const [isActive, setIsActive] = useState(false);
-
+  const audio = document.getElementById("audio");
   useEffect(() => {
     if (content) {
       setIsActive(true);
-
+      audio.play();
       // Sau 3 giây thì bắt đầu thu nhỏ lại
       const timer = setTimeout(() => {
         setIsActive(false);
@@ -26,14 +26,17 @@ const DynamicIsland = () => {
     }
   }, [content, dispatch]);
 
+
   return (
+
     <div className="di-wrapper">
       {/* Chỉ Render CSS class dựa trên biến isActive */}
       <div className={`di-island ${isActive ? 'di-active' : 'di-hidden'}`}>
         {isActive && (
           <div className="di-content">
             <div className="di-icon-bg">
-              <span>{notifi ? '🔔' : '✨'}</span>
+              {/* <span>{notifi ? '🔔' : '✨'}</span> */}
+              <span>'🔔'</span>
             </div>
             <div className="di-text-stack">
               {/* {notifi && <small className="di-title">{notifi}</small>} */}
