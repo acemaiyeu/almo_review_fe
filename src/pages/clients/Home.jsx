@@ -18,19 +18,7 @@ const Home = () => {
   ];
   
  
-  const [ data_c, setData ] = useState("")
-  const getDataWord = (value) => {
-      setData(value)
-  }
-  const dispatch = useDispatch();
 
-  const handleNotifiDynamic = () => {
-    // Truyền vào đúng cấu trúc action.payload.title và action.payload.content
-    dispatch(updateDynamic({
-      title: "Quay thưởng", 
-      content: "Bạn đã nhận được giảm giá 50% với sản phẩm IPHONE 17"
-    }));
-  };
 const { data: products, loading } = useFetch(homeService.getProducts, 123);
   if (loading) return <div>Đang tải sản phẩm...</div>;
   return (

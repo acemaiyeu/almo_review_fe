@@ -21,7 +21,7 @@ axiosAuth.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    // return Promise.reject(error);
   }
 );
 
@@ -38,9 +38,7 @@ axiosAuth.interceptors.response.use(
 
       switch (status) {
         case 401:
-          if(localStorage.getItem('access_token')){
-            toast.error("Phiên đăng nhập đã kết thúc!");
-          }          
+          toast.error("Sai tài khoản hoặc mật khẩu");
           localStorage.removeItem('access_token')
           localStorage.removeItem('expires_in')
           break;

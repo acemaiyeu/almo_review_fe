@@ -13,13 +13,14 @@ const Login = () => {
             await axiosAuth.post('/login', {
                 ...formData
             }).then((res) => {
-                toast.success('Đăng nhập thành công!');
-                // Lưu token vào localStorage hoặc xử lý logic tiếp theo
-                localStorage.setItem('access_token', res.access_token)
-                localStorage.setItem('expires_in', res.expires_in)
-                // showDynamic(dispatch,"Đăng nhập thành công!");
-                window.location.href = "/"
-                showDynamic(dispatch,"Đăng nhập thành công!");
+                if(res){
+                    localStorage.setItem('access_token', res.access_token)
+                    localStorage.setItem('expires_in', res.expires_in)
+                    showDynamic(dispatch,"Đăng nhập thành công!");
+                    window.location.href = "/"
+                    showDynamic(dispatch,"Đăng nhập thành công!");
+                }
+                
                 
             }).catch()
     };

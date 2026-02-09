@@ -1,15 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor';
 import '../../style/ManagerProduct.scss'
 import { useFetch } from '../../services/useFetch';
+import { createProduct, getProductALl } from '../../services/ProductService';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { uploadImage } from '../../app/ComponentSupport/functions';
 const  ManageProduct = () => {
-
+    const dispatch = useDispatch();
     const [listProducts, setListProducts] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
+    const [useParams, setUseParams] = useState({
+        product_name: ''
+    });
+    const [loadding, setLoadding] = useState(false);
+    const [limit, setLimit] = useState(10);
     const [product, setProduct] = useState({
         id: undefined,
         code: "",
         name: "",
+        slug: 'Tạo tự động',
         property: "",
+        thumbnail: "",
+        rate_descriptions: "",
         affilate_tiktok_link: "",
         affilate_shoppee_link: "",
         affilate_lazada_link: "",
@@ -17,9 +31,31 @@ const  ManageProduct = () => {
     const [showModal, setShowModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
 
-    const getDataWord = (content) => {
+    const getDataWordToThumnail = (content) => {
+       product.thumbnail = content;
+       setProduct(product)
+    }
+    const getDataWordToProperty = (content) => {
        product.property = content;
        setProduct(product)
+    }
+    const getDataWordToRate = (content) => {
+       product.rate_descriptions = content;
+       setProduct(product)
+    }
+    const setProductDefault = () => {
+        setProduct({
+            id: undefined,
+            code: "",
+            name: "",
+            property: "",
+            thumbnail: "",
+            slug: 'Tạo tự động',
+            rate_descriptions: "",
+            affilate_tiktok_link: "",
+            affilate_shoppee_link: "",
+            affilate_lazada_link: "",
+        })
     }
     const handleEdit = (product) => {
         setProduct({
@@ -31,25 +67,72 @@ const  ManageProduct = () => {
         setShowModal(true)
         setUpdateModal(true)
     }
+    const getProduct = async () => {
+        setLoadding(true)
+        const products = await getProductALl([],page, limit); 
+        
+        if(products){
+            setListProducts(products.data)
+            setTotalPage(products.meta.pagination.total_pages)
+        }
+        setLoadding(false)
+    }
+
+    const nextPage = () => {
+        if(page >= totalPage){
+            toast.error("Bạn đã ở trang cuối cùng!")
+            return;
+        }
+        setPage(page + 1)
+    }
+    const prevPage = () => {
+        if(page <= 0){
+            toast.error("Bạn đã ở trang đầu tiên!")
+            return;
+        }
+        setPage(page - 1)
+    }
+    const firstPage = () => {
+        setPage(1)
+    }
+    const lastPage = () => {
+        setPage(totalPage)
+    }
+
+
+    useEffect(() => {
+        getProduct()
+    }, [listProducts?.length, page])
+
+
+    //Create, Update, Delete
+    const create = async () => {
+        const product_temp = await createProduct(dispatch, product);
+        if(product_temp){
+            setShowModal(false)
+            setProductDefault()
+        }
+       
+    }
+    const handleUploadThumbail = async (event) => {
+        const url = uploadImage(dispatch ,event);
+        if(url){
+            product.thumbnail = url
+            setProduct(product)
+        }
+    };
     return (
         <div className="manage-box">
             <div className="manage-box-title">QUẢN LÝ SẢN PHẨM</div>
                 <div className="manage-box-filter">
                     <div className="manage-box-filter-control">
-                        <div className="manage-box-filter-control-item">
-                            <div className="manage-box-filter-control-item-title">
-                                Mã sản phẩm:
-                            </div>
-                            <div className="manage-box-filter-control-item-input">
-                                <input type="text" placeholder='Vui lòng nhập mã sản phẩm cần tìm' />
-                            </div>
-                        </div>
+                       
                         <div className="manage-box-filter-control-item">
                             <div className="manage-box-filter-control-item-title">
                                 Tên sản phẩm:
                             </div>
                             <div className="manage-box-filter-control-item-input">
-                                <input type="text" placeholder='Vui lòng nhập tên sản phẩm cần tìm' />
+                                <input type="text" placeholder='Vui lòng nhập tên sản phẩm cần tìm' value={useParams.product_name} onChange={(e) => { setUseParams({ ...useParams, product_name: e.target.value}) }}/>
                             </div>
                         </div>
                         <div className="manage-box-filter-control-item">
@@ -61,18 +144,13 @@ const  ManageProduct = () => {
                         <div className="manage-box-title">Dữ liệu</div>
                         <div className="manage-box-content-modal">
                             <div className="manage-box-content-modal-item" onClick={() => {
-                                            setProduct({
-                                                id: undefined,
-                                                code: "",
-                                                name: "",
-                                                property: ""
-                                            })
+                                           setProductDefault()
                                             setUpdateModal(false)
                                             setShowModal(true)
                                         }}>
                                 Thêm
                             </div>
-                             <div className="manage-box-content-modal-item">
+                            <div className="manage-box-content-modal-item" onClick={() => getProduct()}>
                                 Cập nhật lại dữ liệu
                             </div>
                         </div>
@@ -81,27 +159,35 @@ const  ManageProduct = () => {
                                  <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Mã sản phẩm</th>
+                                        <th>Slug</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>ALRV-IP15PM128</td>
-                                            <td>IPHONE 15 PROMAX 128GB</td>
-                                            <td>
-                                                <div className="btn-table-item" onClick={() => handleEdit({
-                                                    id: 1,
-                                                    code: "ALRV-IP15PM128",
-                                                    name: "IPHONE 15 PROMAX 128GB",
-                                                    property: "Màn hình"
-                                                })}>Chỉnh sửa</div>
-                                                <div className="btn-table-item">Xóa</div>
-                                            </td>
-                                        </tr>
-                                        
+                                        {loadding && 
+                                            <tr>
+                                                <td>
+                                                    <button class="btn-spinner" type="button" disabled>
+                                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                         &nbsp; Đang tải ...
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }   
+                                        {listProducts && listProducts.length > 0 && listProducts.map((item, index_item) => {
+                                            return (
+                                                <tr>
+                                                    <td>{index_item + 1}</td>
+                                                    <td>{item.slug}</td>
+                                                    <td>{item.name}</td>
+                                                    <td>
+                                                        <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
+                                                        <div className="btn-table-item"><i class="bi bi-x-circle"></i></div>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
                                     </tbody>
                             </table>
                         </div>
@@ -118,21 +204,16 @@ const  ManageProduct = () => {
                                 <div className="manage-box-modal-body">
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Mã sản phẩm:
+                                            Slug:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.code} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    code: e.target.value
-                                                })
-                                            }}/>
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.slug} disabled/>
                                         </div>
                                     </div>
 
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Têm sản phẩm:
+                                            Tên sản phẩm:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
                                             <input className="manage-box-modal-body-control-body-input" type="text" value={product.name} onChange={(e) => {
@@ -149,7 +230,23 @@ const  ManageProduct = () => {
                                             Thumnail:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <WordEditor content={product.property} getDataWord={getDataWord}/>
+                                            <input type='file' onChange={(e) => handleUploadThumbail(e)}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Đánh giá nhanh:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <WordEditor content={product.property} getDataWord={getDataWordToRate}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Thuộc tính:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <WordEditor content={product.property} getDataWord={getDataWordToProperty}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -192,7 +289,7 @@ const  ManageProduct = () => {
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-btn" >Tạo mới</div>
+                                        <div className="manage-box-modal-btn" onClick={() => create()}>Tạo mới</div>
                                         <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`}>Cập nhật</div>
                                         <div className="manage-box-modal-btn">Xóa</div>
                                         <div className="manage-box-modal-btn">Làm mới</div>
@@ -203,19 +300,19 @@ const  ManageProduct = () => {
                         }
                 </div>
                 <div className="manage-box-paging">
-                    <div className="manage-box-paging-item">
+                    <div className={`manage-box-paging-item ${page == 1 ? 'disabled' : ''}`}  onClick={() => firstPage()}>
                         Trang đầu
                     </div>
-                    <div className="manage-box-paging-item">
+                    <div className={`manage-box-paging-item ${page == 1 ? 'disabled' : ''}`}  onClick={() => prevPage()}>
                         Trang trước
                     </div>
-                    <div className="manage-box-paging-item">
-                        1 / 2
+                    <div className={`manage-box-paging-item`}>
+                        {page} / {totalPage}
                     </div>
-                     <div className="manage-box-paging-item">
+                     <div className={`manage-box-paging-item ${page == totalPage ? 'disabled' : ''}`}  onClick={() => nextPage()}>
                         Trang tiếp theo
                     </div>
-                     <div className="manage-box-paging-item">
+                     <div className={`manage-box-paging-item ${page == totalPage ? 'disabled' : ''}`} onClick={() => lastPage()}>
                         Trang cuối
                     </div>
                 </div>

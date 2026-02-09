@@ -22,6 +22,10 @@
 .indentifi-position{
   position: relative;
 }
+.btn-spinner{
+  background-color: var(--background-main);
+  color: white;
+}
 
 .logo {
   height: 6em;

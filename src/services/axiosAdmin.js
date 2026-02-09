@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
-const axiosClient = axios.create({
-  baseURL: 'http://localhost:8000/api/', // Thay bằng URL thật của bạn
+const axiosAdmin = axios.create({
+  baseURL: 'http://localhost:8000/api/admin/', // Thay bằng URL thật của bạn
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,9 +11,9 @@ const axiosClient = axios.create({
 
 // 2. Thiết lập Interceptor cho phía Gửi đi (Request)
 // Thường dùng để tự động gắn Token vào mỗi khi gửi API
-axiosClient.interceptors.request.use(
+axiosAdmin.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token_admin');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -26,7 +26,7 @@ axiosClient.interceptors.request.use(
 
 // 3. Thiết lập Interceptor cho phía Nhận về (Response)
 // Giúp bạn xử lý dữ liệu hoặc bắt lỗi tập trung một chỗ
-axiosClient.interceptors.response.use(
+axiosAdmin.interceptors.response.use(
   (response) => {
     // Nếu API trả về dữ liệu thành công, mình chỉ lấy phần data thôi
     return response.data;
@@ -53,4 +53,4 @@ axiosClient.interceptors.response.use(
   }
 );
 
-export default axiosClient;
+export default axiosAdmin;

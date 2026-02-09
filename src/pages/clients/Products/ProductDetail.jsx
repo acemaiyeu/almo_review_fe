@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DisplayContent from '../../../app/ComponentSupport/DisplayContent';
 import '../../../style/ProductDetail.scss'
 import LuckyWheel from '../../../app/ComponentSupport/LuckyWheel.jsx';
 import { updateDynamic } from '../../../app/features/dynamicIslandSlice.js';
 import { useDispatch } from 'react-redux';
 import { showDynamic } from '../../../app/ComponentSupport/functions.js';
+import { getProductClientDetail } from '../../../services/ProductService.js';
+import { useParams } from 'react-router-dom';
 
 const ProductDetail = () => {
     const dispatch = useDispatch();
+    const { id: product_id_param } = useParams();
     const [product, setProduct] = useState({
         id: null,
         name: "IPHONE 15 PROMAX",
@@ -22,12 +25,24 @@ const ProductDetail = () => {
     const handlePrizeReceived = (prize) => {
     // console.log("Dữ liệu nhận được từ con:", prize);
     showDynamic(dispatch,`Bạn nhận được giảm giá ${prize.label} cho sản phẩm: ${product.name}`)
-    
-    
-    // Bạn có thể xử lý lưu vào database hoặc update giỏ hàng tại đây
   };
-    return (<div className="product-detail-container">
-            <div className="product-detail-header">IPHONE 15 PRO MAX</div>
+  const getProduct = async () => {
+    const product_api = await getProductClientDetail(product_id_param);
+        if(product_api){
+            setProduct({
+                id: product_api.id,
+                name: product_api.name,
+                property: product_api.property,
+                rate_descriptions: product_api.rate_descriptions ?? ''
+            })
+        }
+  }
+  useEffect(() => {
+        getProduct()
+    }, [product.id])
+    return (product.id ?
+        <div className="product-detail-container">   
+            <div className="product-detail-header">{product?.name}</div>
             <hr/>
             <div className="product-box">
                 <div className="product-detail-video-rate">
@@ -153,6 +168,6 @@ const ProductDetail = () => {
             </div> */}
             <DisplayContent htmlFromEditor={product?.property ?? ""}/>
            
-    </div>)
+    </div> : <div className="product-detail-container"><p>Không tìm thấy sản phẩm</p></div>)
 }
 export default ProductDetail;
