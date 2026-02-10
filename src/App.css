@@ -49,6 +49,11 @@
 .page-admin>div:last-child{
   flex: 1;
 }
+.table-client td{
+  height: auto !important;
+  width: 100%;
+  text-wrap: wrap;
+}
 
 @keyframes logo-spin {
   from {

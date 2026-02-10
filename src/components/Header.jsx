@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, Phone, History, Package, User } from 'lucide-react';
+import { ShoppingCart, Search, Phone, History, Package, User, Home } from 'lucide-react';
 import { useState } from 'react';
 import '../style/Header.scss'
 
@@ -20,8 +20,8 @@ function Header() {
       <div style={styles.container}>
         {/* 1. Logo */}
         <Link to="/" style={styles.logo}>
-          <Phone size={28} />
-          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Shop's Name</span>
+          <Home size={28} />
+          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Home</span>
         </Link>
 
         {/* 2. Thanh tìm kiếm */}

@@ -88,7 +88,7 @@ const ProductDetail = () => {
                 </div>
             </div>
             <div className="product-promotion">
-                <LuckyWheel onResult={handlePrizeReceived} />
+                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id}/>
             </div>
            </div>
             {/* <div className="product-detail-content-phone">

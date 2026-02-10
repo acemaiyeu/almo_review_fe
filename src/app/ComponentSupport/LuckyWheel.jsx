@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 // Giả sử bạn có action getDiscount từ store
 // import { getDiscount } from '../../redux/actions/productActions'; 
 
-const LuckyWheel = ({ onResult }) => {
+const LuckyWheel = ({ onResult, product_id }) => {
   const dispatch = useDispatch();
   // Lấy dữ liệu từ redux store
 
@@ -24,7 +24,7 @@ const LuckyWheel = ({ onResult }) => {
   ];
   const handleSpin = () => {
       axiosClient.post('/get-discount-product', {
-        product_id: 2
+        product_id
       }).then((res) => {
         if (spinning) return;
 

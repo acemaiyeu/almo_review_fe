@@ -32,7 +32,7 @@ const DynamicIsland = () => {
     <div className="di-wrapper">
       {/* Chỉ Render CSS class dựa trên biến isActive */}
       <div className={`di-island ${isActive ? 'di-active' : 'di-hidden'}`}>
-        {isActive && (
+        {isActive ? (
           <div className="di-content">
             <div className="di-icon-bg">
               {/* <span>{notifi ? '🔔' : '✨'}</span> */}
@@ -43,7 +43,13 @@ const DynamicIsland = () => {
               <p className="di-text">{content}</p>
             </div>
           </div>
-        )}
+        ) : 
+         <div className="di-content">
+            <div className="di-text-stack">
+              <p className="di-text"><span>Almo Review</span></p>
+            </div>
+          </div>
+          }
       </div>
     </div>
   );

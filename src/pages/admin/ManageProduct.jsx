@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor';
 import '../../style/ManagerProduct.scss'
 import { useFetch } from '../../services/useFetch';
-import { createProduct, getProductALl } from '../../services/ProductService';
+import { createProduct, deleteProduct, getProductALl, updateProduct } from '../../services/ProductService';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../app/ComponentSupport/functions';
@@ -59,10 +59,7 @@ const  ManageProduct = () => {
     }
     const handleEdit = (product) => {
         setProduct({
-            id: product.id,
-            code: product.code,
-            name: product.name,
-            property: product.property
+            ...product
         })
         setShowModal(true)
         setUpdateModal(true)
@@ -107,13 +104,38 @@ const  ManageProduct = () => {
 
     //Create, Update, Delete
     const create = async () => {
+        if(product.id){
+            toast.error("Chức năng không thể sử dụng")
+            return;
+        }
         const product_temp = await createProduct(dispatch, product);
         if(product_temp){
             setShowModal(false)
+            getProduct()
             setProductDefault()
         }
        
     }
+    const update = async () => {
+        if(!updateModal){
+            toast.error("Chức năng không thể sử dụng")
+            return;
+        }
+        const product_temp = await updateProduct(dispatch, product);
+        if(product_temp){
+            setShowModal(false)
+            setProductDefault()
+            getProduct()
+        } 
+    }
+    const deleteById = async (id) => {
+        const product_temp = await deleteProduct(dispatch, id);
+        if(product_temp){
+            setProductDefault()
+            getProduct()
+        } 
+    }
+
     const handleUploadThumbail = async (event) => {
         const url = uploadImage(dispatch ,event);
         if(url){
@@ -153,6 +175,13 @@ const  ManageProduct = () => {
                             <div className="manage-box-content-modal-item" onClick={() => getProduct()}>
                                 Cập nhật lại dữ liệu
                             </div>
+                            <div className="manage-box-content-modal-item">
+                                <select>
+                                    <option>10</option>
+                                    <option>100</option>
+                                    <option>1000</option>
+                                </select>
+                            </div>
                         </div>
                         <div className="manage-box-body">
                             <table className="table table-bordered">
@@ -183,7 +212,7 @@ const  ManageProduct = () => {
                                                     <td>{item.name}</td>
                                                     <td>
                                                         <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
-                                                        <div className="btn-table-item"><i class="bi bi-x-circle"></i></div>
+                                                        <div className="btn-table-item" onClick={() => deleteById(item.id)}><i class="bi bi-x-circle"></i></div>
                                                     </td>
                                                 </tr>
                                             )
@@ -230,7 +259,13 @@ const  ManageProduct = () => {
                                             Thumnail:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input type='file' onChange={(e) => handleUploadThumbail(e)}/>
+                                            {/* <input type='file' onChange={(e) => handleUploadThumbail(e)}/> */}
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.thumbnail} onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    thumbnail: e.target.value
+                                                })
+                                            }}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -246,7 +281,7 @@ const  ManageProduct = () => {
                                             Thuộc tính:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <WordEditor content={product.property} getDataWord={getDataWordToProperty}/>
+                                            <WordEditor content={product.rate_descriptions} getDataWord={getDataWordToProperty}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -289,9 +324,9 @@ const  ManageProduct = () => {
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-btn" onClick={() => create()}>Tạo mới</div>
-                                        <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`}>Cập nhật</div>
-                                        <div className="manage-box-modal-btn">Xóa</div>
+                                        <div className={`manage-box-modal-btn ${product.id ? 'disabled' : ''}`} onClick={() => create()}>Tạo mới</div>
+                                        <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`} onClick={() => update()}>Cập nhật</div>
+                                        <div className="manage-box-modal-btn" onClick={() => deleteById(product.id)}>Xóa</div>
                                         <div className="manage-box-modal-btn">Làm mới</div>
                                     </div>
 
