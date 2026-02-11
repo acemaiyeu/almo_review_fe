@@ -7,6 +7,7 @@ import DisplayContent from '../../app/ComponentSupport/DisplayContent.jsx';
 import DynamicIsland from './DynamicIsland.jsx';
 import { useDispatch } from 'react-redux';
 import { updateDynamic } from '../../app/features/dynamicIslandSlice.js';
+import CategoryHome from './Category/CategoryHome.jsx';
 
 const Home = () => {
   // Dữ liệu giả (Mock Data) thay cho việc gọi API
@@ -24,22 +25,28 @@ const { data: products, loading } = useFetch(homeService.getProducts, 123);
   return (
     <div style={styles.container}>
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
-      <h2 style={styles.title}>📱 Điện thoại mới nhất</h2>
-      <div style={styles.grid}>
-        {products && products.map((item) => (
-          <div key={item.id} style={styles.card}>
-            <div style={styles.imageBox}>
-                <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy'/>
+       <div className="category-box">
+          <CategoryHome />
+        </div>
+      <div className="product-box">
+        <h2 style={styles.title}>📱 Điện thoại mới nhất</h2>
+        <div style={styles.grid}>
+          {products && products.map((item) => (
+            <div key={item.id} style={styles.card}>
+              <div style={styles.imageBox}>
+                  <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy'/>
+              </div>
+              <h3 style={styles.name}>{item.name}</h3>
+              <p style={styles.price}>{item.price.toLocaleString()}đ</p>
+              
+              <Link to={`/product/${item.slug}`} style={styles.btn}>
+                Xem chi tiết
+              </Link>
             </div>
-            <h3 style={styles.name}>{item.name}</h3>
-            <p style={styles.price}>{item.price.toLocaleString()}đ</p>
-            
-            <Link to={`/product/${item.id}`} style={styles.btn}>
-              Xem chi tiết
-            </Link>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+        </div>
+       
     </div>
   );
 };

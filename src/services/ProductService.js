@@ -32,10 +32,10 @@ export const getProductALl = async (params = [], page = 1, limit = 10) => {
         // throw error; 
     }
 }
-export const getProductClientDetail = async (id) => {
+export const getProductClientDetail = async (slug) => {
     try {
         // Thêm return ở đầu dòng này
-        const res = await axiosClient.get(`product/${id}`);
+        const res = await axiosClient.get(`product/${slug}`);
         return res.data; // Trả về dữ liệu từ API
     } catch (error) {
         console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
@@ -71,11 +71,10 @@ export const updateProduct = async (dispatch, params) => {
 export const deleteProduct = async (dispatch, product_id) => {
     try {
         // Thêm return ở đầu dòng này
-        const res = await axiosAdmin.delete(`product/${product_id}`, {
-            ...params
-        });
-        showDynamic(dispatch, "Đã xóa sản phẩm thành công!")
-        return res.data; // Trả về dữ liệu từ API
+        const res = await axiosAdmin.delete(`product/${product_id}`).then(() => {
+            showDynamic(dispatch, "Đã xóa sản phẩm thành công!")
+        }).catch()
+        return res; // Trả về dữ liệu từ API
     } catch (error) {
         console.error("Lỗi khi xóa sản phẩm:", error);
         // throw error; 

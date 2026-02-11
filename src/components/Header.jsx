@@ -2,11 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Search, Phone, History, Package, User, Home } from 'lucide-react';
 import { useState } from 'react';
 import '../style/Header.scss'
+import { useSelector } from 'react-redux';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-
+  const profile = useSelector((state) => state.profile)
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -44,24 +45,31 @@ function Header() {
             <History size={20} />
             <span>Lịch sử giảm giá</span>
           </Link>
-          <Link to="/orders" style={styles.menuItem} className="indentifi-position">
-            <User size={20} />
-            <span>Tài khoản của tôi
-              <div className="account-modal">
-                  <div className="account-list">
+          {profile.email === '' ?
+            <Link to="/login" style={styles.menuItem}>
+              {/* < size={20} /> */}
+              <span>Đăng nhập</span>
+            </Link> 
+          : 
+            <Link to="/orders" style={styles.menuItem} className="indentifi-position">
+              <User size={20} />
+              <span>Tài khoản của tôi
+                <div className="account-modal">
+                    <div className="account-list">
+                        <div className="account-item">
+                          <Link to="/profile">Thông tin tài khoản</Link>
+                        </div>
+                    </div>
+                    <div className="account-list">
                       <div className="account-item">
-                        <Link to="/profile">Thông tin tài khoản</Link>
-                      </div>
-                  </div>
-                   <div className="account-list">
-                    <div className="account-item">
-                        <span>Đăng xuất</span>
-                      </div>
-                      
-                  </div>
-              </div>
-            </span>
-          </Link>
+                          <span>Đăng xuất</span>
+                        </div>
+                        
+                    </div>
+                </div>
+              </span>
+            </Link>
+          }
 
           {/* <Link to="/cart" style={styles.cartBtn}>
             <div style={{ position: 'relative' }}>

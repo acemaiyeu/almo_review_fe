@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor';
 import '../../style/ManagerProduct.scss'
-import { useFetch } from '../../services/useFetch';
 import { createProduct, deleteProduct, getProductALl, updateProduct } from '../../services/ProductService';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../app/ComponentSupport/functions';
+import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
 const  ManageProduct = () => {
     const dispatch = useDispatch();
     const [listProducts, setListProducts] = useState([]);
@@ -130,6 +130,7 @@ const  ManageProduct = () => {
     }
     const deleteById = async (id) => {
         const product_temp = await deleteProduct(dispatch, id);
+        alert(product_temp)
         if(product_temp){
             setProductDefault()
             getProduct()
@@ -175,6 +176,7 @@ const  ManageProduct = () => {
                             <div className="manage-box-content-modal-item" onClick={() => getProduct()}>
                                 Cập nhật lại dữ liệu
                             </div>
+                            
                             <div className="manage-box-content-modal-item">
                                 <select>
                                     <option>10</option>
@@ -213,6 +215,7 @@ const  ManageProduct = () => {
                                                     <td>
                                                         <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
                                                         <div className="btn-table-item" onClick={() => deleteById(item.id)}><i class="bi bi-x-circle"></i></div>
+                                                        <div className="btn-table-item"><ExportExcelButton data={item.lucky_wheel_users} fileName="Danh_Sach_User_Lucky" title={"Xuất Users may mắn"}/></div>
                                                     </td>
                                                 </tr>
                                             )

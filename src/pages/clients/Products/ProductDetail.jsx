@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 
 const ProductDetail = () => {
     const dispatch = useDispatch();
-    const { id: product_id_param } = useParams();
+    const { slug } = useParams();
     const [product, setProduct] = useState({
         id: null,
         name: "IPHONE 15 PROMAX",
@@ -27,7 +27,7 @@ const ProductDetail = () => {
     showDynamic(dispatch,`Bạn nhận được giảm giá ${prize.label} cho sản phẩm: ${product.name}`)
   };
   const getProduct = async () => {
-    const product_api = await getProductClientDetail(product_id_param);
+    const product_api = await getProductClientDetail(slug);
         if(product_api){
             setProduct({
                 id: product_api.id,

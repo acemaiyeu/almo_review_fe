@@ -69,7 +69,7 @@ function App() {
           {/* <Route path="/cart" element={<CartPage />} /> */}
           <Route path="/orders" element={<div>Trang lịch sử đơn hàng</div>} />
           <Route path="/search" element={<div>Trang kết quả tìm kiếm</div>} />
-          <Route path="/product/:id" element={<ProductDetail/>} />
+          <Route path="/product/:slug" element={<ProductDetail/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forget-password" element={<Login />} />
