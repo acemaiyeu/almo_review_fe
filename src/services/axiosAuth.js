@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { updateProfile } from '../app/features/profileSlice';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosAuth = axios.create({
@@ -12,9 +13,14 @@ const axiosAuth = axios.create({
 
 // 2. Thiết lập Interceptor cho phía Gửi đi (Request)
 // Thường dùng để tự động gắn Token vào mỗi khi gửi API
+  const isAdminPage = location.pathname.startsWith('/admin');
 axiosAuth.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
+    let token = localStorage.getItem('access_token');
+    if(isAdminPage){
+      token = localStorage.getItem('access_token_admin');
+    }
+    
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -38,9 +44,20 @@ axiosAuth.interceptors.response.use(
 
       switch (status) {
         case 401:
-          toast.error("Sai tài khoản hoặc mật khẩu");
+          if(location.pathname.startsWith('/login')){
+            toast.error("Sai tài khoản hoặc mật khẩu");
+          }else{
+            toast.error("Phiên đăng nhập đã hết hạn");
+          }
+          
           localStorage.removeItem('access_token')
           localStorage.removeItem('expires_in')
+          updateProfile({
+            email: '',
+            name: '',
+            avatar: ''
+          })
+
           break;
         case 404:
           toast.error('Không tìm thấy tài nguyên này!');
@@ -58,6 +75,11 @@ axiosAuth.interceptors.response.use(
       toast.error("Không thể kết nối đến máy chủ. Vui lòng kiểm tra internet.");
     } else {
       toast.error(`Lỗi: ${error.message}`);
+    }
+    if(isAdminPage){
+        localStorage.removeItem('access_token_admin');
+    }else{
+        localStorage.removeItem('access_token');
     }
     return Promise.reject(error);
   }

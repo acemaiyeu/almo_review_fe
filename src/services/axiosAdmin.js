@@ -11,6 +11,8 @@ const axiosAdmin = axios.create({
 
 // 2. Thiết lập Interceptor cho phía Gửi đi (Request)
 // Thường dùng để tự động gắn Token vào mỗi khi gửi API
+
+  const isAdminPage = location.pathname.startsWith('/admin');
 axiosAdmin.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token_admin');
@@ -49,6 +51,7 @@ axiosAdmin.interceptors.response.use(
           console.error('Đã xảy ra lỗi không xác định.');
       }
     }
+    window.location.href = "/admin/login"
     return Promise.reject(error);
   }
 );

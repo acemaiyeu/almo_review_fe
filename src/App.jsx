@@ -17,11 +17,13 @@ import Profile from './pages/clients/Authentication/Profile.jsx'
 import axiosAuth from './services/axiosAuth.js'
 import { updateProfile } from './app/features/profileSlice.js'
 import notifi_sound from './assets/audio/notifi.mp3'
+import AdminLogin from './pages/admin/AdminLogin.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
+  const isLoginAdminPage = location.pathname.startsWith('/admin/login');
   const dispatch = useDispatch();
   // if(!profile.email || profile.email === ''){
   //   axiosAuth.get('auth/profile').then((res) => {
@@ -34,9 +36,9 @@ function App() {
   // }
   useEffect(() => {
     // Check if email is missing
-    if (!profile.email || profile.email === '') {
+    if (localStorage.getItem('access_token') || localStorage.getItem('access_token_admin')) {
       axiosAuth.get('auth/profile')
-        .then((res) => {
+        .then((res) => {      
           // Destructure data from the axios response
           const { name, email, avatar } = res.data; 
           
@@ -44,6 +46,10 @@ function App() {
         })
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
+          // alert(isAdminPage)
+          if(isAdminPage){
+              window.location.href = "/admin/login"
+          }
         });
     }
   }, [profile.email, dispatch]); // Only re-run if email changes or dispatch is ready
@@ -51,7 +57,7 @@ function App() {
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>
        <ToastContainer />
-      {isAdminPage ?<MenuAdmin /> : <Header />}
+      {isAdminPage ? (!isLoginAdminPage ?  <MenuAdmin /> : <></>) : <Header />}
       {/* <Header /> */}
       <div 
       // style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}
@@ -74,6 +80,7 @@ function App() {
 
           {/* //Admin */}
           <Route path="/admin/" element={HomeAdmin} />
+          <Route path="/admin/login" element={<AdminLogin />} />
            <Route path="/admin/manage-products" element={<ManageProduct />} />
            <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
         </Routes>
