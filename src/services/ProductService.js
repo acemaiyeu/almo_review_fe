@@ -14,7 +14,7 @@ export const getProductClientALl = async (params = [], page = 1, limit = 10) => 
         const res = await axiosClient.get(`products?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {
-        console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
+        // console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
         // throw error; 
     }
 }
@@ -28,7 +28,7 @@ export const getProductALl = async (params = [], page = 1, limit = 10) => {
         const res = await axiosAdmin.get(`products?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {
-        console.error("Lỗi khi lấy sản phẩm:", error);
+        // console.error("Lỗi khi lấy sản phẩm:", error);
         // throw error; 
     }
 }
@@ -38,7 +38,7 @@ export const getProductClientDetail = async (slug) => {
         const res = await axiosClient.get(`product/${slug}`);
         return res.data; // Trả về dữ liệu từ API
     } catch (error) {
-        console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
+        // console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
         // throw error; 
     }
 }
@@ -51,7 +51,7 @@ export const createProduct = async (dispatch, params) => {
         showDynamic(dispatch, "Tạo sản phẩm thành công!")
         return res.data; // Trả về dữ liệu từ API
     } catch (error) {
-        console.error("Lỗi khi tạo sản phẩm:", error);
+        // console.error("Lỗi khi tạo sản phẩm:", error);
         // throw error; 
     }
 }
@@ -64,7 +64,7 @@ export const updateProduct = async (dispatch, params) => {
         showDynamic(dispatch, "Cập nhật sản phẩm thành công!")
         return res.data; // Trả về dữ liệu từ API
     } catch (error) {
-        console.error("Lỗi khi cập nhật sản phẩm:", error);
+        // console.error("Lỗi khi cập nhật sản phẩm:", error);
         // throw error; 
     }
 }
@@ -76,7 +76,7 @@ export const deleteProduct = async (dispatch, product_id) => {
         }).catch()
         return res; // Trả về dữ liệu từ API
     } catch (error) {
-        console.error("Lỗi khi xóa sản phẩm:", error);
+        // console.error("Lỗi khi xóa sản phẩm:", error);
         // throw error; 
     }
 }

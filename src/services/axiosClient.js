@@ -35,7 +35,7 @@ axiosClient.interceptors.response.use(
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || 'Đã xảy ra lỗi';
-
+      localStorage.setItem('last-page_client', window.location.pathname);
       switch (status) {
         case 401:
           toast.error("Phiên đăng nhập đã kết thúc! Vui lòng đăng nhập để sử dụng tính năng này!");

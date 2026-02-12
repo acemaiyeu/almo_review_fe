@@ -18,6 +18,7 @@ import axiosAuth from './services/axiosAuth.js'
 import { updateProfile } from './app/features/profileSlice.js'
 import notifi_sound from './assets/audio/notifi.mp3'
 import AdminLogin from './pages/admin/AdminLogin.jsx'
+import ManageCategory from './pages/admin/ManageCategory.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -81,8 +82,9 @@ function App() {
           {/* //Admin */}
           <Route path="/admin/" element={HomeAdmin} />
           <Route path="/admin/login" element={<AdminLogin />} />
-           <Route path="/admin/manage-products" element={<ManageProduct />} />
-           <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
+          <Route path="/admin/manage-products" element={<ManageProduct />} />
+          <Route path="/admin/manage-categories" element={<ManageCategory />} />
+          <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
         </Routes>
         <audio controls id="audio" style={{opacity: '0'}}>
             <source  src={notifi_sound} type="audio/ogg"/>

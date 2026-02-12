@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosAdmin = axios.create({
@@ -25,7 +26,11 @@ axiosAdmin.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
+const forwardToLogig = () => {
+  setTimeout(() => {
+      window.location.href = "/admin/login"
+    }, 1500)
+}
 // 3. Thiết lập Interceptor cho phía Nhận về (Response)
 // Giúp bạn xử lý dữ liệu hoặc bắt lỗi tập trung một chỗ
 axiosAdmin.interceptors.response.use(
@@ -36,22 +41,35 @@ axiosAdmin.interceptors.response.use(
   (error) => {
     // Xử lý lỗi tập trung
     if (error.response) {
+      localStorage.setItem('last-page', window.location.pathname);
       switch (error.response.status) {
         case 401:
-          console.error('Hết hạn phiên làm việc, đang chuyển hướng về Login...');
+          // console.error('Hết hạn phiên làm việc, đang chuyển hướng về Login...');
+          toast.error('Hết hạn phiên làm việc, đang chuyển hướng về Login...')
+          forwardToLogig()
+          // Ví dụ: window.location.href = '/login';
+          break;
+          case 403:
+          // console.error('Hết hạn phiên làm việc, đang chuyển hướng về Login...');
+          toast.error('Bạn không có quyền truy cập dữ liệu này!')
+          forwardToLogig()
           // Ví dụ: window.location.href = '/login';
           break;
         case 404:
-          console.error('Không tìm thấy tài nguyên này!');
+          // console.error('Không tìm thấy tài nguyên này!');
+          toast.error('Không tìm thấy tài nguyên này!');
           break;
         case 500:
-          console.error('Lỗi server, vui lòng thử lại sau!');
+          // console.error('Lỗi server, vui lòng thử lại sau!');
+          toast.error('Lỗi server, vui lòng thử lại sau!');
           break;
         default:
-          console.error('Đã xảy ra lỗi không xác định.');
+          // console.error('Đã xảy ra lỗi không xác định.');
+          toast.error('Đã xảy ra lỗi không xác định.');
+
       }
     }
-    window.location.href = "/admin/login"
+    
     return Promise.reject(error);
   }
 );

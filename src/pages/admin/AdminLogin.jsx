@@ -16,7 +16,9 @@ const AdminLogin = () => {
         ...formData
     }).then((res) => {
         localStorage.setItem('access_token_admin', res.access_token);
-        window.location.href = "/admin/"
+        const last_page = localStorage.getItem('last-page');
+        localStorage.removeItem('last-page')
+        window.location.href = last_page
     }).catch()
     // Xử lý logic gọi API ở đây
   };

@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor';
-import '../../style/ManagerProduct.scss'
-import { createProduct, deleteProduct, getProductALl, updateProduct } from '../../services/ProductService';
+import '../../services/CategoryService.js'
+import { createCategory, deleteCategory, getCategoryALl, updateCategory } from '../../services/CategoryService';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../app/ComponentSupport/functions';
 import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
-import { getCategoryALl } from '../../services/CategoryService';
-const  ManageProduct = () => {
+const  ManageCategory = () => {
     const dispatch = useDispatch();
-    const [listProducts, setListProducts] = useState([]);
+    const [listCategorys, setListCategorys] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [useParams, setUseParams] = useState({
-        product_name: ''
+        category_name: ''
     });
     const [loadding, setLoadding] = useState(false);
     const [limit, setLimit] = useState(10);
-    const [product, setProduct] = useState({
+    const [category, setCategory] = useState({
         id: undefined,
         code: "",
         name: "",
@@ -29,25 +28,23 @@ const  ManageProduct = () => {
         affilate_shoppee_link: "",
         affilate_lazada_link: "",
     });
-    const [listCategories, setListCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
 
     const getDataWordToThumnail = (content) => {
-       product.thumbnail = content;
-       setProduct(product)
+       category.thumbnail = content;
+       setCategory(category)
     }
     const getDataWordToProperty = (content) => {
-       product.property = content;
-       setProduct(product)
+       category.property = content;
+       setCategory(category)
     }
     const getDataWordToRate = (content) => {
-       product.rate_descriptions = content;
-       setProduct(product)
+       category.rate_descriptions = content;
+       setCategory(category)
     }
-    const setProductDefault = () => {
-        setProduct({
-            id: undefined,
+    const setCategoryDefault = () => {
+        setCategory({
             code: "",
             name: "",
             property: "",
@@ -59,29 +56,20 @@ const  ManageProduct = () => {
             affilate_lazada_link: "",
         })
     }
-    const handleEdit = (product) => {
-        setProduct({
-            ...product
+    const handleEdit = (category) => {
+        setCategory({
+            ...category
         })
         setShowModal(true)
         setUpdateModal(true)
     }
-    const getProduct = async () => {
+    const getCategory = async () => {
         setLoadding(true)
-        const products = await getProductALl([],page, limit); 
+        const data = await getCategoryALl([],page, limit); 
         
-        if(products){
-            setListProducts(products.data)
-            setTotalPage(products.meta.pagination.total_pages)
-        }
-        setLoadding(false)
-    }
-     const getCategory = async () => {
-        setLoadding(true)
-        const categories = await getCategoryALl([],page, limit); 
-        
-        if(categories){
-            setListCategories(categories.data)
+        if(data){
+            setListCategorys(data.data)
+            setTotalPage(data.meta.pagination.total_pages)
         }
         setLoadding(false)
     }
@@ -109,22 +97,21 @@ const  ManageProduct = () => {
 
 
     useEffect(() => {
-        getProduct()
         getCategory()
-    }, [listProducts?.length, page])
+    }, [listCategorys?.length, page])
 
 
     //Create, Update, Delete
     const create = async () => {
-        if(product.id){
+        if(category.code){
             toast.error("Chức năng không thể sử dụng")
             return;
         }
-        const product_temp = await createProduct(dispatch, product);
-        if(product_temp){
+        const data_temp = await createCategory(dispatch, category);
+        if(data_temp){
             setShowModal(false)
-            getProduct()
-            setProductDefault()
+            getCategory()
+            setCategoryDefault()
         }
        
     }
@@ -133,27 +120,27 @@ const  ManageProduct = () => {
             toast.error("Chức năng không thể sử dụng")
             return;
         }
-        const product_temp = await updateProduct(dispatch, product);
-        if(product_temp){
+        const data_temp = await updateCategory(dispatch, category);
+        if(data_temp){
             setShowModal(false)
-            setProductDefault()
-            getProduct()
+            setCategoryDefault()
+            getCategory()
         } 
     }
-    const deleteById = async (id) => {
-        const product_temp = await deleteProduct(dispatch, id);
-        alert(product_temp)
-        if(product_temp){
-            setProductDefault()
-            getProduct()
+    const deleteById = async (code) => {
+        const data_temp = await deleteCategory(dispatch, code);
+        if(data_temp){
+            setCategoryDefault()
+            
         } 
+        getCategory()
     }
 
     const handleUploadThumbail = async (event) => {
         const url = uploadImage(dispatch ,event);
         if(url){
-            product.thumbnail = url
-            setProduct(product)
+            category.thumbnail = url
+            setCategory(category)
         }
     };
     return (
@@ -164,10 +151,10 @@ const  ManageProduct = () => {
                        
                         <div className="manage-box-filter-control-item">
                             <div className="manage-box-filter-control-item-title">
-                                Tên sản phẩm:
+                                Tên
                             </div>
                             <div className="manage-box-filter-control-item-input">
-                                <input type="text" placeholder='Vui lòng nhập tên sản phẩm cần tìm' value={useParams.product_name} onChange={(e) => { setUseParams({ ...useParams, product_name: e.target.value}) }}/>
+                                <input type="text" placeholder='Vui lòng nhập tên sản phẩm cần tìm' value={useParams.category_name} onChange={(e) => { setUseParams({ ...useParams, Category_name: e.target.value}) }}/>
                             </div>
                         </div>
                         <div className="manage-box-filter-control-item">
@@ -179,13 +166,13 @@ const  ManageProduct = () => {
                         <div className="manage-box-title">Dữ liệu</div>
                         <div className="manage-box-content-modal">
                             <div className="manage-box-content-modal-item" onClick={() => {
-                                           setProductDefault()
+                                           setCategoryDefault()
                                             setUpdateModal(false)
                                             setShowModal(true)
                                         }}>
                                 Thêm
                             </div>
-                            <div className="manage-box-content-modal-item" onClick={() => getProduct()}>
+                            <div className="manage-box-content-modal-item" onClick={() => getCategory()}>
                                 Cập nhật lại dữ liệu
                             </div>
                             
@@ -202,8 +189,8 @@ const  ManageProduct = () => {
                                  <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Slug</th>
-                                        <th>Tên sản phẩm</th>
+                                        <th>Mã</th>
+                                        <th>Tên</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -218,16 +205,15 @@ const  ManageProduct = () => {
                                                 </td>
                                             </tr>
                                         }   
-                                        {listProducts && listProducts.length > 0 && listProducts.map((item, index_item) => {
+                                        {listCategorys && listCategorys.length > 0 && listCategorys.map((item, index_item) => {
                                             return (
                                                 <tr>
                                                     <td>{index_item + 1}</td>
-                                                    <td>{item.slug}</td>
+                                                    <td>{item.code}</td>
                                                     <td>{item.name}</td>
                                                     <td>
                                                         <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
-                                                        <div className="btn-table-item" onClick={() => deleteById(item.id)}><i class="bi bi-x-circle"></i></div>
-                                                        <div className="btn-table-item"><ExportExcelButton data={item.lucky_wheel_users} fileName="Danh_Sach_User_Lucky" title={"Xuất Users may mắn"}/></div>
+                                                        <div className="btn-table-item" onClick={() => deleteById(item.code)}><i class="bi bi-x-circle"></i></div>
                                                     </td>
                                                 </tr>
                                             )
@@ -248,42 +234,31 @@ const  ManageProduct = () => {
                                 <div className="manage-box-modal-body">
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Slug:
+                                            Mã:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.slug} disabled/>
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={category.code} disabled={updateModal}  onChange={(e) => {
+                                                if(!updateModal){
+                                                    setCategory({
+                                                        ...category,
+                                                        code: e.target.value
+                                                    })
+                                                }  
+                                            }}/>
                                         </div>
                                     </div>
 
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Tên sản phẩm:
+                                            Tên loại sản phẩm:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.name} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={category.name} onChange={(e) => {
+                                                setCategory({
+                                                    ...category,
                                                     name: e.target.value
                                                 })
                                             }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Loại sản phẩm:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <select className="manage-box-modal-body-control-body-input" onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    category_code: e.target.value
-                                                }) 
-                                            }}>
-                                                <option>Loại sản phẩm</option>
-                                                {listCategories && listCategories.length > 0 && listCategories.map((item) => {
-                                                    return (<option selected={product.category_code === item.code} value={item.code}>{item.name}</option>)
-                                                })}
-                                            </select>
                                         </div>
                                     </div>
 
@@ -293,73 +268,18 @@ const  ManageProduct = () => {
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
                                             {/* <input type='file' onChange={(e) => handleUploadThumbail(e)}/> */}
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.thumbnail} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={category.thumbnail} onChange={(e) => {
+                                                setCategory({
+                                                    ...category,
                                                     thumbnail: e.target.value
                                                 })
                                             }}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Đánh giá nhanh:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <WordEditor content={product.property} getDataWord={getDataWordToRate}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Thuộc tính:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <WordEditor content={product.rate_descriptions} getDataWord={getDataWordToProperty}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                           Shoppee Link:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_shoppee_link} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    affilate_shoppee_link: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                           Lazada Link:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_lazada_link} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    affilate_lazada_link: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Tiktok Link:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_tiktok_link} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    affilate_tiktok_link: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className={`manage-box-modal-btn ${product.id ? 'disabled' : ''}`} onClick={() => create()}>Tạo mới</div>
+                                        <div className={`manage-box-modal-btn ${category.id ? 'disabled' : ''}`} onClick={() => create()}>Tạo mới</div>
                                         <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`} onClick={() => update()}>Cập nhật</div>
-                                        <div className="manage-box-modal-btn" onClick={() => deleteById(product.id)}>Xóa</div>
+                                        <div className="manage-box-modal-btn" onClick={() => deleteById(category.id)}>Xóa</div>
                                         <div className="manage-box-modal-btn">Làm mới</div>
                                     </div>
 
@@ -387,4 +307,4 @@ const  ManageProduct = () => {
         </div>
     )
 }
-export default ManageProduct;
+export default ManageCategory;

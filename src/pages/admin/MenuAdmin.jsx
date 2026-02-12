@@ -24,7 +24,14 @@ const MenuAdmin = () => {
                             <i class="bi bi-device-ssd"></i>
                         </div>
                         <div className="menu-item-title">
-                            <Link to="/admin//manage-products">Quản lý sản phẩm</Link></div>
+                            <Link to="/admin/manage-products">Quản lý sản phẩm</Link></div>
+                </div>
+                <div className="menu-item">
+                        <div className="menu-item-icon">
+                            <i class="bi bi-device-ssd"></i>
+                        </div>
+                        <div className="menu-item-title">
+                            <Link to="/admin/manage-categories">Quản lý loại sản phẩm</Link></div>
                 </div>
                 <div className="menu-item">
                         <div className="menu-item-icon">
