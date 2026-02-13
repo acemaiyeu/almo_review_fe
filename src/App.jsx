@@ -19,6 +19,7 @@ import { updateProfile } from './app/features/profileSlice.js'
 import notifi_sound from './assets/audio/notifi.mp3'
 import AdminLogin from './pages/admin/AdminLogin.jsx'
 import ManageCategory from './pages/admin/ManageCategory.jsx'
+import ForgotPassword from './pages/clients/Authentication/ForgotPassword.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -37,7 +38,7 @@ function App() {
   // }
   useEffect(() => {
     // Check if email is missing
-    if (localStorage.getItem('access_token') || localStorage.getItem('access_token_admin')) {
+    if ((!isAdminPage && localStorage.getItem('access_token')) || (isAdminPage && localStorage.getItem('access_token_admin'))) {
       axiosAuth.get('auth/profile')
         .then((res) => {      
           // Destructure data from the axios response
@@ -73,7 +74,8 @@ function App() {
           <Route path="/product/:slug" element={<ProductDetail/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/forget-password" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          
           <Route path="/profile" element={<Profile />} />
           {/* Trang 404 nếu không tìm thấy route */}
           

@@ -109,6 +109,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             &:hover{
                 background-color: var(--background-main);
                 color: white;

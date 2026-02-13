@@ -17,11 +17,15 @@ const Login = () => {
                     localStorage.setItem('access_token', res.access_token)
                     localStorage.setItem('expires_in', res.expires_in)
                     showDynamic(dispatch,"Đăng nhập thành công!");
-                    const last_page = localStorage.getItem('last-page_client');
+                    let last_page = localStorage.getItem('last-page_client');
                     localStorage.removeItem('last-page_client')
                     showDynamic(dispatch,"Đăng nhập thành công!");
                     setTimeout(() => {
+                    if(last_page == null){
+                        window.location.href = '/'
+                    }else{
                         window.location.href = last_page
+                    }
                     },1500)
                     
                 }

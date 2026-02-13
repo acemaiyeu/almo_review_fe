@@ -94,7 +94,7 @@ const  ManageProduct = () => {
         setPage(page + 1)
     }
     const prevPage = () => {
-        if(page <= 0){
+        if(page <= 1){
             toast.error("Bạn đã ở trang đầu tiên!")
             return;
         }
