@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 // Giả sử bạn có action getDiscount từ store
 // import { getDiscount } from '../../redux/actions/productActions'; 
 
-const LuckyWheel = ({ onResult, product_id }) => {
+const LuckyWheel = ({ onResult, product_id, isLogin = false }) => {
   const dispatch = useDispatch();
   // Lấy dữ liệu từ redux store
 
@@ -101,8 +101,8 @@ const LuckyWheel = ({ onResult, product_id }) => {
         <div className="wheel-center-dot"></div>
       </div>
 
-      <button className="spin-button" onClick={handleSpin} disabled={spinning}>
-        {spinning ? 'ĐANG QUAY...' : 'NHẬN GIẢM GIÁ'}
+      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin}>
+        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'CHỜ ĐĂNG NHẬP' : 'NHẬN GIẢM GIÁ')}
       </button>
 
       {result && !spinning && (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../../style/Auth.css';
 import axiosAuth from '../../../services/axiosAuth';
 import { toast } from 'react-toastify';
+import { showDynamic } from '../../../app/ComponentSupport/functions';
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '', name: '',  phone: ''});
@@ -11,11 +12,11 @@ const Login = () => {
             await axiosAuth.post('/register', {
                 ...formData
             }).then((res) => {
-                toast.success('Đăng ký thành công!');
-                console.log(res)
+                showDynamic(dispatch, 'Đăng ký thành công!')
                 // Lưu token vào localStorage hoặc xử lý logic tiếp theo
                 localStorage.setItem('access_token', res.access_token)
                 localStorage.setItem('expires_in', res.expires_in)
+                window.location.href = "/"
             }).catch()
     };
 
@@ -60,7 +61,7 @@ const Login = () => {
                     <button className="button-submit" type="submit">Đăng Ký</button>
                 </form>
                 <div className="auth-footer">
-                    <p>Đã có tài khoản? <a href="/register">Đăng nhập</a></p>
+                    <p>Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
                     <p><a href="/forgot-password">Quên mật khẩu?</a></p>
                 </div>
             </div>

@@ -26,7 +26,7 @@ const  ManageProduct = () => {
         thumbnail: "",
         rate_descriptions: "",
         affilate_tiktok_link: "",
-        affilate_shoppee_link: "",
+        affilate_shopee_link: "",
         affilate_lazada_link: "",
     });
     const [listCategories, setListCategories] = useState([]);
@@ -55,7 +55,7 @@ const  ManageProduct = () => {
             slug: 'Tạo tự động',
             rate_descriptions: "",
             affilate_tiktok_link: "",
-            affilate_shoppee_link: "",
+            affilate_shopee_link: "",
             affilate_lazada_link: "",
         })
     }
@@ -322,10 +322,10 @@ const  ManageProduct = () => {
                                            Shoppee Link:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_shoppee_link} onChange={(e) => {
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_shopee_link} onChange={(e) => {
                                                 setProduct({
                                                     ...product,
-                                                    affilate_shoppee_link: e.target.value
+                                                    affilate_shopee_link: e.target.value
                                                 })
                                             }}/>
                                         </div>

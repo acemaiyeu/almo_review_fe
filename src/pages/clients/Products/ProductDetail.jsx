@@ -3,12 +3,15 @@ import DisplayContent from '../../../app/ComponentSupport/DisplayContent';
 import '../../../style/ProductDetail.scss'
 import LuckyWheel from '../../../app/ComponentSupport/LuckyWheel.jsx';
 import { updateDynamic } from '../../../app/features/dynamicIslandSlice.js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showDynamic } from '../../../app/ComponentSupport/functions.js';
 import { getProductClientDetail } from '../../../services/ProductService.js';
 import { useParams } from 'react-router-dom';
+import TikTokPlayer from '../../../app/ComponentSupport/TikTokPlayer.jsx';
+import YouTubePlayer from '../../../app/ComponentSupport/YouTubePlayer.jsx';
 
 const ProductDetail = () => {
+    const profile = useSelector((state) => state.profile);
     const dispatch = useDispatch();
     const { slug } = useParams();
     const [product, setProduct] = useState({
@@ -30,10 +33,7 @@ const ProductDetail = () => {
     const product_api = await getProductClientDetail(slug);
         if(product_api){
             setProduct({
-                id: product_api.id,
-                name: product_api.name,
-                property: product_api.property,
-                rate_descriptions: product_api.rate_descriptions ?? ''
+                ...product_api
             })
         }
   }
@@ -47,17 +47,8 @@ const ProductDetail = () => {
             <div className="product-box">
                 <div className="product-detail-video-rate">
                     <div className="product-detail-video-rate-title">Video Review</div>
-                <video 
-                    id="product-detail-video" 
-                    src="..." 
-                    controls         /* Hiển thị thanh điều khiển (play, volume) */
-                    muted            /* Tắt tiếng (bắt buộc nếu muốn tự động phát trên Chrome/Safari) */
-                    playsInline      /* Giúp video phát ngay trong khung trên mobile, không bị nhảy toàn màn hình */
-                    poster="url_anh_cho" /* Ảnh hiển thị trước khi video được bấm phát */
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                >
-                    Trình duyệt của bạn không hỗ trợ thẻ video.
-                </video>
+               {/* <TikTokPlayer videoUrl="https://www.tiktok.com/@69s.pet/video/7605579465699101972?is_from_webapp=1&sender_device=pc" /> */}
+               <YouTubePlayer videoUrl="https://www.youtube.com/watch?v=Ly0wJQEgGn4" />
             </div>
              <div className="product-detail-fast-rate">
                 <div className="product-detail-fast-rate-title">Đánh giá nhanh</div>
@@ -68,27 +59,35 @@ const ProductDetail = () => {
             </div>
            <div className="product-box">
              <div className="product-affilate-link-list">
-                <div className="product-affilate-link-item">
-                    <div className="product-affilate-link-item-logo">
-                        <img className="product-affilate-link-item-img" src="https://play-lh.googleusercontent.com/vrrgAukb27gHzlI-lwHQoabie4ByvZKMN9QVN7jgd5KCFgEKCbQClsujkfqhExpfrUdS=w600-h300-pc0xffffff-pd" alt="logo-shoppee" loading='lazy'></img>
-                    </div>
-                    <a target="_blank" className="product-affilate-link-item-title" href="" alt="affilate-link-shoppee">Mua hàng tại Shoppee</a>
-                </div>
-                <div className="product-affilate-link-item">
-                    <div className="product-affilate-link-item-logo">
-                        <img className="product-affilate-link-item-img" src="https://image.sggp.org.vn/w1000/Uploaded/2026/yfsgf/2019_06_20/3_BIXQ.png.webp" alt="logo-lazada" loading='lazy'></img>
-                    </div>
-                    <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-shoppee">Mua hàng tại Lazada</a>
-                </div>
-                <div className="product-affilate-link-item">
-                    <div className="product-affilate-link-item-logo">
-                        <img className="product-affilate-link-item-img" src="https://cloud.shopback.com/c_fit,h_750,w_750/store-service-vn/assets/258709/2d508ce0-8522-11ee-bcea-33e49e1b1414.png" alt="logo-tiktok" loading='lazy'></img>
-                    </div>
-                    <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-shoppee">Mua hàng tại TiktokShop</a>
-                </div>
+                
+                {product.affilate_lazada_link &&
+                        <div className="product-affilate-link-item">
+                            <div className="product-affilate-link-item-logo">
+                                <img className="product-affilate-link-item-img" src="https://image.sggp.org.vn/w1000/Uploaded/2026/yfsgf/2019_06_20/3_BIXQ.png.webp" alt="logo-lazada" loading='lazy'></img>
+                            </div>
+                            <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-lazada">Mua hàng tại Lazada</a>
+                        </div>
+                    }
+                    {product.affilate_tiktok_link && 
+                        <div className="product-affilate-link-item">
+                            <div className="product-affilate-link-item-logo">
+                                <img className="product-affilate-link-item-img" src="https://cloud.shopback.com/c_fit,h_750,w_750/store-service-vn/assets/258709/2d508ce0-8522-11ee-bcea-33e49e1b1414.png" alt="logo-tiktok" loading='lazy'></img>
+                            </div>
+                            <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-tiktok">Mua hàng tại TiktokShop</a>
+                        </div>
+                    }
+                    {product.affilate_shopee_link && 
+                        <div className="product-affilate-link-item">
+                            <div className="product-affilate-link-item-logo">
+                                <img className="product-affilate-link-item-img" src="https://play-lh.googleusercontent.com/vrrgAukb27gHzlI-lwHQoabie4ByvZKMN9QVN7jgd5KCFgEKCbQClsujkfqhExpfrUdS=w600-h300-pc0xffffff-pd" alt="logo-shoppee" loading='lazy'></img>
+                            </div>
+                            <a target="_blank" className="product-affilate-link-item-title" href={product.affilate_shopee_link} alt="affilate-link-shopee">Mua hàng tại Shopee</a>
+                        </div>
+                    }
+                
             </div>
             <div className="product-promotion">
-                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id}/>
+                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''}/>
             </div>
            </div>
             {/* <div className="product-detail-content-phone">

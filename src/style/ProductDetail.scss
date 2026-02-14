@@ -130,3 +130,37 @@
             }
         }
 }
+
+/* Khi màn hình nhỏ hơn 768px (Điện thoại/Tablet đứng) */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Chuyển từ hàng ngang sang hàng dọc */
+  }
+  
+  .sidebar {
+    display: none; /* Ẩn bớt các thành phần không quan trọng */
+  }
+  
+  body {
+    font-size: 16px; /* Điều chỉnh cỡ chữ cho dễ đọc */
+  }
+  .product-box{
+    flex-direction: column;
+  }
+  html{
+    font-size: 12px !important;
+  }
+  td{
+    font-size: 1rem !important;
+  }
+  .product-detail-header{
+    font-size: 1.8rem !important;
+  }
+  .content-container *{
+    font-size: 1rem !important;
+  }
+  h1{
+    font-size: 1.3rem !important;
+  }
+}
+

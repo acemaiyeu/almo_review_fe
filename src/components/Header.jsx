@@ -2,12 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Search, Phone, History, Package, User, Home } from 'lucide-react';
 import { useState } from 'react';
 import '../style/Header.scss'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axiosAuth from '../services/axiosAuth';
+import { showDynamic } from '../app/ComponentSupport/functions';
+import { resetProfile, updateProfile } from '../app/features/profileSlice';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const profile = useSelector((state) => state.profile)
+  const dispatch =  useDispatch();
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -15,7 +19,18 @@ function Header() {
       navigate(`/search?q=${searchTerm}`);
     }
   };
-
+  const LogOut = async () => {
+      await axiosAuth.post('auth/logout').then(() => {
+          
+          localStorage.removeItem('expires_in')
+          localStorage.removeItem('access_token')
+          resetProfile()
+          showDynamic(dispatch, 'Đăng xuất thành công');
+          setTimeout(() => {
+            window.location.reload();
+          },1500)
+      }).catch()
+  }
   return (
     <nav style={styles.nav}>
       <div style={styles.container}>
@@ -51,7 +66,7 @@ function Header() {
               <span>Đăng nhập</span>
             </Link> 
           : 
-            <Link to="/orders" style={styles.menuItem} className="indentifi-position">
+            <Link to="/" style={styles.menuItem} className="indentifi-position">
               <User size={20} />
               <span>Tài khoản của tôi
                 <div className="account-modal">
@@ -61,7 +76,7 @@ function Header() {
                         </div>
                     </div>
                     <div className="account-list">
-                      <div className="account-item">
+                      <div className="account-item" onClick={() => LogOut()}>
                           <span>Đăng xuất</span>
                         </div>
                         

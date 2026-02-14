@@ -16,7 +16,6 @@ const Login = () => {
                 if(res){
                     localStorage.setItem('access_token', res.access_token)
                     localStorage.setItem('expires_in', res.expires_in)
-                    showDynamic(dispatch,"Đăng nhập thành công!");
                     let last_page = localStorage.getItem('last-page_client');
                     localStorage.removeItem('last-page_client')
                     showDynamic(dispatch,"Đăng nhập thành công!");
@@ -52,7 +51,13 @@ const Login = () => {
                         <input 
                             type="password" 
                             required 
-                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                            onChange={(e) => {
+
+                                setFormData({...formData, password: e.target.value})
+                                if(e.key === 'Enter'){
+                                    handleSubmit(e);
+                                }
+                            }}
                         />
                     </div>
                     <button className="button-submit" type="submit">Đăng Nhập</button>
