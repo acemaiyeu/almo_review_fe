@@ -3,7 +3,6 @@ import './App.css'
 import Header from './components/Header'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/clients/Home'
-import HomeAdmin from './pages/admin/Home';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductDetail from './pages/clients/Products/ProductDetail'
 import { useLocation } from 'react-router-dom';
@@ -58,7 +57,7 @@ function App() {
 
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>
-       <ToastContainer />
+       <ToastContainer position="top-right" style={{ top: "50px" }}/>
       {isAdminPage ? (!isLoginAdminPage ?  <MenuAdmin /> : <></>) : <Header />}
       {/* <Header /> */}
       <div 
@@ -82,7 +81,7 @@ function App() {
 
 
           {/* //Admin */}
-          <Route path="/admin/" element={HomeAdmin} />
+          <Route path="/admin/" element={<ManageProduct/>} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/manage-products" element={<ManageProduct />} />
           <Route path="/admin/manage-categories" element={<ManageCategory />} />

@@ -24,8 +24,8 @@
         .product-detail-fast-rate{
             flex: 2;
             width: 100%;
-            // overflow: none;
-            // overflow-y: scroll;
+            overflow: none;
+            overflow-y: scroll;
             .product-detail-fast-rate-title{
                 font-weight: bold;
                 font-size: 2rem;
@@ -39,6 +39,55 @@
             flex: 1;
         }
     }
+       .product-promotion .lucky-wheel-sterm{
+            width: 100%;
+            
+            .lucky-wheel-sterm-text{
+                color: var(--background-main);
+                .lucky-wheel-sterm-modal{
+                    width: 95%;
+                    position: absolute;
+                    z-index: 10000;
+                    background-color: white;
+                    box-shadow: 0px 0px 12px 0px rgb(207, 207, 207);
+                    height: 500px;
+                    overflow: hidden;
+                    overflow-y: auto;
+                    .lucky-wheel-sterm-modal-closed{
+                        width: 20%;
+                        display: flex;
+                        position: sticky;
+                        top: 10px;
+                        left: 70%;
+                        background-color: gray;
+                        color: white;
+                        text-align: center;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        border-radius: 10px;
+                    }
+                    .lucky-wheel-sterm-modal-title{
+                        font-size: 1.5rem;
+                        margin-top: 20px;
+                        font-weight: bold;
+                    }
+                    .lucky-wheel-sterm-modal-content{
+                        margin-top: 10px;
+                        text-align: left;
+                        padding: 0px 10px;
+                        box-sizing: border-box;
+                        .lucky-wheel-sterm-modal-content-title{
+                            font-weight: bold;
+                        }
+                        .lucky-wheel-sterm-modal-content-body{
+                            padding: 0px 5px;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
     .product-detail-content-phone{
         width: 100%;
         padding: 2%;
@@ -157,10 +206,13 @@
     font-size: 1.8rem !important;
   }
   .content-container *{
-    font-size: 1rem !important;
+    font-size: 1rem ;
   }
   h1{
-    font-size: 1.3rem !important;
+    font-size: 2rem !important;
+  }
+  .product-affilate-link-list{
+    margin: 20px auto;
   }
 }
 

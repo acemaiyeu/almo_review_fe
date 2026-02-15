@@ -37,9 +37,8 @@ const { data: products, loading } = useFetch(homeService.getProducts, 123);
                   <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy'/>
               </div>
               <h3 style={styles.name}>{item.name}</h3>
-              <p style={styles.price}>{item.price.toLocaleString()}đ</p>
               
-              <Link to={`/product/${item.slug}`} style={styles.btn}>
+              <Link to={`/product/${item.slug}`} className='button-submit'>
                 Xem chi tiết
               </Link>
             </div>

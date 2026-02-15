@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 // Giả sử bạn có action getDiscount từ store
 // import { getDiscount } from '../../redux/actions/productActions'; 
 
-const LuckyWheel = ({ onResult, product_id, isLogin = false }) => {
+const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, join_lucky = false, discount = 0}) => {
   const dispatch = useDispatch();
   // Lấy dữ liệu từ redux store
 
@@ -22,6 +22,7 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false }) => {
     { label: 'Giảm 45%', value: 45 },
     { label: 'Giảm 50%', value: 50 }
   ];
+  const terms = `<div className=''></div>`;
   const handleSpin = () => {
       axiosClient.post('/get-discount-product', {
         product_id
@@ -101,8 +102,8 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false }) => {
         <div className="wheel-center-dot"></div>
       </div>
 
-      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin}>
-        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'CHỜ ĐĂNG NHẬP' : 'NHẬN GIẢM GIÁ')}
+      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || !join_lucky}>
+        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (!join_lucky ? `GIÁ KHI TRÚNG GIẢI 4.990.000 VNĐ` : 'NHẬN GIẢM GIÁ'))}
       </button>
 
       {result && !spinning && (
@@ -111,6 +112,9 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false }) => {
           <i style={{fontSize: "0.8rem"}}>Cùng chờ quay may mắn tại Tiktok #ALmo</i>
         </div>
       )}
+      <div className="total-user-complete">
+          <span className="total-user-complete-number">{userComplete}</span> người đã tham gia
+      </div>
     </div>
   );
 };

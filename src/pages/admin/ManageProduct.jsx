@@ -281,7 +281,7 @@ const  ManageProduct = () => {
                                             }}>
                                                 <option>Loại sản phẩm</option>
                                                 {listCategories && listCategories.length > 0 && listCategories.map((item) => {
-                                                    return (<option selected={product.category_code === item.code} value={item.code}>{item.name}</option>)
+                                                    return (<option selected={product.category?.code === item.code} value={item.code}>{item.name}</option>)
                                                 })}
                                             </select>
                                         </div>

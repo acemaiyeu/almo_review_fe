@@ -37,7 +37,7 @@ function Header() {
         {/* 1. Logo */}
         <Link to="/" style={styles.logo}>
           <Home size={28} />
-          <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Home</span>
+          {/* <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Home</span> */}
         </Link>
 
         {/* 2. Thanh tìm kiếm */}
@@ -56,10 +56,6 @@ function Header() {
 
         {/* 3. Menu điều hướng */}
         <div style={styles.menu}>
-          <Link to="/orders" style={styles.menuItem}>
-            <History size={20} />
-            <span>Lịch sử giảm giá</span>
-          </Link>
           {profile.email === '' ?
             <Link to="/login" style={styles.menuItem}>
               {/* < size={20} /> */}
@@ -75,12 +71,28 @@ function Header() {
                           <Link to="/profile">Thông tin tài khoản</Link>
                         </div>
                     </div>
+                    
                     <div className="account-list">
+                        <div className="account-item">
+                          <Link to="/history-discounts" style={styles.menuItem}>
+                            <span>Lịch sử giảm giá</span>
+                        </Link>
+                        </div>
+                    </div>
+                    <div className="account-list">
+                        <div className="account-item">
+                          <Link to="/my-orders" style={styles.menuItem}>
+                            <span>Quản lý đơn hàng</span>
+                        </Link>
+                        </div>
+                    </div>
+                  <div className="account-list">
                       <div className="account-item" onClick={() => LogOut()}>
                           <span>Đăng xuất</span>
                         </div>
                         
                     </div>
+                    
                 </div>
               </span>
             </Link>
