@@ -1,0 +1,37 @@
+.footer-container{
+    width: 100%;
+    display: flex;
+    .footer-auth, .footer-about, .footer-policy, .footer-connect{
+        flex: 1;
+        color: var(--background-main);
+        a{
+            color: black;
+            cursor: pointer;
+            &:hover{
+                color: var(--background-main);
+            }
+        }
+    }
+
+    .footer-auth{
+        .footer-auth-logo{
+            font-size: 2rem;
+            color: var(--background-main);
+            font-weight: bold;
+        }
+        .footer-auth-bct{
+            width: 50%;
+            height: 100%;
+            margin: auto;
+            &>img{
+                width: 100%;
+            }
+        }
+        
+    }
+    .footer-connect{
+            display: flex;
+            flex-direction: column;
+            // text-align: left;
+        }
+}

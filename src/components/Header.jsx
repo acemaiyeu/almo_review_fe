@@ -20,6 +20,7 @@ function Header() {
     }
   };
   const LogOut = async () => {
+    alert(window.location.pathname);
       await axiosAuth.post('auth/logout').then(() => {
           
           localStorage.removeItem('expires_in')
@@ -63,7 +64,7 @@ function Header() {
               <span>Đăng nhập</span>
             </Link> 
           : 
-            <Link to="/" style={styles.menuItem} className="indentifi-position">
+            <div style={styles.menuItem} className="indentifi-position">
               <User size={20} />
               <span>Tài khoản của tôi
                 <div className="account-modal">
@@ -96,7 +97,7 @@ function Header() {
                     
                 </div>
               </span>
-            </Link>
+            </div>
           }
 
           {/* <Link to="/cart" style={styles.cartBtn}>

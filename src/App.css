@@ -19,6 +19,18 @@
     overflow: hidden;
     overflow-y: auto;
 }
+.spin{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--background-main);
+  gap: 10px;
+}
+.text-almo{
+  color: var(--background-main);
+}
 .indentifi-position{
   position: relative;
 }

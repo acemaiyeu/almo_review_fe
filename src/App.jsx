@@ -19,6 +19,8 @@ import notifi_sound from './assets/audio/notifi.mp3'
 import AdminLogin from './pages/admin/AdminLogin.jsx'
 import ManageCategory from './pages/admin/ManageCategory.jsx'
 import ForgotPassword from './pages/clients/Authentication/ForgotPassword.jsx'
+import Footer from './components/Footer.jsx'
+import ManageUser from './pages/admin/ManageUser.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -85,12 +87,13 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/manage-products" element={<ManageProduct />} />
           <Route path="/admin/manage-categories" element={<ManageCategory />} />
+          <Route path="/admin/manage-users" element={<ManageUser />} />
           <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
         </Routes>
         <audio controls id="audio" style={{opacity: '0'}}>
             <source  src={notifi_sound} type="audio/ogg"/>
         </audio>
-       
+       <Footer />
       </div>
     </div>
   )

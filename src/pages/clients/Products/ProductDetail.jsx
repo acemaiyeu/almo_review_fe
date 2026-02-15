@@ -16,6 +16,7 @@ const ProductDetail = () => {
     const dispatch = useDispatch();
     const { slug } = useParams();
     const [stermModal, setStermModal] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState({
         id: null,
         name: "IPHONE 15 PROMAX",
@@ -41,15 +42,22 @@ const ProductDetail = () => {
             setProduct({
                 ...product_api
             })
+            setLoading(false);
         }
   }
   useEffect(() => {
         getProduct()
     }, [product.id])
+    if(loading){
+        return <div className="spin">
+                    <div class="spinner-grow text-almo" role="status"></div>Đang tải sản phẩm...
+                </div>;
+    }
     return (product.id ?
         <div className="product-detail-container">   
             <div className="product-detail-header">{product?.name}</div>
             <hr/>
+            <div className="product-price">GIÁ SẢN PHẨM (đã mua): {product.price}</div>
             <div className="product-box">
                 <div className="product-detail-video-rate">
                     <div className="product-detail-video-rate-title">Video Review</div>
@@ -279,7 +287,7 @@ const ProductDetail = () => {
                         </div>
                        
                 </div>
-                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={2000} discount={product.discount}/>
+                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={2000} join_lucky={product.join_lucky} discount_price={product.discount_price}/>
             </div>
            
     </div> : <div className="product-detail-container"><p>Không tìm thấy sản phẩm</p></div>)

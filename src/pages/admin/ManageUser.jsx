@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor';
 import '../../style/ManagerProduct.scss'
-import { createProduct, deleteProduct, getProductALl, updateProduct } from '../../services/ProductService';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../app/ComponentSupport/functions';
 import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
 import { getCategoryALl } from '../../services/CategoryService';
 import axiosAdmin from '../../services/axiosAdmin';
-const  ManageProduct = () => {
+import { blockUser, getUserALl, unBlockUser } from '../../services/UserService';
+const  ManageUser = () => {
     const dispatch = useDispatch();
-    const [listProducts, setListProducts] = useState([]);
+    const [listUsers, setlistUsers] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [useParams, setUseParams] = useState({
         product_name: ''
     });
     const [loadding, setLoadding] = useState(false);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(7);
     const [product, setProduct] = useState({
         id: undefined,
         code: "",
@@ -47,7 +47,7 @@ const  ManageProduct = () => {
        setProduct(product)
     }
     const [dataExport, setDataExport] = useState([])
-    const setProductDefault = () => {
+    const setUserDefault = () => {
         setProduct({
             id: undefined,
             code: "",
@@ -68,12 +68,12 @@ const  ManageProduct = () => {
         setShowModal(true)
         setUpdateModal(true)
     }
-    const getProduct = async () => {
+    const getUsers = async () => {
         setLoadding(true)
-        const products = await getProductALl(useParams,page, limit); 
+        const products = await getUserALl(useParams,page, limit); 
         
         if(products){
-            setListProducts(products.data)
+            setlistUsers(products.data)
             setTotalPage(products.meta.pagination.total_pages)
         }
         setLoadding(false)
@@ -111,66 +111,60 @@ const  ManageProduct = () => {
 
 
     useEffect(() => {
-        getProduct()
-        getCategory()
-    }, [listProducts?.length, page])
+        getUsers()
+    }, [listUsers?.length, page])
 
 
     //Create, Update, Delete
-    const create = async () => {
-        if(product.id){
-            toast.error("Chức năng không thể sử dụng")
-            return;
-        }
-        const product_temp = await createProduct(dispatch, product);
-        if(product_temp){
-            setShowModal(false)
-            getProduct()
-            setProductDefault()
-        }
-       
+   
+    const updateBlockUser = async (user_id) => {
+       const re = await blockUser(dispatch, user_id);
+            // getUsers()
     }
-    const update = async () => {
-        if(!updateModal){
-            toast.error("Chức năng không thể sử dụng")
-            return;
-        }
-        const product_temp = await updateProduct(dispatch, product);
-        if(product_temp){
-            setShowModal(false)
-            setProductDefault()
-            getProduct()
-        } 
+    const updateUnBlockUser = async (user_id) => {
+       await unBlockUser(dispatch, user_id);
+            // getUsers()
     }
-    const deleteById = async (id) => {
-        await deleteProduct(dispatch, id);
-            setProductDefault()
-            getProduct()
-    }
-
-    const handleUploadThumbail = async (event) => {
-        const url = uploadImage(dispatch ,event);
-        if(url){
-            product.thumbnail = url
-            setProduct(product)
-        }
-    };
     return (
         <div className="manage-box">
-            <div className="manage-box-title">QUẢN LÝ SẢN PHẨM</div>
+            <div className="manage-box-title">QUẢN LÝ TÀI KHOẢN</div>
                 <div className="manage-box-filter">
                     <div className="manage-box-filter-control">
                        
                         <div className="manage-box-filter-control-item">
                             <div className="manage-box-filter-control-item-title">
-                                Tên sản phẩm:
+                                ID:
                             </div>
                             <div className="manage-box-filter-control-item-input">
-                                <input type="text" placeholder='Vui lòng nhập tên sản phẩm cần tìm' value={useParams.product_name} onChange={(e) => { setUseParams({ ...useParams, product_name: e.target.value}) }}/>
+                                <input type="text" placeholder='Vui lòng nhập id cần tìm' value={useParams.id} onChange={(e) => { setUseParams({ ...useParams, id: e.target.value}) }}/>
+                            </div>
+                        </div>
+                         <div className="manage-box-filter-control-item">
+                            <div className="manage-box-filter-control-item-title">
+                                Tên:
+                            </div>
+                            <div className="manage-box-filter-control-item-input">
+                                <input type="text" placeholder='Vui lòng nhập tên tài khoản cần tìm' value={useParams.name} onChange={(e) => { setUseParams({ ...useParams, name: e.target.value}) }}/>
                             </div>
                         </div>
                         <div className="manage-box-filter-control-item">
-                            <input className="btn-submit" type='submit' value={"Tìm kiếm"} onClick={() => getProduct()}/>
+                            <div className="manage-box-filter-control-item-title">
+                                Email:
+                            </div>
+                            <div className="manage-box-filter-control-item-input">
+                                <input type="text" placeholder='Vui lòng nhập email sản phẩm cần tìm' value={useParams.email} onChange={(e) => { setUseParams({ ...useParams, email: e.target.value}) }}/>
+                            </div>
+                        </div>
+                        <div className="manage-box-filter-control-item">
+                            <div className="manage-box-filter-control-item-title">
+                                Số điện thoại:
+                            </div>
+                            <div className="manage-box-filter-control-item-input">
+                                <input type="text" placeholder='Vui lòng nhập SĐT sản phẩm cần tìm' value={useParams.phone} onChange={(e) => { setUseParams({ ...useParams, phone: e.target.value}) }}/>
+                            </div>
+                        </div>
+                        <div className="manage-box-filter-control-item">
+                            <input className="btn-submit" type='submit' value={"Tìm kiếm"} onClick={() => getUsers()}/>
                         </div>
                     </div>
                 </div>
@@ -178,13 +172,13 @@ const  ManageProduct = () => {
                         <div className="manage-box-title">Dữ liệu</div>
                         <div className="manage-box-content-modal">
                             <div className="manage-box-content-modal-item" onClick={() => {
-                                           setProductDefault()
+                                           setUserDefault()
                                             setUpdateModal(false)
                                             setShowModal(true)
                                         }}>
                                 Thêm
                             </div>
-                            <div className="manage-box-content-modal-item" onClick={() => getProduct()}>
+                            <div className="manage-box-content-modal-item" onClick={() => getUsers()}>
                                 Cập nhật lại dữ liệu
                             </div>
                             
@@ -201,8 +195,8 @@ const  ManageProduct = () => {
                                  <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Slug</th>
-                                        <th>Tên sản phẩm</th>
+                                        <th>ID</th>
+                                        <th>Tên tài khoản</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -217,22 +211,23 @@ const  ManageProduct = () => {
                                                 </td>
                                             </tr>
                                         }   
-                                        {listProducts && listProducts.length > 0 && listProducts.map((item, index_item) => {
+                                        {listUsers && listUsers.length > 0 && listUsers.map((item, index_item) => {
                                             return (
                                                 <tr>
                                                     <td>{index_item + 1}</td>
-                                                    <td>{item.slug}</td>
+                                                    <td>{item.id}</td>
                                                     <td>{item.name}</td>
                                                     <td>
                                                         <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
                                                         <div className="btn-table-item" onClick={() => deleteById(item.id)}><i class="bi bi-x-circle"></i></div>
-                                                        <div className="btn-table-item" ><ExportExcelButton data={item?.export_excel_data?.data ? item?.export_excel_data.data : []} fileName={`${item?.export_excel_data?.title ? item.export_excel_data.title : 'Danh_Sach_User_Lucky'}`}title={`Xuất Users may mắn`}/></div>
+                                                        <div className="btn-table-item" onClick={() => updateBlockUser(item.id)}>Chặn</div>
+                                                        <div className="btn-table-item" onClick={() => updateUnBlockUser(item.id)}>Mở chặn</div>
                                                     </td>
                                                 </tr>
                                             )
                                         })}
-                                        {listProducts.length === 0 && 
-                                            <div>Không tìm thấy sản phẩm</div>
+                                        {listUsers.length === 0 && 
+                                            <div>Không tìm thấy tài khoản</div>
                                         }
                                     </tbody>
                             </table>
@@ -246,7 +241,7 @@ const  ManageProduct = () => {
                                 }}>
                                     <p>x</p>
                                 </div>
-                                <div className="manage-box-modal-title">CHỈNH SỬA SẢN PHẨM</div>
+                                <div className="manage-box-modal-title">CHỈNH SỬA TÀI KHOẢN</div>
                                 <div className="manage-box-modal-body">
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
@@ -449,4 +444,4 @@ const  ManageProduct = () => {
         </div>
     )
 }
-export default ManageProduct;
+export default ManageUser;

@@ -21,9 +21,13 @@ const Home = () => {
  
 
 const { data: products, loading } = useFetch(homeService.getProducts, 123);
-  if (loading) return <div>Đang tải sản phẩm...</div>;
+  if (loading) return <div className="spin">
+        <div class="spinner-grow text-almo" role="status">
+      </div>Đang tải sản phẩm...
+      </div>;
   return (
     <div style={styles.container}>
+      
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
        <div className="category-box">
           <CategoryHome />

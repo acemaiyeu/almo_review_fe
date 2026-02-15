@@ -5,6 +5,15 @@
         font-size: 2.5rem;
         font-weight: bold;
     }
+    .product-price{
+        width: 100%;
+        font-size: 2rem;
+        color: var(--background-main);
+        font-weight: bold;
+        display: flex;
+        margin-left: 1%;
+
+    }
     .product-box{
         width: 100%;
         max-height: 50vh;
@@ -16,6 +25,8 @@
         box-sizing: border-box;
         .product-detail-video-rate{
             flex: 1;
+            overflow: hidden;
+            overflow-y: auto;
             .product-detail-video-rate-title{
                  font-weight: bold;
                 font-size: 2rem;

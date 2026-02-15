@@ -22,8 +22,8 @@ export const getProductALl = async (params = [], page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
         let params_text = "";
-        if(params?.length > 0){
-
+        if(params?.product_name){
+           params_text += `name=${params.product_name}`
         }
         const res = await axiosAdmin.get(`products?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
