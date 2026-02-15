@@ -24,6 +24,7 @@ function Header() {
           
           localStorage.removeItem('expires_in')
           localStorage.removeItem('access_token')
+          localStorage.setItem("last-page_client", window.location.pathname)
           resetProfile()
           showDynamic(dispatch, 'Đăng xuất thành công');
           setTimeout(() => {

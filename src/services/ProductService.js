@@ -71,8 +71,20 @@ export const updateProduct = async (dispatch, params) => {
 export const deleteProduct = async (dispatch, product_id) => {
     try {
         // Thêm return ở đầu dòng này
-        const res = await axiosAdmin.delete(`product/${product_id}`).then(() => {
+        const res = await axiosAdmin.delete(`product/${product_id}`).then((res) => {
             showDynamic(dispatch, "Đã xóa sản phẩm thành công!")
+        }).catch()
+        return res; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error("Lỗi khi xóa sản phẩm:", error);
+        // throw error; 
+    }
+}
+export const exportLuckyUsers = async (dispatch, product_id) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosAdmin.delete(`export-lucky-users-data/${product_id}`).then(() => {
+            showDynamic(dispatch, "Đang chờ tải file")
         }).catch()
         return res; // Trả về dữ liệu từ API
     } catch (error) {

@@ -102,8 +102,8 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
         <div className="wheel-center-dot"></div>
       </div>
 
-      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || !join_lucky}>
-        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (!join_lucky ? `GIÁ KHI TRÚNG GIẢI 4.990.000 VNĐ` : 'NHẬN GIẢM GIÁ'))}
+      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || join_lucky}>
+        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (join_lucky ? `GIÁ KHI TRÚNG GIẢI 4.990.000 VNĐ` : 'NHẬN GIẢM GIÁ'))}
       </button>
 
       {result && !spinning && (

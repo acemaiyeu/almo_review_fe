@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../app/ComponentSupport/functions';
 import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
 import { getCategoryALl } from '../../services/CategoryService';
+import axiosAdmin from '../../services/axiosAdmin';
 const  ManageProduct = () => {
     const dispatch = useDispatch();
     const [listProducts, setListProducts] = useState([]);
@@ -45,6 +46,7 @@ const  ManageProduct = () => {
        product.rate_descriptions = content;
        setProduct(product)
     }
+    const [dataExport, setDataExport] = useState([])
     const setProductDefault = () => {
         setProduct({
             id: undefined,
@@ -141,12 +143,9 @@ const  ManageProduct = () => {
         } 
     }
     const deleteById = async (id) => {
-        const product_temp = await deleteProduct(dispatch, id);
-        alert(product_temp)
-        if(product_temp){
+        await deleteProduct(dispatch, id);
             setProductDefault()
             getProduct()
-        } 
     }
 
     const handleUploadThumbail = async (event) => {
@@ -225,9 +224,10 @@ const  ManageProduct = () => {
                                                     <td>{item.slug}</td>
                                                     <td>{item.name}</td>
                                                     <td>
+                                                    {console.log(item.export_excel_data)}
                                                         <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
                                                         <div className="btn-table-item" onClick={() => deleteById(item.id)}><i class="bi bi-x-circle"></i></div>
-                                                        <div className="btn-table-item"><ExportExcelButton data={item.lucky_wheel_users} fileName="Danh_Sach_User_Lucky" title={"Xuất Users may mắn"}/></div>
+                                                        <div className="btn-table-item" ><ExportExcelButton data={item?.export_excel_data?.data ? item?.export_excel_data.data : []} fileName={`${item?.export_excel_data?.title ? item.export_excel_data.title : 'Danh_Sach_User_Lucky'}`}title={`Xuất Users may mắn`}/></div>
                                                     </td>
                                                 </tr>
                                             )
@@ -283,6 +283,66 @@ const  ManageProduct = () => {
                                                 {listCategories && listCategories.length > 0 && listCategories.map((item) => {
                                                     return (<option selected={product.category?.code === item.code} value={item.code}>{item.name}</option>)
                                                 })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Link review:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.review_link} onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    review_link: e.target.value
+                                                })
+                                            }}/>
+                                        </div>
+                                    </div>
+                                     <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Loại link review:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <select className="manage-box-modal-body-control-body-input" onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    type_review_link: e.target.value
+                                                }) 
+                                            }}>
+                                                <option>Chọn loại link review</option>
+                                                    <option selected={product.type_review_link === "youtube"} value="youtube">Youtube</option>
+                                                    <option selected={product.type_review_link === "tiktok"} value="tiktok">Tiktok</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Link review 2:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.review_link2} onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    review_link2: e.target.value
+                                                })
+                                            }}/>
+                                        </div>
+                                    </div>
+                                     <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Loại link review 2:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <select className="manage-box-modal-body-control-body-input" onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    type_review_link2: e.target.value
+                                                }) 
+                                            }}>
+                                                <option>Chọn loại link review</option>
+                                                    <option selected={product.type_review_link2 === "youtube"} value="youtube">Youtube</option>
+                                                    <option selected={product.type_review_link2 === "tiktok"} value="tiktok">Tiktok</option>
                                             </select>
                                         </div>
                                     </div>

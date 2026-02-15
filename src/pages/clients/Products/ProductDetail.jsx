@@ -54,7 +54,20 @@ const ProductDetail = () => {
                 <div className="product-detail-video-rate">
                     <div className="product-detail-video-rate-title">Video Review</div>
                {/* <TikTokPlayer videoUrl="https://www.tiktok.com/@69s.pet/video/7605579465699101972?is_from_webapp=1&sender_device=pc" /> */}
-               <YouTubePlayer videoUrl="https://www.youtube.com/watch?v=Ly0wJQEgGn4" />
+               {product.review_link && product.type_review_link === "youtube" && 
+                    <YouTubePlayer videoUrl={product.review_link} />
+                }
+                {product.review_link && product.type_review_link === "tiktok" && 
+                    <TikTokPlayer videoUrl={product.review_link} />
+                }
+                <div className="product-detail-video-rate-title">Video Review Lại</div>
+               {/* <TikTokPlayer videoUrl="https://www.tiktok.com/@69s.pet/video/7605579465699101972?is_from_webapp=1&sender_device=pc" /> */}
+               {product.review_link2 && product.type_review_link2 === "youtube" && 
+                    <YouTubePlayer videoUrl={product.review_link2} />
+                }
+                {product?.review_link2 && product.type_review_link2 === "tiktok" && 
+                    <TikTokPlayer videoUrl={product.review_link2} />
+                }
             </div>
              <div className="product-detail-fast-rate">
                 <div className="product-detail-fast-rate-title">Đánh giá nhanh</div>
