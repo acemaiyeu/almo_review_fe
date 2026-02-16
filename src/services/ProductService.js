@@ -7,14 +7,14 @@ import axiosClient from "./axiosClient";
 export const getProductClientALl = async (params = [], page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
-        params_text = "";
-        if(params?.length > 0){
-
+        let params_text = "";
+        if(params?.category_name){
+           params_text += `category_name=${params.category_name}`
         }
         const res = await axiosClient.get(`products?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {
-        // console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
+        console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
         // throw error; 
     }
 }

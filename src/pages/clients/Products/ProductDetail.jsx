@@ -31,6 +31,7 @@ const ProductDetail = () => {
     const handlePrizeReceived = (prize) => {
     // console.log("Dữ liệu nhận được từ con:", prize);
     showDynamic(dispatch,`Bạn nhận được giảm giá ${prize.label} cho sản phẩm: ${product.name}`)
+    getProduct()
   };
   const handleClose = (e) => {
   e.stopPropagation(); // Ngăn chặn sự kiện lan lên cha

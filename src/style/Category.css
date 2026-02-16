@@ -38,10 +38,13 @@
   align-items: center;
   gap: 12px;
 }
-
 .category-icon {
   font-size: 1.3rem;
   color: var(--background-main);
+}
+.category-icon>img{
+  width: 100%;
+  max-width: 25px;
 }
 
 .category-name {

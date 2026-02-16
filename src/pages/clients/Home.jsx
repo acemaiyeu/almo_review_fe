@@ -1,39 +1,84 @@
 import { Link } from 'react-router-dom';
 import { useFetch } from '../../services/useFetch.js';
 import homeService from '../../services/homeService.js'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor.jsx';
 import DisplayContent from '../../app/ComponentSupport/DisplayContent.jsx';
 import DynamicIsland from './DynamicIsland.jsx';
 import { useDispatch } from 'react-redux';
 import { updateDynamic } from '../../app/features/dynamicIslandSlice.js';
 import CategoryHome from './Category/CategoryHome.jsx';
+import { getProductClientALl } from '../../services/ProductService.js';
+import { toast } from 'react-toastify';
 
 const Home = () => {
-  // Dữ liệu giả (Mock Data) thay cho việc gọi API
-  const mockProducts = [
-    { id: 1, name: 'iPhone 15 Pro Max', price: 29990000, image: 'https://vcdn-sohoa.vnecdn.net/2023/09/13/iphone-15-pro-max-finish-select-202309-6-7-inch-natural-titanium-6261-1694565355.jpg' },
-    { id: 2, name: 'Samsung Galaxy S24 Ultra', price: 26500000, image: 'https://images.samsung.com/is/image/samsung/p6pim/vn/2401/pd/samsung-galaxy-s24-ultra-titanium-gray-600x600.png' },
-    { id: 3, name: 'Xiaomi 14 Ultra', price: 21990000, image: 'https://cdn.tgdd.vn/Products/Images/42/322616/xiaomi-14-ultra-trang-thumb-600x600.jpg' },
-    { id: 4, name: 'Oppo Find X7 Ultra', price: 18500000, image: 'https://cdn.mobilecity.vn/mobilecity-vn/images/2024/01/oppo-find-x7-ultra-den.jpg' },
-  ];
-  
- 
 
-const { data: products, loading } = useFetch(homeService.getProducts, 123);
-  if (loading) return <div className="spin">
+// const { data: products, loading } = useFetch(homeService.getProducts, 123);
+const [products, setProducts] = useState([]);
+const [currentPage, setCurrentPage] = useState(1);
+const [totalPage, setTotalPage] = useState(1);
+const [loading, setLoading] = useState(true);
+  
+    const showProductByCategory = (products) => {
+      
+      if(products?.data.length > 0){
+        // console.log("check", products.meta.pagination.total_pages)
+         setLoading(true);
+          setProducts(products.data)
+          setTotalPage(products.meta.pagination.total_pages)
+          setLoading(false);
+      }else{
+           setProducts([])
+          setTotalPage(1)
+          setCurrentPage(1)
+      }
+    }
+    useEffect(() => {
+      setLoading(true);
+        getProduct()
+         setLoading(false);
+    }, [])
+    const getProduct = async () => {
+        const data = await getProductClientALl([], currentPage, 10);
+        if(data){
+          setProducts(data.data)
+          setTotalPage(data.meta.pagination.total_pages)
+        }
+    }
+
+    const handleViewMore = async () => {
+        setLoading(true)
+        if(currentPage >= totalPage){
+          toast.error("Đã hiển thị hết sản phẩm");
+          return;
+        }
+        const data = await getProductClientALl([], currentPage + 1, 10);
+        if(data){
+            const combinedList = [...products, ...data.data]; 
+            setProducts(combinedList)
+        }
+        setCurrentPage(currentPage + 1);
+        setLoading(false)
+    }
+
+    if (loading && products?.data?.length === 0) return <div className="spin">
         <div class="spinner-grow text-almo" role="status">
       </div>Đang tải sản phẩm...
       </div>;
+       if (products?.data?.length === 0) return <div className="spin">
+        <div class="spinner-grow text-almo" role="status">
+      </div>Không tìm thấy sản phẩm
+      </div>;
+      
   return (
     <div style={styles.container}>
       
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
        <div className="category-box">
-          <CategoryHome />
+          <CategoryHome showProduct={showProductByCategory}/>
         </div>
       <div className="product-box">
-        <h2 style={styles.title}>📱 Điện thoại mới nhất</h2>
+        <h2 style={styles.title}>Sản phẩm mới nhất</h2>
         <div style={styles.grid}>
           {products && products.map((item) => (
             <div key={item.id} style={styles.card}>
@@ -49,7 +94,16 @@ const { data: products, loading } = useFetch(homeService.getProducts, 123);
           ))}
         </div>
         </div>
-       
+        {loading && <div className="spin">
+                      <div class="spinner-grow text-almo" role="status">
+                    </div>Đang tải sản phẩm...
+                    </div> 
+                    }
+       <div className="manage-box-paging">
+                    <div className={`manage-box-paging-more ${currentPage == totalPage ? 'visibled' : ''}`}  onClick={() => handleViewMore()}>
+                        Xem thêm
+                    </div>
+                </div>
     </div>
   );
 };

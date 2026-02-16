@@ -17,6 +17,7 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
 
   const prizes = [
     { label: 'Giảm 30%', value: 30 },
+    { label: 'Giảm 32.5%', value: 32.5},
     { label: 'Giảm 35%', value: 35 },
     { label: 'Giảm 40%', value: 40 },
     { label: 'Giảm 45%', value: 45 },
@@ -43,7 +44,7 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
     
     // Tính toán góc quay mới dựa trên góc hiện tại để không bị quay ngược về 0
     const currentRotationBase = rotation - (rotation % 360);
-    const finalRotation = currentRotationBase + extraSpin + (360 - angleToCenterOfPrize - 90);
+    const finalRotation = currentRotationBase + extraSpin + (360 - angleToCenterOfPrize - 100);
 
     setRotation(finalRotation);
 

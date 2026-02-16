@@ -103,7 +103,7 @@ const  ManageCategory = () => {
 
     //Create, Update, Delete
     const create = async () => {
-        if(category.code){
+        if(!category.code){
             toast.error("Chức năng không thể sử dụng")
             return;
         }

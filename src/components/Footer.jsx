@@ -21,12 +21,14 @@ const Footer = () => {
                 <div className="footer-policy">
                         <h1>Chính sách</h1>
                         <Link to="/policy">Chính sách bảo mật</Link>
+                        <Link to="/terms">Điều khoản sử dụng & Thể lệ Quay thưởng</Link>
+                        <Link to="/inspection-policy">Chính sách Kiểm hàng, Đổi trả & Bảo hành</Link>
                 </div>
                 <div className="footer-connect">
                         <h1>Kết nối</h1>
-                        <a href="https://facebook.com" target='_blank'><i class="bi bi-facebook"></i> Facebook</a>
-                        <a href="https://tiktok.com" target='_blank'><i class="bi bi-tiktok"></i> Tiktok</a>
-                        <a href="https://youtube.com" target='_blank'><i class="bi bi-youtube"></i> Youtube</a>
+                        <a href="https://facebook.com" className="facebook_link" target='_blank'><i class="bi bi-facebook"></i> Facebook</a>
+                        <a href="https://tiktok.com" className="tiktok_link" target='_blank'><i class="bi bi-tiktok"></i> Tiktok</a>
+                        <a href="https://youtube.com" className="youtube_link" target='_blank'><i class="bi bi-youtube"></i> Youtube</a>
                 </div>
         </footer>
     )

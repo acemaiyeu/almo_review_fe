@@ -12,7 +12,35 @@
             }
         }
     }
+    .footer-policy{
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-connect
+    {
+        .facebook_link{
+            color: blue;
+            &:hover{
+                color: white;
+                background-color: blue;
+            }
+        }
+        .tiktok_link{
+            color: black;
+            &:hover{
+                color: white;
+                background-color: black;
+            }
+        }
+        .youtube_link{
+            color: red;
+            &:hover{
+                color: white;
+                background-color: red;
+            }
+        }
 
+    }
     .footer-auth{
         .footer-auth-logo{
             font-size: 2rem;
@@ -34,4 +62,16 @@
             flex-direction: column;
             // text-align: left;
         }
+}
+@media (max-width: 768px) {
+
+    .footer-container{
+        flex-direction: column;
+        gap: 10px;
+        padding: 0px 20px;
+        .footer-auth{
+            display: flex;
+            flex-direction: row;
+        }
+    }
 }

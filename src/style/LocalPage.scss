@@ -1,0 +1,102 @@
+.almo-container{
+    width: 50%;
+    margin: 0px auto;
+    text-align: left;
+    font-size: 1.2rem;
+    .almo-container-header{
+        font-size: 2rem;
+        font-weight: bold;
+        display: flex;
+        justify-self: center;
+        margin-bottom: 30px;
+    }
+    .almo-container-content{
+        .almo-container-content-title{
+            font-weight: bold;
+            font-size: 1.7rem;
+        }
+    }
+}
+
+.manage-box-paging{
+        width: 30%;
+        display: flex;
+        gap: 5px;
+        justify-self: center;
+        align-self: center;
+        justify-content: center;
+        margin: 2%  auto;
+        font-size: .8rem;
+        .manage-box-paging-more{
+            color: var(--background-main);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            &:hover{
+                background-color: var(--background-main);
+                color: white;
+            }
+        }
+        .manage-box-paging-more.visibled{
+            display: none;
+        }
+        .manage-box-paging-item{
+            flex: 1;
+            border: 1px solid var(--background-main);
+            padding: 5px;
+            transition: all .5s ease-out;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:hover{
+                background-color: var(--background-main);
+                color: white;
+            }
+            &:first-child {
+                border-top-left-radius: 999px;
+                border-bottom-left-radius: 999px;
+            }   
+            &:last-child {
+                border-top-right-radius: 999px;
+                border-bottom-right-radius: 999px;
+            }   
+            &:nth-child(3){
+                cursor: default;
+                color: var(--background-main);
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+                &:hover{
+                    background-color: transparent;
+                    color: var(--background-main);
+                    font-weight: bold;
+                }
+            }
+        }
+        .manage-box-paging-item.disabled{
+            background-color: rgb(165, 163, 163);
+            color: white;
+            &:hover{
+                color: white;
+                cursor: default;
+            }
+        }
+    }
+
+@media (max-width: 768px) {
+    .almo-container{
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    .manage-box-paging{
+        width: 70%;
+        font-size: .6rem;
+    }
+
+}

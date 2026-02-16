@@ -7,18 +7,14 @@ const uri_base_local = 'category' //create update delete
 const label_notification = 'loại sản phẩm' //get all
 
 
-export const getCategoryClientALl = async (params = [], page = 1, limit = 10) => {
+export const getCategoryClientALl = async ( page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
-        params_text = "";
-        if(params?.length > 0){
-
-        }
-        const res = await axiosClient.get(`${uri_base_all}?${params_text}&page=${page}&limit=${limit}`);
+        const res = await axiosClient.get(`${uri_base_all}?page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {
-        // console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
-        // throw error; 
+        console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
+        throw error; 
     }
 }
 export const getCategoryALl = async (params = [], page = 1, limit = 10) => {

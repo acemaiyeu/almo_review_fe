@@ -21,6 +21,10 @@ import ManageCategory from './pages/admin/ManageCategory.jsx'
 import ForgotPassword from './pages/clients/Authentication/ForgotPassword.jsx'
 import Footer from './components/Footer.jsx'
 import ManageUser from './pages/admin/ManageUser.jsx'
+import About from './components/About.jsx'
+import Terms from './components/Terms.jsx'
+import InspectionPolicy from './components/InspectionPolicy.jsx'
+import Policy from './components/Policy.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -80,6 +84,10 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           {/* Trang 404 nếu không tìm thấy route */}
           
+          <Route path="/about" element={<About />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/inspection-policy" element={<InspectionPolicy />} />
+          <Route path="/policy" element={<Policy />} />
 
 
           {/* //Admin */}
