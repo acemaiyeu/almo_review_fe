@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axiosAuth from '../services/axiosAuth';
 import { showDynamic } from '../app/ComponentSupport/functions';
 import { resetProfile, updateProfile } from '../app/features/profileSlice';
+import logo from '../assets/img/logo.png'
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -38,7 +39,7 @@ function Header() {
       <div style={styles.container}>
         {/* 1. Logo */}
         <Link to="/" style={styles.logo}>
-          <Home size={28} />
+          <img className="logo" src={logo} alt="logo"/>
           {/* <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Home</span> */}
         </Link>
 

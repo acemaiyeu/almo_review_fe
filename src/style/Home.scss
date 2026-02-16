@@ -1,0 +1,11 @@
+.modal-img{
+    position: absolute;
+    width: 20%;
+    height: 50px;
+    top: 45%;
+    right: 42%;
+    &>img{
+        width: 100%;
+        opacity: .3;
+    }
+}

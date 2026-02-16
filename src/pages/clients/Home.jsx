@@ -10,6 +10,8 @@ import { updateDynamic } from '../../app/features/dynamicIslandSlice.js';
 import CategoryHome from './Category/CategoryHome.jsx';
 import { getProductClientALl } from '../../services/ProductService.js';
 import { toast } from 'react-toastify';
+import logo from '../../assets/img/logo.png'
+import '../../style/Home.scss'
 
 const Home = () => {
 
@@ -82,6 +84,7 @@ const [loading, setLoading] = useState(true);
         <div style={styles.grid}>
           {products && products.map((item) => (
             <div key={item.id} style={styles.card}>
+              <div className="modal-img"><img src={logo} alt="logo"/></div>
               <div style={styles.imageBox}>
                   <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy'/>
               </div>
@@ -122,7 +125,8 @@ const styles = {
     padding: '15px', 
     textAlign: 'center',
     background: '#fff',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+    position: 'relative'
   },
   imageBox: { height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' },
   image: { maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' },

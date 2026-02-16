@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 import MenuAdmin from './pages/admin/MenuAdmin'
 import ManageProduct from './pages/admin/ManageProduct'
 import DynamicIsland from './pages/clients/DynamicIsland'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import Login from './pages/clients/Authentication/Login.jsx'
 import Register from './pages/clients/Authentication/Register.jsx'
 import Profile from './pages/clients/Authentication/Profile.jsx'
@@ -61,6 +61,9 @@ function App() {
     }
   }, [profile.email, dispatch]); // Only re-run if email changes or dispatch is ready
 
+  useEffect(() => {
+      toast.warning("Web hiện tại chỉ demo chưa vận hành trực tiếp!")
+  }, [])
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>
        <ToastContainer position="top-right" style={{ top: "50px" }}/>

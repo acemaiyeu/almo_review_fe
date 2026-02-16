@@ -58,6 +58,9 @@ const ProductDetail = () => {
         <div className="product-detail-container">   
             <div className="product-detail-header">{product?.name}</div>
             <hr/>
+            <div className="product-detail-thumbnail">
+                <img src={product?.thumbnail} loading='lazy' alt="thumbnail"/>
+            </div>
             <div className="product-price">GIÁ SẢN PHẨM (đã mua): {product.price}</div>
             <div className="product-box">
                 <div className="product-detail-video-rate">
