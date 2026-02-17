@@ -21,7 +21,6 @@ function Header() {
     }
   };
   const LogOut = async () => {
-    alert(window.location.pathname);
       await axiosAuth.post('auth/logout').then(() => {
           
           localStorage.removeItem('expires_in')

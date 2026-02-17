@@ -4,7 +4,7 @@ import { updateProfile } from '../app/features/profileSlice';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosAuth = axios.create({
-  baseURL: 'http://localhost:8000/api/', // Thay bằng URL thật của bạn
+  baseURL: 'http://192.168.31.81:8000/api/', // Thay bằng URL thật của bạn
   headers: {
     'Content-Type': 'application/json',
   },

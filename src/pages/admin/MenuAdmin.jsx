@@ -1,18 +1,21 @@
 import { Link } from 'react-router-dom';
 import '../../style/MenuAdmin.scss'
+import { useSelector } from 'react-redux';
 
 const MenuAdmin = () => {
 
-
+    const profile = useSelector((state) => state.profile);
     return (
         <div className="menu-admin-container">
+            {profile.email !== '' &&
+                <>
                 <div className="menu-user-container">
                     <div className="menu-user-form">
                          <div className='menu-user-avatar'>
                                     <img className="avatar" alt='avatar' src={'https://i.pinimg.com/736x/27/56/6e/27566e92e158a7d2c175948a0a7321b0.jpg'} loading='lazy'/>
                                 </div>
                                 <div className='menu-user-title'>
-                                    <Link to={"/admin/"}>Almo Admin</Link>
+                                    <Link to={"/admin/"}>{profile.name}</Link>
                                 </div>
                     </div>
                     <div className="menu-user-fucntions">
@@ -47,6 +50,8 @@ const MenuAdmin = () => {
                         </div>
                         <div className="menu-item-title"><Link to="/admin/manage-users">Quản lý tài khoản</Link></div>
                 </div>
+                </>
+                }
         </div>
     )
 }
