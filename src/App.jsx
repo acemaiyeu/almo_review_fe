@@ -25,6 +25,8 @@ import About from './components/About.jsx'
 import Terms from './components/Terms.jsx'
 import InspectionPolicy from './components/InspectionPolicy.jsx'
 import Policy from './components/Policy.jsx'
+import MyOrders from './pages/clients/Orders/MyOrders.jsx'
+import DiscountHistory from './pages/clients/DiscountHistory/DiscountHistory.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -75,17 +77,23 @@ function App() {
       >
         <DynamicIsland />
         <Routes>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/cart" element={<CartPage />} /> */}
-          <Route path="/orders" element={<div>Trang lịch sử đơn hàng</div>} />
+          {/* Home */}
+          <Route path="/" element={<Home />} /> 
           <Route path="/search" element={<div>Trang kết quả tìm kiếm</div>} />
           <Route path="/product/:slug" element={<ProductDetail/>} />
+         {/* Orders */}
+         <Route path="/my-orders" element={<MyOrders/>} />
+
+        {/* DiscountHistory */}
+         <Route path="/history-discounts" element={<DiscountHistory/>} />
+
+         {/* Authentication */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          
           <Route path="/profile" element={<Profile />} />
-          {/* Trang 404 nếu không tìm thấy route */}
+
+          
           
           <Route path="/about" element={<About />} />
           <Route path="/terms" element={<Terms />} />
@@ -99,6 +107,8 @@ function App() {
           <Route path="/admin/manage-products" element={<ManageProduct />} />
           <Route path="/admin/manage-categories" element={<ManageCategory />} />
           <Route path="/admin/manage-users" element={<ManageUser />} />
+
+          {/* Trang 404 nếu không tìm thấy route */}
           <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
         </Routes>
         <audio controls id="audio" style={{opacity: '0'}}>

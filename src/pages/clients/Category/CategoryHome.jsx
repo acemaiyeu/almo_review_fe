@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../../../style/Category.css'
+import '../../../style/Category.scss'
 import { getCategoryClientALl } from '../../../services/CategoryService';
 import { getProductClientALl } from '../../../services/ProductService';
 
@@ -7,11 +7,12 @@ import { getProductClientALl } from '../../../services/ProductService';
 
 
 
-const CategoryHome = ({showProduct}) => {
+const CategoryHome = ({sendToHome}) => {
 
   const [categories, setCategories] = useState([]);
-const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(true);
+  const [showFull, setShowFull] = useState(false);
+  const [categoryActive, setCategoryActive] = useState("")
   useEffect(() => {
       getCategories()
   }, [])
@@ -30,20 +31,22 @@ const [loading, setLoading] = useState(true);
                     <div class="spinner-grow text-almo" role="status"></div>Đang tải loại sản phẩm...
                 </div>;
   }
-  const hanleClickCategory = async (category_name) => {
-        // showProduct
-      const products = await getProductClientALl({category_name}, 1, 10);
-      if(products){
-          showProduct(products);
-      }
+  const hanleClickCategory = async (category_name, category_code) => {
+      setShowFull(false)
+      sendToHome(category_name)
+      setCategoryActive(category_code)
   }
   return (
-    categories ? <section className="category-container">
+    categories ? <section className={`category-container ${showFull ? 'active' : 'none-active'}`}>
+      {/* <div className="category-container-modal-less"></div> */}
+      <div className={`category-container-modal`} onClick={() => setShowFull(!showFull)}>{showFull ? 'Thu gọn' : 'Hiển thị thêm'}</div> 
+     
+      {/* <div className="category-container-modal">Thu gọn</div> */}
       <h2 className="category-title">Danh mục sản phẩm</h2>
       
       <div className="category-grid">
         {categories.map((cat) => (
-          <div key={cat.id} className="category-item" onClick={() => hanleClickCategory(cat.name)}>
+          <div key={cat.code} className={`category-item ${categoryActive === cat.code ? 'active' : ''}`} onClick={() => hanleClickCategory(cat.name, cat.code)}>
             <div className="category-info">
               <span className="category-icon"><img src={cat.thumbnail} loading='lazy'></img></span>
               <span className="category-name">{cat.name}</span>

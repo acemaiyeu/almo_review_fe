@@ -25,6 +25,7 @@ const  ManageProduct = () => {
         slug: 'Tạo tự động',
         property: "",
         thumbnail: "",
+        price: 0,
         rate_descriptions: "",
         affilate_tiktok_link: "",
         affilate_shopee_link: "",
@@ -54,7 +55,8 @@ const  ManageProduct = () => {
             name: "",
             property: "",
             thumbnail: "",
-            slug: 'Tạo tự động',
+            price: 0,
+            slug: 'Được tạo tự động',
             rate_descriptions: "",
             affilate_tiktok_link: "",
             affilate_shopee_link: "",
@@ -112,7 +114,10 @@ const  ManageProduct = () => {
 
     useEffect(() => {
         getProduct()
-        getCategory()
+        if(listCategories.length===0){
+            getCategory()
+        }
+        
     }, [listProducts?.length, page])
 
 
@@ -286,6 +291,19 @@ const  ManageProduct = () => {
                                                     return (<option selected={product.category?.code === item.code} value={item.code}>{item.name}</option>)
                                                 })}
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Giá mua: 
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.price} onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    price: e.target.value
+                                                })
+                                            }}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">

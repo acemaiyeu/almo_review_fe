@@ -21,19 +21,27 @@ const [currentPage, setCurrentPage] = useState(1);
 const [totalPage, setTotalPage] = useState(1);
 const [loading, setLoading] = useState(true);
   
-    const showProductByCategory = (products) => {
-      
-      if(products?.data.length > 0){
-        // console.log("check", products.meta.pagination.total_pages)
-         setLoading(true);
-          setProducts(products.data)
-          setTotalPage(products.meta.pagination.total_pages)
-          setLoading(false);
-      }else{
-           setProducts([])
-          setTotalPage(1)
-          setCurrentPage(1)
+    const showProductByCategory = async (category_name) => {
+      setLoading(true)
+      setProducts([])
+      if(category_name === "Tất cả"){
+        category_name = "";
       }
+      const data = await getProductClientALl({category_name}, 1, 10);
+      if(data){
+        if(data?.data.length > 0){
+          // console.log("check", products.meta.pagination.total_pages)
+          setLoading(true);
+            setProducts(data.data)
+            setTotalPage(data.meta.pagination.total_pages)
+            setLoading(false);
+        }else{
+            setProducts([])
+            setTotalPage(1)
+            setCurrentPage(1)
+        }
+      }
+      setLoading(false)
     }
     useEffect(() => {
       setLoading(true);
@@ -77,7 +85,7 @@ const [loading, setLoading] = useState(true);
       
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
        <div className="category-box">
-          <CategoryHome showProduct={showProductByCategory}/>
+          <CategoryHome sendToHome={showProductByCategory}/>
         </div>
       <div className="product-box">
         <h2 style={styles.title}>Sản phẩm mới nhất</h2>

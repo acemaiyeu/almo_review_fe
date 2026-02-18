@@ -291,7 +291,7 @@ const ProductDetail = () => {
                         </div>
                        
                 </div>
-                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={2000} join_lucky={product.join_lucky} discount_price={product.discount_price}/>
+                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={product.total_lucky} join_lucky={product.join_lucky} discount_price={product.discount_price}/>
             </div>
            
     </div> : <div className="product-detail-container"><p>Không tìm thấy sản phẩm</p></div>)

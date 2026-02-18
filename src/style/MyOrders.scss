@@ -1,0 +1,212 @@
+// Variables
+$bg-gray: #f8f9fa;
+$text-main: #2d3436;
+$text-muted: #636e72;
+$border-color: #edf2f7;
+$white: #ffffff;
+
+// Mixins for Responsive
+@mixin mobile {
+  @media (max-width: 640px) { @content; }
+}
+
+.my-orders-container {
+  min-height: 100vh;
+  background-color: $bg-gray;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+
+  .content-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 1.5rem;
+      color: $text-main;
+      font-weight: 700;
+    }
+
+    .order-count {
+      font-size: 0.875rem;
+      color: $text-muted;
+    }
+  }
+
+  .order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .order-card {
+    background: $white;
+    border-radius: 12px;
+    border: 1px solid $border-color;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+
+    .card-body {
+      padding: 16px;
+
+      @include mobile {
+        padding: 12px;
+      }
+    }
+
+    .order-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid $border-color;
+      margin-bottom: 16px;
+
+      .order-id-label {
+        font-size: 0.85rem;
+        color: $text-muted;
+        
+        span {
+          color: var(--background-main);;
+          font-weight: 700;
+          margin-left: 4px;
+        }
+      }
+
+      .status-badge {
+        font-size: 0.75rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        display: flex;
+        gap: 10px;
+        .status-badge-title{
+            font-weight: bold;
+        }
+        .status-badge-value{
+            color: var(--background-main);
+            font-size: .9rem;
+        }
+        &.shipping { background: #e3f2fd; color: #1976d2; }
+        &.delivered { background: #e8f5e9; color: #2e7d32; }
+        &.cancelled { background: #ffebee; color: #c62828; }
+      }
+    }
+
+    .product-info {
+      display: flex;
+      gap: 16px;
+
+      @include mobile {
+        gap: 12px;
+      }
+
+      .product-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: #eee;
+      }
+
+      .details {
+        flex: 1;
+
+        h3 {
+          font-size: 1rem;
+          font-weight: 600;
+          color: $text-main;
+          margin: 0 0 4px 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .date {
+          font-size: 0.8rem;
+          color: $text-muted;
+        }
+
+        .price-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-top: 8px;
+          flex-direction: column;
+          .price {
+            font-size: 1rem;
+            font-weight: 700;
+            
+            width: 100%;
+            display: flex;
+            &:last-child{
+                color: var(--background-main);
+                font-size: 1.1rem;
+            }
+            .price_title{
+                width: 30%;
+                text-align: left;
+            }
+            .price_value{
+                width: 70%;
+                text-align: right;
+                // display: flex;
+                // justify-content: flex-end;
+            }
+          }
+
+          .view-detail {
+            font-size: 0.85rem;
+            color: var(--background-main);;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .card-footer {
+      background: #fafafa;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+
+      button {
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &.btn-secondary {
+          background: white;
+          border: 1px solid #dcdde1;
+          color: $text-muted;
+          &:hover { background: #f1f2f6; }
+        }
+
+        &.btn-primary {
+          background: var(--background-main);;
+          border: 1px solid var(--background-main);;
+          color: white;
+          &:hover { opacity: 0.9; }
+        }
+
+        @include mobile {
+          flex: 1; // Trên mobile nút sẽ dài bằng nhau
+        }
+      }
+    }
+  }
+}
