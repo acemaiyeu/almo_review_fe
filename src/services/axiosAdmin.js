@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_URL } from '../const/const';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosAdmin = axios.create({
-  baseURL: 'http://192.168.31.81:8000/api/admin/', // Thay bằng URL thật của bạn
+  baseURL: `${API_URL}/api/admin/`, // Thay bằng URL thật của bạn
   headers: {
     'Content-Type': 'application/json',
   },
