@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { updateProfile } from '../app/features/profileSlice';
+import { API_URL } from '../const/const';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosAuth = axios.create({

@@ -1,1 +1,1 @@
-export const API_URL = window.location.host
+export const API_URL = "https://almobe.io.vn"
