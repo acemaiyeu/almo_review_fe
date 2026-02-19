@@ -11,7 +11,6 @@ const AdminLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Đăng nhập với:", formData);
     axiosAuth.post('login', {
         ...formData
     }).then((res) => {

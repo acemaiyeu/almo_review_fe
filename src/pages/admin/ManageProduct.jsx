@@ -57,7 +57,6 @@ const  ManageProduct = () => {
     }
     useEffect(() => {
         if(userLucky.user_id && productLucky.product_id){
-            console.log(historyDiscounts,userLucky, productLucky)
             const discount_index = historyDiscounts.findIndex((i) => i.product_id == productLucky.product_id && i.user_id == userLucky.user_id);
             if(discount_index < 0){
                 toast.error("Không tìm thấy dữ liệu vòng quay");
@@ -107,7 +106,7 @@ const  ManageProduct = () => {
     }
      const getCategory = async () => {
         setLoadding(true)
-        const categories = await getCategoryALl([],page, limit); 
+        const categories = await getCategoryALl([],page, 1000); 
         
         if(categories){
             setListCategories(categories.data)
@@ -188,7 +187,6 @@ const  ManageProduct = () => {
     const handleChangeProductId = async (e) => {
                                                
                                                 const product_index = listProducts.findIndex((el) => el.id == e.target.value);
-                                                 console.log(e.target.value, product_index)
                                                 if(product_index >= 0){
                                                     const product_temp = listProducts[product_index];
                                                     
