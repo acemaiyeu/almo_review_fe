@@ -10,6 +10,7 @@ import logo from '../assets/img/logo.png'
 import SettingModal from '../pages/clients/SettingModal';
 import { getProductClientALl } from '../services/ProductService';
 import { setProducts } from '../app/features/productSlice';
+import { toast } from 'react-toastify';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,6 +29,9 @@ function Header() {
             data: products.data,
             product_name: product_name
           }))
+      }
+      if(products?.data?.length == 0){
+        toast.warning("Không tìm thấy sản phẩm!")
       }
   }
 
