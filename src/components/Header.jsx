@@ -7,12 +7,14 @@ import axiosAuth from '../services/axiosAuth';
 import { showDynamic } from '../app/ComponentSupport/functions';
 import { resetProfile, updateProfile } from '../app/features/profileSlice';
 import logo from '../assets/img/logo.png'
+import SettingModal from '../pages/clients/SettingModal';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const profile = useSelector((state) => state.profile)
   const dispatch =  useDispatch();
+  const [showSetting, setShowSetting] = useState(false);
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -32,6 +34,9 @@ function Header() {
             window.location.reload();
           },1500)
       }).catch()
+  }
+  const handleSetShowSetting = () => {
+    setShowSetting(false);      // Cập nhật state
   }
   return (
     <nav style={styles.nav}>
@@ -85,6 +90,15 @@ function Header() {
                         <div className="account-item">
                           <Link to="/my-orders" style={styles.menuItem}>
                             <span>Quản lý đơn hàng</span>
+                        </Link>
+                        </div>
+                    </div>
+                     <div className="account-list">
+                        <div className="account-item" >
+                          <Link  style={styles.menuItem}>
+                            <span onClick={() => setShowSetting(true)}>Cài đặt</span>
+                            {showSetting === true && <SettingModal setShowSetting={handleSetShowSetting}/>}
+                            
                         </Link>
                         </div>
                     </div>

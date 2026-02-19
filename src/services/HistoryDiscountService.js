@@ -17,12 +17,12 @@ export const getHistoryDiscountClientALl = async ([],page = 1, limit = 10) => {
         throw error; 
     }
 }
-export const getHistoryDiscountALl = async (params = [], page = 1, limit = 10) => {
+export const getHistoryDiscountALl = async (params = {}, page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
         let params_text = "";
-        if(params?.length > 0){
-
+        if(params?.product_id){
+            params_text += `product_id=${params.product_id}`
         }
         const res = await axiosAdmin.get(`${uri_base_all}?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API

@@ -27,6 +27,7 @@ import InspectionPolicy from './components/InspectionPolicy.jsx'
 import Policy from './components/Policy.jsx'
 import MyOrders from './pages/clients/Orders/MyOrders.jsx'
 import DiscountHistory from './pages/clients/DiscountHistory/DiscountHistory.jsx'
+import './style/responsive.scss'
 
 function App() {
   const profile = useSelector((state) => state.profile)

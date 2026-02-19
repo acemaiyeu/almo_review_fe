@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor';
 import '../../style/ManagerProduct.scss'
 import { createProduct, deleteProduct, getProductALl, updateProduct } from '../../services/ProductService';
@@ -8,11 +8,16 @@ import { uploadImage } from '../../app/ComponentSupport/functions';
 import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
 import { getCategoryALl } from '../../services/CategoryService';
 import axiosAdmin from '../../services/axiosAdmin';
+import { getHistoryDiscountALl } from '../../services/HistoryDiscountService';
 const  ManageProduct = () => {
     const dispatch = useDispatch();
     const [listProducts, setListProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    const [modalForLucky, setModalForLucky] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [historyDiscounts, setHistoryDiscounts] = useState([]);
+    const [productLucky, setProductLucky] = useState({});
     const [useParams, setUseParams] = useState({
         product_name: ''
     });
@@ -31,6 +36,9 @@ const  ManageProduct = () => {
         affilate_shopee_link: "",
         affilate_lazada_link: "",
     });
+    const [userLucky,setUserLucky] = useState({
+        user_id: undefined
+    })
     const [listCategories, setListCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
@@ -47,6 +55,23 @@ const  ManageProduct = () => {
        product.rate_descriptions = content;
        setProduct(product)
     }
+    useEffect(() => {
+        if(userLucky.user_id && productLucky.product_id){
+            console.log(historyDiscounts,userLucky, productLucky)
+            const discount_index = historyDiscounts.findIndex((i) => i.product_id == productLucky.product_id && i.user_id == userLucky.user_id);
+            if(discount_index < 0){
+                toast.error("Không tìm thấy dữ liệu vòng quay");
+                return;
+            }
+            const discount = historyDiscounts[discount_index];
+                setProductLucky({
+                    ...productLucky,
+                    price_product: discount.price_product,
+                    discount_percent: discount.discount_percent,
+                    price_discount: discount.price_discount
+                })
+        }
+    }, [userLucky.user_id, productLucky.product_id])
     const [dataExport, setDataExport] = useState([])
     const setProductDefault = () => {
         setProduct({
@@ -160,6 +185,36 @@ const  ManageProduct = () => {
             setProduct(product)
         }
     };
+    const handleChangeProductId = async (e) => {
+                                               
+                                                const product_index = listProducts.findIndex((el) => el.id == e.target.value);
+                                                 console.log(e.target.value, product_index)
+                                                if(product_index >= 0){
+                                                    const product_temp = listProducts[product_index];
+                                                    
+                                                    setProductLucky({
+                                                        product_id: product_temp.id,
+                                                        product_name: product_temp.name,
+                                                    })
+
+                                                    const data_history_discounts = await getHistoryDiscountALl({product_id: product_temp.id})
+                                                    if(data_history_discounts){
+                                                        let data_temp = data_history_discounts.data;
+                                                        setHistoryDiscounts(data_temp)
+                                                        let users_temp = data_temp.map((hd) => {
+                                                            return hd.user_id;
+                                                        })
+                                                        setUsers(users_temp)
+                                                    }
+
+                                                }else{
+                                                    toast.error("Không tìm thấy sản phẩm!")
+                                                }
+    }
+    const handleModalLucky = () => {
+        const next_value = !modalForLucky;
+        setModalForLucky(next_value)
+    }
     return (
         <div className="manage-box">
             <div className="manage-box-title">QUẢN LÝ SẢN PHẨM</div>
@@ -188,6 +243,11 @@ const  ManageProduct = () => {
                                             setShowModal(true)
                                         }}>
                                 Thêm
+                            </div>
+                            <div className="manage-box-content-modal-item" onClick={() => {
+                                           handleModalLucky()
+                                        }}>
+                                Cập nhật người thắng
                             </div>
                             <div className="manage-box-content-modal-item" onClick={() => getProduct()}>
                                 Cập nhật lại dữ liệu
@@ -225,7 +285,7 @@ const  ManageProduct = () => {
                                         {listProducts && listProducts.length > 0 && listProducts.map((item, index_item) => {
                                             return (
                                                 <tr>
-                                                    <td>{index_item + 1}</td>
+                                                    <td>{item.id}</td>
                                                     <td>{item.slug}</td>
                                                     <td>{item.name}</td>
                                                     <td>
@@ -446,6 +506,112 @@ const  ManageProduct = () => {
                                 </div>
                             </div>
                         }
+
+                        {modalForLucky && <div className="manage-box-modal">
+                                <div className="manage-box-modal-closed" onClick={() => {
+                                    handleModalLucky()
+                                }}>
+                                    <p>x</p>
+                                </div>
+                                <div className="manage-box-modal-title">CHỌN NGƯỜI TRÚNG GIẢI</div>
+                                <div className="manage-box-modal-body">
+                                    
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Id sản phẩm:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <select className="manage-box-modal-body-control-body-input" onChange={(e) => handleChangeProductId(e)}>
+                                                <option>Tên sản phẩm: </option>
+                                                {listProducts && listProducts.length > 0 && listProducts.map((item) => {
+                                                    return (<option selected={productLucky.product_id == item.id} value={item.id}>{item.id}</option>)
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Tên sản phẩm:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <select className="manage-box-modal-body-control-body-input" disabled>
+                                                <option>Tên sản phẩm: </option>
+                                                {listProducts && listProducts.length > 0 && listProducts.map((item) => {
+                                                    return (<option selected={productLucky.product_id === item.id} value={item.slug}>{item.name}</option>)
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Tài khoản trúng:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <select className="manage-box-modal-body-control-body-input" onChange={(e) => {
+                                                setUserLucky({
+                                                    user_id: e.target.value
+                                                }) 
+                                            }}>
+                                                <option>Chọn tài khoản</option>
+                                                {users && users.length > 0 && users.map((item) => {
+                                                    return (<option selected={userLucky.user_id === item} value={item}>{item}</option>)
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Giá sản phẩm: 
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.price_product} disabled/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Giảm giá (%): 
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.discount_percent} disabled/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Giá khuyến mãi: 
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.price_discount} disabled/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Đơn vị vận chuyển:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.unit_shipping ?? ""} onChange={(e) => setProductLucky({
+                                                ...productLucky,
+                                                unit_shipping: e.target.value
+                                            })}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Phí ship:  
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.fee_ship ?? 0} onChange={(e) => setProductLucky({
+                                                ...productLucky,
+                                                fee_ship: e.target.value
+                                            })}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className={`manage-box-modal-btn ${product.id ? 'disabled' : ''}`} onClick={() => create()}>Tạo mới</div>
+                                        <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`} onClick={() => update()}>Cập nhật</div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
                 </div>
                 <div className="manage-box-paging">
                     <div className={`manage-box-paging-item ${page == 1 ? 'disabled' : ''}`}  onClick={() => firstPage()}>

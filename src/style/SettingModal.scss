@@ -1,0 +1,120 @@
+// Variables
+$primary: var(--background-main);
+$bg-card: #ffffff;
+$breakpoint-mobile: 480px;
+
+.overlay {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.05); // Nền mờ nhẹ phía sau
+  display: flex;
+  align-items: center;
+  justify-content: center;
+top: 0;
+  .setting-modal {
+    position: absolute; // Theo yêu cầu của bạn
+    top: 25%;
+    right: -15%;
+    transform: translate(-50%, -50%);
+    
+    width: 90%; // Chiếm 90% chiều rộng màn hình nhỏ
+    max-width: 450px; // Không quá 450px trên màn hình lớn
+    background: $bg-card;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 0px 12px 0px rgb(180, 180, 180);
+    box-sizing: border-box;
+
+    // Responsive cho Mobile
+    @media (max-width: $breakpoint-mobile) {
+      width: 95%;
+      padding: 16px;
+      border-radius: 20px 20px 0 0; // Bo góc kiểu "Bottom Sheet" nếu muốn
+      
+      // Nếu muốn kiểu tràn màn hình mobile có thể đổi thành:
+      // bottom: 0; top: auto; transform: translateX(-50%);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      
+      h2 { font-size: 1.4rem; margin: 0; }
+      .close-btn { 
+        background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #999;
+      }
+    }
+
+    .setting-list {
+      .setting-item {
+        display: flex;
+        align-items: flex-start; // Căn trên để nếu text dài không bị lệch nút
+        justify-content: space-between;
+        padding: 16px 0;
+        border-bottom: 1px solid #f1f5f9;
+
+        .setting-info {
+          margin-right: 12px;
+          .setting-title {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+          }
+          .setting-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.4;
+          }
+        }
+
+        /* Nút Toggle Switch */
+        .switch {
+          position: relative;
+          min-width: 44px; // Đảm bảo không bị co lại
+          height: 24px;
+
+          input { opacity: 0; width: 0; height: 0; }
+          .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            border-radius: 34px;
+            transition: 0.3s;
+            &:before {
+              position: absolute;
+              content: "";
+              height: 18px; width: 18px;
+              left: 3px; bottom: 3px;
+              background-color: white;
+              border-radius: 50%;
+              transition: 0.3s;
+            }
+          }
+          input:checked + .slider { background-color: $primary; }
+          input:checked + .slider:before { transform: translateX(20px); }
+        }
+      }
+    }
+
+    .modal-footer {
+      margin-top: 24px;
+      .save-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: $primary;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        &:active { opacity: 0.9; }
+      }
+    }
+  }
+}

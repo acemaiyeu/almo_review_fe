@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import '../../style/MenuAdmin.scss'
 import { useSelector } from 'react-redux';
+import icon from '../../assets/img/logo.png'
 
 const MenuAdmin = () => {
 
@@ -12,7 +13,7 @@ const MenuAdmin = () => {
                 <div className="menu-user-container">
                     <div className="menu-user-form">
                          <div className='menu-user-avatar'>
-                                    <img className="avatar" alt='avatar' src={'https://i.pinimg.com/736x/27/56/6e/27566e92e158a7d2c175948a0a7321b0.jpg'} loading='lazy'/>
+                                    <img className="avatar" alt='avatar' src={icon} loading='lazy'/>
                                 </div>
                                 <div className='menu-user-title'>
                                     <Link to={"/admin/"}>{profile.name}</Link>
@@ -49,6 +50,12 @@ const MenuAdmin = () => {
                             <i class="bi bi-file-person"></i>
                         </div>
                         <div className="menu-item-title"><Link to="/admin/manage-users">Quản lý tài khoản</Link></div>
+                </div>
+                <div className="menu-item">
+                        <div className="menu-item-icon">
+                           <i class="bi bi-gear"></i>
+                        </div>
+                        <div className="menu-item-title"><Link to="/admin/manage-settings">Quản lý cài đặt</Link></div>
                 </div>
                 </>
                 }
