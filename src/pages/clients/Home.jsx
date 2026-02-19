@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor.jsx';
 import DisplayContent from '../../app/ComponentSupport/DisplayContent.jsx';
 import DynamicIsland from './DynamicIsland.jsx';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateDynamic } from '../../app/features/dynamicIslandSlice.js';
 import CategoryHome from './Category/CategoryHome.jsx';
 import { getProductClientALl } from '../../services/ProductService.js';
@@ -20,7 +20,8 @@ const [products, setProducts] = useState([]);
 const [currentPage, setCurrentPage] = useState(1);
 const [totalPage, setTotalPage] = useState(1);
 const [loading, setLoading] = useState(true);
-  
+const [params, setParams] = useState({})
+const {items: products_headers, loading_header} = useSelector((state) => state.products)
     const showProductByCategory = async (category_name) => {
       setLoading(true)
       setProducts([])
@@ -49,12 +50,17 @@ const [loading, setLoading] = useState(true);
          setLoading(false);
     }, [])
     const getProduct = async () => {
-        const data = await getProductClientALl([], currentPage, 10);
+        const data = await getProductClientALl(params, currentPage, 10);
         if(data){
           setProducts(data.data)
           setTotalPage(data.meta.pagination.total_pages)
         }
     }
+    useEffect(() => {
+        if(products_headers.length > 0){
+            setProducts(products_headers)
+        }
+    },[products_headers])
 
     const handleViewMore = async () => {
         setLoading(true)
@@ -62,7 +68,7 @@ const [loading, setLoading] = useState(true);
           toast.error("Đã hiển thị hết sản phẩm");
           return;
         }
-        const data = await getProductClientALl([], currentPage + 1, 10);
+        const data = await getProductClientALl(params, currentPage + 1, 10);
         if(data){
             const combinedList = [...products, ...data.data]; 
             setProducts(combinedList)
@@ -79,7 +85,6 @@ const [loading, setLoading] = useState(true);
         <div class="spinner-grow text-almo" role="status">
       </div>Không tìm thấy sản phẩm
       </div>;
-      
   return (
     <div style={styles.container}>
       

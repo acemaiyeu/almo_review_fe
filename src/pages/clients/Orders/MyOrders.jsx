@@ -23,7 +23,7 @@ const MyOrders = () => {
             toast.error("Không còn dữ liệu để hiển thị")
             return;
         }
-        setCurrentPage(currentPage++)
+        setCurrentPage(currentPage + 1)
   }
   return (
     <div className="my-orders-container">

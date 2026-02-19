@@ -8,7 +8,7 @@ import dynamicReducer from './features/dynamicIslandSlice';
 export const store = configureStore({
   reducer: {
     profile: profileReducer,
-    product: productReducer,
+    products: productReducer,
     dynamic: dynamicReducer
   },
 });

@@ -11,6 +11,10 @@ export const getProductClientALl = async (params = [], page = 1, limit = 10) => 
         if(params?.category_name){
            params_text += `category_name=${params.category_name}`
         }
+        if(params?.product_name){
+           params_text += `name=${params.product_name}`
+        }
+        
         const res = await axiosClient.get(`products?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {

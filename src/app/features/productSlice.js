@@ -12,9 +12,10 @@ const productSlice = createSlice({
   reducers: {
     // Đây là hàm setProducts bạn cần
     setProducts: (state, action) => {
-      state.items = action.payload;
+      state.items = action.payload.data;
       state.loading = false;
       state.error = null;
+      state.product_name = action.payload.product_name
     },
     // Bạn có thể thêm các hàm khác như clearProducts
     clearProducts: (state) => {

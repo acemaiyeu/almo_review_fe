@@ -8,6 +8,8 @@ import { showDynamic } from '../app/ComponentSupport/functions';
 import { resetProfile, updateProfile } from '../app/features/profileSlice';
 import logo from '../assets/img/logo.png'
 import SettingModal from '../pages/clients/SettingModal';
+import { getProductClientALl } from '../services/ProductService';
+import { setProducts } from '../app/features/productSlice';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,13 +17,30 @@ function Header() {
   const profile = useSelector((state) => state.profile)
   const dispatch =  useDispatch();
   const [showSetting, setShowSetting] = useState(false);
+
+   const getProductByName = async (product_name) => {
+      const products = await getProductClientALl({product_name});
+      if(window.location.pathname != '/'){
+          navigate(`/search/${searchTerm}`);
+      }
+       if(products){
+          dispatch(setProducts({
+            data: products.data,
+            product_name: product_name
+          }))
+      }
+  }
+
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      // Chuyển hướng sang trang tìm kiếm với từ khóa
-      navigate(`/search?q=${searchTerm}`);
-    }
+    // if (searchTerm.trim()) {
+    //   // Chuyển hướng sang trang tìm kiếm với từ khóa
+    //   navigate(`/search?q=${searchTerm}`);
+    // }
+    getProductByName(searchTerm)
+    
   };
+ 
   const LogOut = async () => {
       await axiosAuth.post('auth/logout').then(() => {
           
@@ -38,6 +57,7 @@ function Header() {
   const handleSetShowSetting = () => {
     setShowSetting(false);      // Cập nhật state
   }
+
   return (
     <nav style={styles.nav}>
       <div style={styles.container}>
