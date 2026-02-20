@@ -65,6 +65,9 @@
   min-width: 30px;
   text-align: center;
 }
+.category-container-modal{
+  display: none;
+}
 @media (max-width: 768px) {
 .category-container{
   margin-bottom: 30px;
@@ -83,6 +86,7 @@
       width: 40%;
       text-align: center;
       border-radius: 999px;
+      display: block;
   }
  
 }

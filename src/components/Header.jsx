@@ -165,7 +165,7 @@ const styles = {
   searchBox: { flex: 1, display: 'flex', background: '#fff', borderRadius: '4px', overflow: 'hidden' },
   input: { flex: 1, border: 'none', padding: '8px 12px', outline: 'none' },
   searchBtn: { border: 'none', background: 'none', padding: '0 10px', cursor: 'pointer' },
-  menu: { display: 'flex', gap: '20px', alignItems: 'center' },
+  menu: { display: 'flex', gap: '20px', alignItems: 'center', width: "30%" },
   menuItem: { textDecoration: 'none', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '1rem' },
   cartBtn: { textDecoration: 'none', color: '#000', display: 'flex', alignItems: 'center', gap: '8px', background: '#fff', padding: '5px 12px', borderRadius: '4px' },
   badge: { position: 'absolute', top: '-8px', right: '-8px', background: 'red', color: '#fff', fontSize: '10px', borderRadius: '50%', padding: '2px 5px' }
