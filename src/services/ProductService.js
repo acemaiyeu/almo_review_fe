@@ -11,6 +11,7 @@ export const getProductClientALl = async (params = [], page = 1, limit = 10) => 
         if(params?.category_name){
            params_text += `category_name=${params.category_name}`
         }
+        console.log("params", params)
         if(params?.product_name){
            params_text += `name=${params.product_name}`
         }

@@ -4,7 +4,7 @@ import { API_URL } from '../const/const';
 
 // 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosClient = axios.create({
-  baseURL: `https://almobe.io.vn/api/client/`, // Thay bằng URL thật của bạn
+  baseURL: `${API_URL}/api/client/`, // Thay bằng URL thật của bạn
   headers: {
     'Content-Type': 'application/json',
   },

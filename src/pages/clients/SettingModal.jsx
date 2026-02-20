@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import '../../style/SettingModal.scss';
+import { updateProfile } from '../../app/features/profileSlice';
+import { updateNotification } from '../../services/UserService';
 
-const SettingModal = ({setShowSetting}) => {
+const SettingModal = ({setShowSetting, isNotification = false, profile, dispatch}) => {
   const [settings, setSettings] = useState([
-    { id: 1, title: 'Thông báo sản phẩm mới', desc: 'Nhận email khi có sản phẩm vừa ra mắt.', active: true },
-    { id: 2, title: 'Ưu đãi độc quyền', desc: 'Thông báo về các mã giảm giá cá nhân.', active: false },
-    { id: 3, title: 'Cập nhật đơn hàng', desc: 'Trạng thái vận chuyển và giao hàng.', active: true },
+    { id: 1, title: 'Nhận thông báo qua email', desc: 'Nhận email khi có sản phẩm vừa ra mắt hoặc trúng giải', active: true }
   ]);
 
-  const handleToggle = (id) => {
-    setSettings(prev => 
-      prev.map(item => item.id === id ? { ...item, active: !item.active } : item)
-    );
+  const handleToggle = async () => {
+      await updateNotification(dispatch, !isNotification);
+      dispatch(updateProfile({
+        ...profile,
+        notification: !isNotification
+      }))
+      isNotification = !isNotification;
   };
-
   return (
     <div className="overlay">
       <div className="setting-modal">
@@ -24,7 +26,7 @@ const SettingModal = ({setShowSetting}) => {
 
         <div className="setting-list">
           {settings.map((item) => (
-            <div key={item.id} className="setting-item">
+            <div key={item.id} className="setting-item" onClick={() => handleToggle()} >
               <div className="setting-info">
                 <span className="setting-title">{item.title}</span>
                 <p className="setting-desc">{item.desc}</p>
@@ -33,18 +35,13 @@ const SettingModal = ({setShowSetting}) => {
               <label className="switch">
                 <input 
                   type="checkbox" 
-                  checked={item.active} 
-                  onChange={() => handleToggle(item.id)} 
+                  checked={isNotification} 
                 />
                 <span className="slider"></span>
               </label>
             </div>
           ))}
         </div>
-        
-        <footer className="modal-footer">
-          <button className="save-btn">Lưu thay đổi</button>
-        </footer>
       </div>
     </div>
   );

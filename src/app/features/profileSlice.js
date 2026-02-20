@@ -5,7 +5,8 @@ const profileSlice = createSlice({
   initialState: {
     email: '',
     name: '',
-    avatar: ''
+    avatar: '',
+    notification: false
   },
   reducers: {
     updateProfile: (state, action) => {
@@ -13,6 +14,7 @@ const profileSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.avatar = action.payload.avatar;
+      state.notification = action.payload.notification
     },
     resetProfile: (state) => {
        state.name = undefined;

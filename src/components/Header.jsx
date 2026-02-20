@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, Phone, History, Package, User, Home } from 'lucide-react';
+import { ShoppingCart, Search, User } from 'lucide-react';
 import { useState } from 'react';
 import '../style/Header.scss'
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,10 +20,17 @@ function Header() {
   const [showSetting, setShowSetting] = useState(false);
 
    const getProductByName = async (product_name) => {
-      const products = await getProductClientALl({product_name});
-      if(window.location.pathname != '/'){
+      
+      if(!window.location.pathname.startsWith('/search/')){
           navigate(`/search/${searchTerm}`);
+          return;
       }
+      if(window.location.pathname.startsWith('/search/')){
+        navigate(`/search/${searchTerm}`);
+          window.location.reload()
+          return;
+      }
+      const products = await getProductClientALl({product_name});
        if(products){
           dispatch(setProducts({
             data: products.data,
@@ -34,7 +41,6 @@ function Header() {
         toast.warning("Không tìm thấy sản phẩm!")
       }
   }
-
   const handleSearch = (e) => {
     e.preventDefault();
     // if (searchTerm.trim()) {
@@ -121,7 +127,7 @@ function Header() {
                         <div className="account-item" >
                           <Link  style={styles.menuItem}>
                             <span onClick={() => setShowSetting(true)}>Cài đặt</span>
-                            {showSetting === true && <SettingModal setShowSetting={handleSetShowSetting}/>}
+                            {showSetting === true && <SettingModal setShowSetting={handleSetShowSetting} isNotification={profile.notification} profile={profile} dispatch={dispatch}/>}
                             
                         </Link>
                         </div>

@@ -28,6 +28,7 @@ import Policy from './components/Policy.jsx'
 import MyOrders from './pages/clients/Orders/MyOrders.jsx'
 import DiscountHistory from './pages/clients/DiscountHistory/DiscountHistory.jsx'
 import './style/responsive.scss'
+import Search from './pages/clients/Search.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -35,6 +36,7 @@ function App() {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isLoginAdminPage = location.pathname.startsWith('/admin/login');
   const dispatch = useDispatch();
+  const isDevHost = window.location.hostname.startsWith("localhost") || window.location.hostname.startsWith("192.168")
   // if(!profile.email || profile.email === ''){
   //   axiosAuth.get('auth/profile').then((res) => {
   //     useDispatch(updateProfile({
@@ -50,9 +52,9 @@ function App() {
       axiosAuth.get('auth/profile')
         .then((res) => {      
           // Destructure data from the axios response
-          const { name, email, avatar } = res.data; 
+          const { name, email, avatar, notification } = res.data; 
           
-          dispatch(updateProfile({ name, email, avatar }));
+          dispatch(updateProfile({ name, email, avatar, notification}));
         })
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
@@ -64,31 +66,32 @@ function App() {
     }
   }, [profile.email, dispatch]); // Only re-run if email changes or dispatch is ready
 
+  
+  useEffect(() => {
+    if(!isDevHost){
+      const handleContextMenu = (e) => e.preventDefault();
 
-  // useEffect(() => {
-  //   // 1. Chặn chuột phải
-  //   const handleContextMenu = (e) => e.preventDefault();
+    // 2. Chặn các phím tắt Inspect (F12, Ctrl+Shift+I, v.v.)
+    const handleKeyDown = (e) => {
+      if (
+        e.keyCode === 123 || // F12
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || // Ctrl+Shift+I/J
+        (e.ctrlKey && e.keyCode === 85) // Ctrl+U
+      ) {
+        e.preventDefault();
+        alert("Hành động bị chặn để bảo vệ dữ liệu!");
+      }
+    };
 
-  //   // 2. Chặn các phím tắt Inspect (F12, Ctrl+Shift+I, v.v.)
-  //   const handleKeyDown = (e) => {
-  //     if (
-  //       e.keyCode === 123 || // F12
-  //       (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || // Ctrl+Shift+I/J
-  //       (e.ctrlKey && e.keyCode === 85) // Ctrl+U
-  //     ) {
-  //       e.preventDefault();
-  //       alert("Hành động bị chặn để bảo vệ dữ liệu!");
-  //     }
-  //   };
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
 
-  //   document.addEventListener('contextmenu', handleContextMenu);
-  //   document.addEventListener('keydown', handleKeyDown);
-
-  //   return () => {
-  //     document.removeEventListener('contextmenu', handleContextMenu);
-  //     document.removeEventListener('keydown', handleKeyDown);
-  //   };
-  // }, []);
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+    }
+  }, []);
 
 
   useEffect(() => {
@@ -114,6 +117,9 @@ function App() {
 
         {/* DiscountHistory */}
          <Route path="/history-discounts" element={<DiscountHistory/>} />
+
+         {/* DiscountHistory */}
+         <Route path="/search/:product_name" element={<Search/>} />
 
          {/* Authentication */}
           <Route path="/login" element={<Login />} />

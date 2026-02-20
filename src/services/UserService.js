@@ -53,3 +53,16 @@ export const unBlockUser = async (dispatch, user_id) => {
         // throw error; 
     }
 }
+export const updateNotification = async (dispatch, staus_notification) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosClient.put(`notification`, {
+            notification: staus_notification
+        });
+        showDynamic(dispatch, `Cập nhật thông báo qua email thành công!`)
+        return res.data; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error(`Lỗi khi cập nhật ${label_notification}:`, error);
+        // throw error; 
+    }
+}
