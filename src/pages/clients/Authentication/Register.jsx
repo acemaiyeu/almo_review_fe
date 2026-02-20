@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import '../../../style/Auth.css';
 import axiosAuth from '../../../services/axiosAuth';
 import { toast } from 'react-toastify';
-import { showDynamic } from '../../../app/ComponentSupport/functions';
+import { getCookie, setCookie, showDynamic } from '../../../app/ComponentSupport/functions';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '', name: '',  phone: ''});
-
+    const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
+            let sk = localStorage.getItem("sks-ksk");
+            if(!sk){
+                sk = getCookie("sk");
+            }
+            setFormData({
+                ...formData,
+                sk: sk
+            })
             await axiosAuth.post('/register', {
                 ...formData
             }).then((res) => {
@@ -16,6 +25,8 @@ const Login = () => {
                 // Lưu token vào localStorage hoặc xử lý logic tiếp theo
                 localStorage.setItem('access_token', res.access_token)
                 localStorage.setItem('expires_in', res.expires_in)
+                localStorage.setItem('sks-ksk', res.sks_ksk)
+                setCookie("sk", res.sks_ksk, 10000)
                 window.location.href = "/"
             }).catch()
     };
