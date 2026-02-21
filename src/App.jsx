@@ -73,31 +73,7 @@ function App() {
   }
 }, []);
 
-  // useEffect(() => {
-  //   if(!isDevHost){
-  //     const handleContextMenu = (e) => e.preventDefault();
-
-  //   // 2. Chặn các phím tắt Inspect (F12, Ctrl+Shift+I, v.v.)
-  //   const handleKeyDown = (e) => {
-  //     if (
-  //       e.keyCode === 123 || // F12
-  //       (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || // Ctrl+Shift+I/J
-  //       (e.ctrlKey && e.keyCode === 85) // Ctrl+U
-  //     ) {
-  //       e.preventDefault();
-  //       alert("Hành động bị chặn để bảo vệ dữ liệu!");
-  //     }
-  //   };
-
-  //   document.addEventListener('contextmenu', handleContextMenu);
-  //   document.addEventListener('keydown', handleKeyDown);
-
-  //   return () => {
-  //     document.removeEventListener('contextmenu', handleContextMenu);
-  //     document.removeEventListener('keydown', handleKeyDown);
-  //   };
-  //   }
-  // }, []);
+  
 
 
   useEffect(() => {
