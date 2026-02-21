@@ -25,7 +25,8 @@ export default defineConfig({
         // Cho phép hiển thị ảnh từ mọi nguồn https (nếu cần) hoặc giới hạn lại 'self'
         "img-src 'self' data: https:; " +
         // Cho phép kết nối API đến chính mình và API backend của bạn
-        "connect-src 'self' localhost:5173 127.0.0.1:5173 ws://localhost:5173 ws://127.0.0.1:5173 http://localhost:8000 http://127.0.0.1:8000 http://192.168.31.81:8000 https://almobe.io.vn;"
+        // "connect-src 'self' localhost:5173 127.0.0.1:5173 ws://localhost:5173 ws://127.0.0.1:5173 http://localhost:8000 http://127.0.0.1:8000 http://192.168.31.81:8000 https://almobe.io.vn;"
+        "connect-src 'self' https://almobe.io.vn ws://localhost:5173;"
     },
   },
   build: {
