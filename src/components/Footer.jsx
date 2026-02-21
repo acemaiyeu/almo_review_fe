@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import img_bct from '../assets/img/logo-da-thong-bao-bo-cong-thuong-mau-xanh.png'
 import '../style/Footer.scss'
+import { useEffect } from 'react';
 const Footer = () => {
 
 
