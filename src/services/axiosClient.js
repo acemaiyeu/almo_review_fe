@@ -2,63 +2,66 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { API_URL } from '../const/const';
 
-// 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosClient = axios.create({
-  baseURL: `${API_URL}/api/client/`, // Thay bằng URL thật của bạn
+  baseURL: `${API_URL}/api/client/`,
   headers: {
     'Content-Type': 'application/json',
+    // 1. Thêm Custom Header để Server nhận diện request từ chính App của bạn
+    'X-App-Source': 'almobe-react-client',
   },
-  timeout: 10000, // Sau 10 giây mà không phản hồi thì sẽ báo lỗi
+  timeout: 10000,
 });
 
-// 2. Thiết lập Interceptor cho phía Gửi đi (Request)
-// Thường dùng để tự động gắn Token vào mỗi khi gửi API
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
+
+    // 2. Chặn Request nếu phát hiện dev cố tình đổi baseURL lạ (phòng độc mã nguồn)
+    if (!config.baseURL.includes('almobe.io.vn') && !config.baseURL.includes('192.168.')) {
+        return Promise.reject(new Error('Cảnh báo: Yêu cầu kết nối đến nguồn không xác thực bị chặn!'));
+    }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// 3. Thiết lập Interceptor cho phía Nhận về (Response)
-// Giúp bạn xử lý dữ liệu hoặc bắt lỗi tập trung một chỗ
 axiosClient.interceptors.response.use(
-  (response) => {
-    return response.data;
-  },
+  (response) => response.data,
   (error) => {
+    // 3. Xử lý lỗi CSP hoặc mất mạng
+    if (error.message === 'Network Error' && !error.response) {
+       toast.error("Lỗi kết nối hoặc bị chính sách bảo mật (CSP) chặn!");
+    }
+
     if (error.response) {
-      const status = error.response.status;
-      const message = error.response.data?.message || 'Đã xảy ra lỗi';
+      const { status, data } = error.response;
+      const message = data?.message || 'Đã xảy ra lỗi';
+      
       localStorage.setItem('last-page_client', window.location.pathname);
+
       switch (status) {
         case 401:
-          toast.error("Phiên đăng nhập đã kết thúc! Vui lòng đăng nhập để sử dụng tính năng này!");
-          localStorage.removeItem('access_token')
-          localStorage.removeItem('expires_in')
+          toast.error("Phiên đăng nhập hết hạn!");
+          localStorage.multiRemove(['access_token', 'expires_in']); // Nếu dùng bộ nhớ chung
           break;
-        case 404:
-          toast.error('Không tìm thấy tài nguyên này!');
+        case 403:
+          toast.error("Bạn không có quyền truy cập vào tài nguyên này (Forbidden)!");
+          break;
+        case 429:
+          toast.error("Bạn đang thao tác quá nhanh. Vui lòng chậm lại!");
           break;
         case 500:
-          toast.error('Lỗi server, vui lòng thử lại sau!');
+          toast.error('Lỗi hệ thống máy chủ!');
           break;
         default:
-          // Hiển thị mã lỗi status và thông báo từ API nếu có
-          // console.error(`Lỗi hệ thống [${status}]:`, message);
-          toast.error(`${message}`);
+          toast.error(message);
       }
-    } else if (error.request) {
-      // Trường hợp không nhận được phản hồi từ server (ví dụ: lỗi mạng)
-      toast.error("Không thể kết nối đến máy chủ. Vui lòng kiểm tra internet.");
     } else {
-      toast.error(`Lỗi: ${error.message}`);
+      toast.error("Không thể kết nối đến máy chủ.");
     }
     return Promise.reject(error);
   }

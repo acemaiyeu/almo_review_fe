@@ -48,7 +48,9 @@ const CategoryHome = ({sendToHome}) => {
         {categories.map((cat) => (
           <div key={cat.code} className={`category-item ${categoryActive === cat.code ? 'active' : ''}`} onClick={() => hanleClickCategory(cat.name, cat.code)}>
             <div className="category-info">
-              <span className="category-icon"><img src={cat.thumbnail} loading='lazy'></img></span>
+              {cat.code !== "ALL" && 
+                <span className="category-icon"><img src={cat.thumbnail} loading='lazy'></img></span> 
+              }
               <span className="category-name">{cat.name}</span>
             </div>
             

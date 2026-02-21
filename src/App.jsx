@@ -66,7 +66,13 @@ function App() {
     }
   }, [profile.email, dispatch]); // Only re-run if email changes or dispatch is ready
 
-  
+  useEffect(() => {
+  if (window.self !== window.top) {
+    // Nếu web đang bị nhúng vào iframe, hãy đẩy nó ra ngoài hoặc xóa nội dung
+    window.top.location.href = window.self.location.href;
+  }
+}, []);
+
   useEffect(() => {
     if(!isDevHost){
       const handleContextMenu = (e) => e.preventDefault();

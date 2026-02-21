@@ -2,73 +2,80 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { API_URL } from '../const/const';
 
-// 1. Tạo một instance của axios với các cấu hình cơ bản
 const axiosAdmin = axios.create({
-  baseURL: `${API_URL}/api/admin/`, // Thay bằng URL thật của bạn
+  baseURL: `${API_URL}/api/admin/`,
   headers: {
     'Content-Type': 'application/json',
+    // 1. Định danh riêng cho Admin App để khớp với Middleware Laravel
+    'X-App-Source': 'almobe-admin-internal',
   },
-  timeout: 10000, // Sau 10 giây mà không phản hồi thì sẽ báo lỗi
+  timeout: 15000, // Admin xử lý dữ liệu nặng nên cho timeout dài hơn một chút (15s)
 });
 
-// 2. Thiết lập Interceptor cho phía Gửi đi (Request)
-// Thường dùng để tự động gắn Token vào mỗi khi gửi API
+const forwardToLogin = () => {
+  // Xóa sạch dấu vết khi bị đá ra ngoài
+  localStorage.removeItem('access_token_admin');
+  setTimeout(() => {
+    window.location.href = "/admin/login";
+  }, 1500);
+};
 
-  const isAdminPage = location.pathname.startsWith('/admin');
+// 2. Request Interceptor
 axiosAdmin.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token_admin');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
+
+    // Chống thay đổi URL gọi API ngầm (Security check)
+    if (!config.baseURL.includes('almobe.io.vn') && !config.baseURL.includes('192.168.')) {
+        return Promise.reject(new Error('Domain không được phép!'));
+    }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
-const forwardToLogig = () => {
-  setTimeout(() => {
-      window.location.href = "/admin/login"
-    }, 1500)
-}
-// 3. Thiết lập Interceptor cho phía Nhận về (Response)
-// Giúp bạn xử lý dữ liệu hoặc bắt lỗi tập trung một chỗ
+
+// 3. Response Interceptor
 axiosAdmin.interceptors.response.use(
-  (response) => {
-    // Nếu API trả về dữ liệu thành công, mình chỉ lấy phần data thôi
-    return response.data;
-  },
+  (response) => response.data,
   (error) => {
-    // Xử lý lỗi tập trung
     if (error.response) {
-      localStorage.setItem('last-page', window.location.pathname);
-      switch (error.response.status) {
+      const { status, data } = error.response;
+      const message = data?.message || 'Lỗi hệ thống';
+      
+      // Lưu lại trang cuối để sau khi login quay lại cho đúng
+      localStorage.setItem('last-page-admin', window.location.pathname);
+
+      switch (status) {
         case 401:
-          // console.error('Hết hạn phiên làm việc, đang chuyển hướng về Login...');
-          toast.error('Hết hạn phiên làm việc, đang chuyển hướng về Login...')
-          forwardToLogig()
-          // Ví dụ: window.location.href = '/login';
+          toast.error('Phiên làm việc hết hạn, vui lòng đăng nhập lại!');
+          forwardToLogin();
           break;
-          case 403:
-          // console.error('Hết hạn phiên làm việc, đang chuyển hướng về Login...');
-          toast.error('Bạn không có quyền truy cập dữ liệu này!')
-          forwardToLogig()
-          // Ví dụ: window.location.href = '/login';
+        case 403:
+          toast.error('Bạn không có quyền thực hiện hành động này!');
+          // Không nhất thiết phải forwardToLogin nếu họ chỉ bị cấm 1 tính năng nhỏ
+          forwardToLogin();
           break;
-        case 404:
-          // console.error('Không tìm thấy tài nguyên này!');
-          toast.error('Không tìm thấy tài nguyên này!');
+        case 422: // Lỗi Validation từ Laravel (thường gặp ở Admin)
+          const errors = data.errors ? Object.values(data.errors).flat().join(', ') : message;
+          toast.warn(`Dữ liệu không hợp lệ: ${errors}`);
+          break;
+        case 429:
+          toast.error('Bạn đang thao tác quá nhanh! Hãy thử lại sau 1 phút.');
           break;
         case 500:
-          // console.error('Lỗi server, vui lòng thử lại sau!');
-          toast.error('Lỗi server, vui lòng thử lại sau!');
+          toast.error('Máy chủ Admin đang bảo trì hoặc gặp lỗi nghiêm trọng!');
           break;
         default:
-          // console.error('Đã xảy ra lỗi không xác định.');
-          toast.error('Đã xảy ra lỗi không xác định.');
-
+          toast.error(`Lỗi [${status}]: ${message}`);
       }
+    } else if (error.code === 'ECONNABORTED') {
+      toast.error('Kết nối quá tải (Timeout), vui lòng kiểm tra mạng!');
+    } else {
+      toast.error('Không thể kết nối tới máy chủ Admin (CSP hoặc Network)!');
     }
     
     return Promise.reject(error);
