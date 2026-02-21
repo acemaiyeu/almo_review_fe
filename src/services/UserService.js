@@ -66,3 +66,16 @@ export const updateNotification = async (dispatch, staus_notification) => {
         // throw error; 
     }
 }
+export const activePasswordUser = async (dispatch, $password_temp) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosClient.put(`user/active-password/${$password_temp}`);
+        showDynamic(dispatch, `Bạn đã kích hoạt mật khẩu thành công!`)
+        return res.data; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error(`Lỗi khi cập nhật ${label_notification}:`, error);
+        return {
+            status: "error"
+        }
+    }
+}

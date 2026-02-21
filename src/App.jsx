@@ -29,6 +29,7 @@ import MyOrders from './pages/clients/Orders/MyOrders.jsx'
 import DiscountHistory from './pages/clients/DiscountHistory/DiscountHistory.jsx'
 import './style/responsive.scss'
 import Search from './pages/clients/Search.jsx'
+import ActivePassword from './pages/clients/Authentication/activePassword.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -108,7 +109,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/profile" element={<Profile />} />
-
+          <Route path="/user/activate-password/:password" element={<ActivePassword />} />
           
           
           <Route path="/about" element={<About />} />
