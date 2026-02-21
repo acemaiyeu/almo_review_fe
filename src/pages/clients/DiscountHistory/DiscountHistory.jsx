@@ -106,7 +106,7 @@ const DiscountHistory = () => {
             <div className="time-stamp">{item.created_at}</div>
           </div>
         )) : (
-          <div className="no-result">Không tìm thấy sản phẩm nào phù hợp.</div>
+          <div className="no-result">Không tìm thấy nào phù hợp.</div>
         )}
       </div>
       <div className="manage-box-paging">
