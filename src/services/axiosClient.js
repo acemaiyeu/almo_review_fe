@@ -20,10 +20,9 @@ axiosClient.interceptors.request.use(
     }
 
     // 2. Chặn Request nếu phát hiện dev cố tình đổi baseURL lạ (phòng độc mã nguồn)
-    if (!config.baseURL.includes('almobe.io.vn') && !config.baseURL.includes('192.168.')) {
-        return Promise.reject(new Error('Cảnh báo: Yêu cầu kết nối đến nguồn không xác thực bị chặn!'));
-    }
-
+      if (!config.baseURL.includes('almobe.io.vn') && !config.baseURL.includes('192.168.')) {
+          return Promise.reject(new Error('Cảnh báo: Yêu cầu kết nối đến nguồn không xác thực bị chặn!'));
+      }
     return config;
   },
   (error) => Promise.reject(error)
