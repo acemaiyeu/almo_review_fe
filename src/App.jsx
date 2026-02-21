@@ -29,7 +29,7 @@ import MyOrders from './pages/clients/Orders/MyOrders.jsx'
 import DiscountHistory from './pages/clients/DiscountHistory/DiscountHistory.jsx'
 import './style/responsive.scss'
 import Search from './pages/clients/Search.jsx'
-import ActivePassword from './pages/clients/Authentication/activePassword.jsx'
+import ActivePassword from './pages/clients/Authentication/ActivePassword.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
