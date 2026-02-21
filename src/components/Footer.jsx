@@ -4,7 +4,7 @@ import '../style/Footer.scss'
 import { useEffect } from 'react';
 const Footer = () => {
 
-
+    const isDevHost = window.location.hostname.startsWith("localhost") || window.location.hostname.startsWith("192.168")
     useEffect(() => {
         if(!isDevHost){
           const handleContextMenu = (e) => e.preventDefault();

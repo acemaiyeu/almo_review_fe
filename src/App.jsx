@@ -36,7 +36,7 @@ function App() {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isLoginAdminPage = location.pathname.startsWith('/admin/login');
   const dispatch = useDispatch();
-  const isDevHost = window.location.hostname.startsWith("localhost") || window.location.hostname.startsWith("192.168")
+  
   // if(!profile.email || profile.email === ''){
   //   axiosAuth.get('auth/profile').then((res) => {
   //     useDispatch(updateProfile({
