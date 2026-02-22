@@ -50,6 +50,22 @@ axiosClient.interceptors.response.use(
         case 403:
           toast.error("Bạn không có quyền truy cập vào tài nguyên này (Forbidden)!");
           break;
+        case 422:
+          // Lấy danh sách lỗi
+          const validationErrors = data?.errors;
+
+          // Kiểm tra nếu là mảng và có ít nhất 1 phần tử
+          if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+            // Chỉ bắn thông báo cho lỗi đầu tiên
+            toast.error(validationErrors[0]);
+          } else if (typeof validationErrors === 'string') {
+            // Trường hợp lỗi trả về là một chuỗi đơn thuần
+            toast.error(validationErrors);
+          } else {
+            // Trường hợp mặc định nếu không lấy được mảng lỗi cụ thể
+            toast.error(message || "Dữ liệu không hợp lệ.");
+          }
+          break;
         case 429:
           toast.error("Bạn đang thao tác quá nhanh. Vui lòng chậm lại!");
           break;

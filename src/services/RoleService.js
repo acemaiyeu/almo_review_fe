@@ -2,12 +2,12 @@ import { showDynamic } from "../app/ComponentSupport/functions";
 import axiosAdmin from "./axiosAdmin";
 import axiosClient from "./axiosClient";
 
-const uri_base_all = 'orders' //get all
-const uri_base_local = 'order' //create update delete
-const label_notification = 'đơn hàng' //get all
+const uri_base_all = 'roles' //get all
+const uri_base_local = 'role' //create update delete
+const label_notification = 'Loại tài khoản' //get all
 
 
-export const getOrderClientALl = async ([],page = 1, limit = 10) => {
+export const getRoleClientALl = async ( page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
         const res = await axiosClient.get(`${uri_base_all}?page=${page}&limit=${limit}`);
@@ -17,7 +17,7 @@ export const getOrderClientALl = async ([],page = 1, limit = 10) => {
         throw error; 
     }
 }
-export const getOrderALl = async (params = [], page = 1, limit = 10) => {
+export const getRoleALl = async (params = [], page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
         let params_text = "";
@@ -31,7 +31,7 @@ export const getOrderALl = async (params = [], page = 1, limit = 10) => {
         // throw error; 
     }
 }
-export const getOrderClientDetail = async (slug) => {
+export const getRoleClientDetail = async (slug) => {
     try {
         // Thêm return ở đầu dòng này
         const res = await axiosClient.get(`${uri_base_local}/${slug}`);
@@ -41,10 +41,10 @@ export const getOrderClientDetail = async (slug) => {
         // throw error; 
     }
 }
-export const createOrder = async (dispatch, params) => {
+export const createRole = async (dispatch, params) => {
     try {
         // Thêm return ở đầu dòng này
-        const res = await axiosAdmin.post(`order`, {
+        const res = await axiosAdmin.post(`role`, {
             ...params
         });
         showDynamic(dispatch, `Tạo ${label_notification} thành công!`)
@@ -54,7 +54,7 @@ export const createOrder = async (dispatch, params) => {
         // throw error; 
     }
 }
-export const updateOrder = async (dispatch, params) => {
+export const updateRole = async (dispatch, params) => {
     try {
         // Thêm return ở đầu dòng này
         const res = await axiosAdmin.put(`${uri_base_local}/${params.code}`, {
@@ -67,10 +67,10 @@ export const updateOrder = async (dispatch, params) => {
         // throw error; 
     }
 }
-export const deleteOrder = async (dispatch, code) => {
+export const deleteRole = async (dispatch, code) => {
     try {
         // Thêm return ở đầu dòng này
-        const res = await axiosAdmin.delete(`Order/${code}`).then(() => {
+        const res = await axiosAdmin.delete(`role/${code}`).then(() => {
             showDynamic(dispatch, `Đã xóa ${label_notification} thành công!`)
         }).catch()
         return res; // Trả về dữ liệu từ API

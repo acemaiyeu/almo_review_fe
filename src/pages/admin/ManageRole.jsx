@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import WordEditor from '../../app/ComponentSupport/WordEditor.jsx';
 import '../../services/CategoryService.js'
-import { createCategory, deleteCategory, getCategoryALl, updateCategory } from '../../services/CategoryService';
+import { createCategory, deleteCategory, getCategoryALl, updateCategory } from '../../services/CategoryService.js';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { uploadImage } from '../../app/ComponentSupport/functions';
-import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
-const  ManageCategory = () => {
+import { uploadImage } from '../../app/ComponentSupport/functions.js';
+import ExportExcelButton from '../../app/ComponentSupport/ExportButton.jsx';
+const  ManageRole = () => {
     const dispatch = useDispatch();
     const [listCategorys, setListCategorys] = useState([]);
     const [page, setPage] = useState(1);
@@ -306,4 +307,4 @@ const  ManageCategory = () => {
         </div>
     )
 }
-export default ManageCategory;
+export default ManageRole;

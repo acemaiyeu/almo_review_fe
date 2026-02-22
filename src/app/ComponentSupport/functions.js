@@ -50,3 +50,28 @@ export const getCookie = (cname) => {
   }
   return "";
 }
+export const formatToNumber = (str) => {
+    // 1. Kiểm tra nếu đầu vào không có giá trị
+    if (!str && str !== 0) return 0;
+
+    // 2. Chuyển sang chuỗi (phòng trường hợp đầu vào đã là số)
+    const stringValue = String(str);
+
+    // 3. Loại bỏ tất cả ký tự không phải số bằng Regex \D
+    const number = stringValue.replace(/\D/g, "");
+
+    // 4. Trả về số nguyên, mặc định là 0 nếu chuỗi rỗng
+    return parseInt(number, 10) || 0;
+};
+export const formatToCurrency = (num) => {
+    // 1. Kiểm tra nếu không phải số hoặc là chuỗi rỗng thì trả về mặc định
+    if (num === null || num === undefined || isNaN(num)) {
+        return "0 ₫";
+    }
+
+    // 2. Chuyển đổi num sang dạng số (phòng trường hợp truyền vào chuỗi "1000")
+    const amount = Number(num);
+
+    // 3. Định dạng theo chuẩn vi-VN
+    return amount.toLocaleString('vi-VN') + " ₫";
+};

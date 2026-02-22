@@ -79,3 +79,41 @@ export const activePasswordUser = async (dispatch, $password_temp) => {
         }
     }
 }
+export const createUser = async (dispatch, params) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosAdmin.post(`user`, {
+            ...params
+        });
+        showDynamic(dispatch, "Tạo tài khoản thành công!")
+        return res.data; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error("Lỗi khi tạo sản phẩm:", error);
+        // throw error; 
+    }
+}
+export const updateUser = async (dispatch, params) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosAdmin.put(`user/${params.id}`, {
+            ...params
+        });
+        showDynamic(dispatch, "Cập nhật tài khoản thành công!")
+        return res.data; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error("Lỗi khi cập nhật sản phẩm:", error);
+        // throw error; 
+    }
+}
+export const deleteUser = async (dispatch, user_id) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosAdmin.delete(`user/${user_id}`).then((res) => {
+            showDynamic(dispatch, "Đã xóa tài khoản thành công!")
+        }).catch()
+        return res; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error("Lỗi khi xóa sản phẩm:", error);
+        // throw error; 
+    }
+}

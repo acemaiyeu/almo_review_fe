@@ -59,9 +59,21 @@ axiosAdmin.interceptors.response.use(
           // Không nhất thiết phải forwardToLogin nếu họ chỉ bị cấm 1 tính năng nhỏ
           forwardToLogin();
           break;
-        case 422: // Lỗi Validation từ Laravel (thường gặp ở Admin)
-          const errors = data.errors ? Object.values(data.errors).flat().join(', ') : message;
-          toast.warn(`Dữ liệu không hợp lệ: ${errors}`);
+        case 422:
+          // Lấy danh sách lỗi
+          const validationErrors = data?.errors;
+
+          // Kiểm tra nếu là mảng và có ít nhất 1 phần tử
+          if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+            // Chỉ bắn thông báo cho lỗi đầu tiên
+            toast.error(validationErrors[0]);
+          } else if (typeof validationErrors === 'string') {
+            // Trường hợp lỗi trả về là một chuỗi đơn thuần
+            toast.error(validationErrors);
+          } else {
+            // Trường hợp mặc định nếu không lấy được mảng lỗi cụ thể
+            toast.error(message || "Dữ liệu không hợp lệ.");
+          }
           break;
         case 429:
           toast.error('Bạn đang thao tác quá nhanh! Hãy thử lại sau 1 phút.');

@@ -7,7 +7,8 @@ import { uploadImage } from '../../app/ComponentSupport/functions';
 import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
 import { getCategoryALl } from '../../services/CategoryService';
 import axiosAdmin from '../../services/axiosAdmin';
-import { blockUser, getUserALl, unBlockUser } from '../../services/UserService';
+import { blockUser, createUser, deleteUser, getUserALl, unBlockUser, updateUser } from '../../services/UserService';
+import { getRoleALl } from '../../services/RoleService';
 const  ManageUser = () => {
     const dispatch = useDispatch();
     const [listUsers, setlistUsers] = useState([]);
@@ -16,78 +17,61 @@ const  ManageUser = () => {
     const [useParams, setUseParams] = useState({
         product_name: ''
     });
+    const [listRole, setListRole] = useState([]);
     const [loadding, setLoadding] = useState(false);
     const [limit, setLimit] = useState(7);
-    const [product, setProduct] = useState({
+    const [user, setUser] = useState({
         id: undefined,
-        code: "",
+        email: "",
         name: "",
-        slug: 'Tạo tự động',
-        property: "",
-        thumbnail: "",
-        rate_descriptions: "",
-        affilate_tiktok_link: "",
-        affilate_shopee_link: "",
-        affilate_lazada_link: "",
+        phone: "",
+        role_id: "",
+        block: false,
     });
     const [listCategories, setListCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
 
     const getDataWordToThumnail = (content) => {
-       product.thumbnail = content;
-       setProduct(product)
+       user.thumbnail = content;
+       setUser(user)
     }
     const getDataWordToProperty = (content) => {
-       product.property = content;
-       setProduct(product)
+       user.property = content;
+       setUser(user)
     }
     const getDataWordToRate = (content) => {
-       product.rate_descriptions = content;
-       setProduct(product)
+       user.rate_descriptions = content;
+       setUser(user)
     }
     const [dataExport, setDataExport] = useState([])
     const setUserDefault = () => {
-        setProduct({
+        setUser({
             id: undefined,
-            code: "",
+            email: "",
             name: "",
-            property: "",
-            thumbnail: "",
-            slug: 'Tạo tự động',
-            rate_descriptions: "",
-            affilate_tiktok_link: "",
-            affilate_shopee_link: "",
-            affilate_lazada_link: "",
+            phone: "",
+            role_id: "",
+            block: false,
         })
     }
-    const handleEdit = (product) => {
-        setProduct({
-            ...product
+    const handleEdit = (user) => {
+        setUser({
+            ...user
         })
         setShowModal(true)
         setUpdateModal(true)
     }
     const getUsers = async () => {
         setLoadding(true)
-        const products = await getUserALl(useParams,page, limit); 
+        const users = await getUserALl(useParams,page, limit); 
         
-        if(products){
-            setlistUsers(products.data)
-            setTotalPage(products.meta.pagination.total_pages)
+        if(users){
+            setlistUsers(users.data)
+            setTotalPage(users.meta.pagination.total_pages)
         }
         setLoadding(false)
     }
-     const getCategory = async () => {
-        setLoadding(true)
-        const categories = await getCategoryALl([],page, limit); 
-        
-        if(categories){
-            setListCategories(categories.data)
-        }
-        setLoadding(false)
-    }
-
     const nextPage = () => {
         if(page >= totalPage){
             toast.error("Bạn đã ở trang cuối cùng!")
@@ -114,17 +98,73 @@ const  ManageUser = () => {
         getUsers()
     }, [listUsers?.length, page])
 
+    const changeTextEmail = (email) => {
+    if (!email || !email.includes('@')) return email;
+
+    // Tách email thành 2 phần: username và domain
+    const [username, domain] = email.split('@');
+
+    // Nếu username quá ngắn (dưới 3 ký tự), chỉ ẩn một phần hoặc hiện hết
+    if (username.length <= 2) {
+        return `${username[0]}***@${domain}`;
+    }
+
+    // Giữ lại 3 ký tự đầu và 2 ký tự cuối (giống ví dụ của bạn)
+    const firstPart = username.substring(0, 3);
+    const lastPart = username.substring(username.length - 2);
+    
+    // Tạo chuỗi sao ở giữa (độ dài tùy ý, ở đây mình để 8 dấu *)
+    const maskedUsername = `${firstPart}********${lastPart}`;
+
+    return `${maskedUsername}@${domain}`;
+};
+     const getRoles = async () => {
+        if(listRole.length <= 0){
+            const roles = await getRoleALl([],1, 1000); 
+        
+            if(roles){
+                setListRole(roles.data)
+            }
+        }
+       
+    }
 
     //Create, Update, Delete
+        const create = async () => {
+            if(user.id){
+                toast.error("Chức năng không thể sử dụng")
+                return;
+            }
+            const data = await createUser(dispatch, user);
+
+                setShowModal(false)
+                getUsers()
+                setUserDefault()
+        }
+        const update = async () => {
+            if(!updateModal){
+                toast.error("Chức năng không thể sử dụng")
+                return;
+            }
+            const data = await updateUser(dispatch, user);
+                setShowModal(false)
+                getUsers()
+                setUserDefault()
+        }
+        const deleteById = async (id) => {
+            await deleteUser(dispatch, id);
+                setShowModal(false)
+                getUsers()
+        }
    
-    const updateBlockUser = async (user_id) => {
-       const re = await blockUser(dispatch, user_id);
-            // getUsers()
-    }
-    const updateUnBlockUser = async (user_id) => {
-       await unBlockUser(dispatch, user_id);
-            // getUsers()
-    }
+    // const updateBlockUser = async (user_id) => {
+    //    const re = await blockUser(dispatch, user_id);
+    //         // getUsers()
+    // }
+    // const updateUnBlockUser = async (user_id) => {
+    //    await unBlockUser(dispatch, user_id);
+    //         // getUsers()
+    // }
     return (
         <div className="manage-box">
             <div className="manage-box-title">QUẢN LÝ TÀI KHOẢN</div>
@@ -156,7 +196,7 @@ const  ManageUser = () => {
                             </div>
                         </div>
                         <div className="manage-box-filter-control-item">
-                            <div className="manage-box-filter-control-item-title">
+                            <div className="manage-box-filter-control-item-title">  
                                 Số điện thoại:
                             </div>
                             <div className="manage-box-filter-control-item-input">
@@ -195,8 +235,9 @@ const  ManageUser = () => {
                                  <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ID</th>
                                         <th>Tên tài khoản</th>
+                                        <th>Email</th>
+                                        <th>Loại tài khoản</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -214,14 +255,14 @@ const  ManageUser = () => {
                                         {listUsers && listUsers.length > 0 && listUsers.map((item, index_item) => {
                                             return (
                                                 <tr>
-                                                    <td>{index_item + 1}</td>
                                                     <td>{item.id}</td>
                                                     <td>{item.name}</td>
+                                                    <td>{changeTextEmail(item.email)}</td>
+                                                    <td>{item.role_name}</td>
                                                     <td>
                                                         <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
                                                         <div className="btn-table-item" onClick={() => deleteById(item.id)}><i class="bi bi-x-circle"></i></div>
-                                                        <div className="btn-table-item" onClick={() => updateBlockUser(item.id)}>Chặn</div>
-                                                        <div className="btn-table-item" onClick={() => updateUnBlockUser(item.id)}>Mở chặn</div>
+                                                      
                                                     </td>
                                                 </tr>
                                             )
@@ -245,178 +286,94 @@ const  ManageUser = () => {
                                 <div className="manage-box-modal-body">
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Slug:
+                                            ID:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.slug} disabled/>
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={user.id} disabled/>
                                         </div>
                                     </div>
 
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Tên sản phẩm:
+                                            Tên khách hàng:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.name} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={user.name} onChange={(e) => {
+                                                setUser({
+                                                    ...user,
                                                     name: e.target.value
                                                 })
                                             }}/>
                                         </div>
                                     </div>
+
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Loại sản phẩm:
+                                            Email:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={changeTextEmail(user.email)}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Số điện thoại:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={user.phone}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Mật khẩu:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="password" value={updateModal ? "Đã ẩn password" : user.password} 
+                                            onChange={(e) => setUser({
+                                                ...user,
+                                                password: e.target.value
+                                            })}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Loại tài khoản:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
                                             <select className="manage-box-modal-body-control-body-input" onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    category_code: e.target.value
+                                                setUser({
+                                                    ...user,
+                                                    role_id: e.target.value
                                                 }) 
-                                            }}>
-                                                <option>Loại sản phẩm</option>
-                                                {listCategories && listCategories.length > 0 && listCategories.map((item) => {
-                                                    return (<option selected={product.category?.code === item.code} value={item.code}>{item.name}</option>)
+                                            }}
+                                            onClick={() => getRoles()}
+                                            >
+                                                <option>Loại tài khoản</option>
+                                                {listRole && listRole.length > 0 && listRole.map((item) => {
+                                                    return (<option selected={user.role_code === item.code} value={item.id}>{item.name}</option>)
                                                 })}
                                             </select>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
-                                            Link review:
+                                            Chặn tài khoản:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.review_link} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    review_link: e.target.value
-                                                })
-                                            }}/>
+                                            <input className="manage-box-modal-body-control-body-input" type="checkbox" checked={user.block === true} 
+                                            onChange={(e) => setUser({
+                                                ...user,
+                                                block: !user.is_block
+                                            })}
+                                            />
                                         </div>
                                     </div>
+                                   
                                      <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Loại link review:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <select className="manage-box-modal-body-control-body-input" onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    type_review_link: e.target.value
-                                                }) 
-                                            }}>
-                                                <option>Chọn loại link review</option>
-                                                    <option selected={product.type_review_link === "youtube"} value="youtube">Youtube</option>
-                                                    <option selected={product.type_review_link === "tiktok"} value="tiktok">Tiktok</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Link review 2:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.review_link2} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    review_link2: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                     <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Loại link review 2:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <select className="manage-box-modal-body-control-body-input" onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    type_review_link2: e.target.value
-                                                }) 
-                                            }}>
-                                                <option>Chọn loại link review</option>
-                                                    <option selected={product.type_review_link2 === "youtube"} value="youtube">Youtube</option>
-                                                    <option selected={product.type_review_link2 === "tiktok"} value="tiktok">Tiktok</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Thumnail:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            {/* <input type='file' onChange={(e) => handleUploadThumbail(e)}/> */}
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.thumbnail} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    thumbnail: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Đánh giá nhanh:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <WordEditor content={product.property} getDataWord={getDataWordToRate}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Thuộc tính:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <WordEditor content={product.rate_descriptions} getDataWord={getDataWordToProperty}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                           Shoppee Link:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_shopee_link} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    affilate_shopee_link: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                           Lazada Link:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_lazada_link} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    affilate_lazada_link: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className="manage-box-modal-body-control-title">
-                                            Tiktok Link:
-                                        </div>
-                                        <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={product.affilate_tiktok_link} onChange={(e) => {
-                                                setProduct({
-                                                    ...product,
-                                                    affilate_tiktok_link: e.target.value
-                                                })
-                                            }}/>
-                                        </div>
-                                    </div>
-                                    <div className="manage-box-modal-body-control">
-                                        <div className={`manage-box-modal-btn ${product.id ? 'disabled' : ''}`} onClick={() => create()}>Tạo mới</div>
+                                        <div className={`manage-box-modal-btn ${user.id ? 'disabled' : ''}`} onClick={() => create()}>Tạo mới</div>
                                         <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`} onClick={() => update()}>Cập nhật</div>
-                                        <div className="manage-box-modal-btn" onClick={() => deleteById(product.id)}>Xóa</div>
+                                        <div className="manage-box-modal-btn" onClick={() => deleteById(user.id)}>Xóa</div>
                                         <div className="manage-box-modal-btn">Làm mới</div>
                                     </div>
 

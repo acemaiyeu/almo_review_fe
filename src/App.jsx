@@ -30,6 +30,7 @@ import DiscountHistory from './pages/clients/DiscountHistory/DiscountHistory.jsx
 import './style/responsive.scss'
 import Search from './pages/clients/Search.jsx'
 import ActivePassword from './pages/clients/Authentication/ActivePassword.jsx'
+import HomeAdmin from './pages/admin/HomeAdmin.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -119,7 +120,7 @@ function App() {
 
 
           {/* //Admin */}
-          <Route path="/admin/" element={<ManageProduct/>} />
+          <Route path="/admin/" element={<HomeAdmin/>} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/manage-products" element={<ManageProduct />} />
           <Route path="/admin/manage-categories" element={<ManageCategory />} />

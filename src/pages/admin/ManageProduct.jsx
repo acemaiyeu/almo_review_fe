@@ -4,11 +4,12 @@ import '../../style/ManagerProduct.scss'
 import { createProduct, deleteProduct, getProductALl, updateProduct } from '../../services/ProductService';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { uploadImage } from '../../app/ComponentSupport/functions';
+import { formatToCurrency, formatToNumber, uploadImage } from '../../app/ComponentSupport/functions';
 import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
 import { getCategoryALl } from '../../services/CategoryService';
 import axiosAdmin from '../../services/axiosAdmin';
 import { getHistoryDiscountALl } from '../../services/HistoryDiscountService';
+import { createOrder } from '../../services/OrderService';
 const  ManageProduct = () => {
     const dispatch = useDispatch();
     const [listProducts, setListProducts] = useState([]);
@@ -58,16 +59,24 @@ const  ManageProduct = () => {
     useEffect(() => {
         if(userLucky.user_id && productLucky.product_id){
             const discount_index = historyDiscounts.findIndex((i) => i.product_id == productLucky.product_id && i.user_id == userLucky.user_id);
+            const product_index = listProducts.findIndex((p) => p.id === productLucky.product_id);
             if(discount_index < 0){
                 toast.error("Không tìm thấy dữ liệu vòng quay");
+                return;
+            }
+            if(product_index < 0){
+                toast.error("Không tìm thấy sản phẩm");
                 return;
             }
             const discount = historyDiscounts[discount_index];
                 setProductLucky({
                     ...productLucky,
-                    price_product: discount.price_product,
-                    discount_percent: discount.discount_percent,
-                    price_discount: discount.price_discount
+                    price: discount.price_product,
+                    discount: discount.discount_percent,
+                    price_discount: discount.price_discount,
+                    user_id: userLucky.user_id,
+                    thumbnail: listProducts[product_index].thumbnail
+
                 })
         }
     }, [userLucky.user_id, productLucky.product_id])
@@ -159,6 +168,11 @@ const  ManageProduct = () => {
         }
        
     }
+    const handleCreateOrder = async () => {
+        const data = await createOrder(dispatch, productLucky);
+            setModalForLucky(false)
+    }
+    
     const update = async () => {
         if(!updateModal){
             toast.error("Chức năng không thể sử dụng")
@@ -562,7 +576,7 @@ const  ManageProduct = () => {
                                             Giá sản phẩm: 
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.price_product} disabled/>
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={formatToCurrency(productLucky.price)} disabled/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -570,7 +584,7 @@ const  ManageProduct = () => {
                                             Giảm giá (%): 
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.discount_percent} disabled/>
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.discount} disabled/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -578,7 +592,7 @@ const  ManageProduct = () => {
                                             Giá khuyến mãi: 
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.price_discount} disabled/>
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={formatToCurrency(productLucky.price_discount)} disabled/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -592,19 +606,30 @@ const  ManageProduct = () => {
                                             })}/>
                                         </div>
                                     </div>
+                                     <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Mã vận đơn:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.shipping_code ?? ""} onChange={(e) => setProductLucky({
+                                                ...productLucky,
+                                                shipping_code: e.target.value
+                                            })}/>
+                                        </div>
+                                    </div>
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
                                             Phí ship:  
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="text" value={productLucky.fee_ship ?? 0} onChange={(e) => setProductLucky({
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={formatToCurrency(productLucky.fee_ship ?? 0)} onChange={(e) => setProductLucky({
                                                 ...productLucky,
-                                                fee_ship: e.target.value
+                                                fee_ship: formatToNumber(e.target.value)
                                             })}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
-                                        <div className={`manage-box-modal-btn ${product.id ? 'disabled' : ''}`} onClick={() => create()}>Tạo mới</div>
+                                        <div className={`manage-box-modal-btn ${product.id ? 'disabled' : ''}`} onClick={() => handleCreateOrder()}>Tạo mới</div>
                                         <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`} onClick={() => update()}>Cập nhật</div>
                                     </div>
                                 </div>
