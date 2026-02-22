@@ -45,12 +45,14 @@ const MenuAdmin = () => {
                             <Link to="/admin/manage-promotions">Quản lý chương trình khuyến mãi</Link>
                         </div>
                 </div>
-                 <div className="menu-item">
-                        <div className="menu-item-icon">
-                            <i class="bi bi-file-person"></i>
-                        </div>
-                        <div className="menu-item-title"><Link to="/admin/manage-users">Quản lý tài khoản</Link></div>
-                </div>
+                {(profile.role_code).toLowerCase() === 'super_admin' &&
+                    <div className="menu-item">
+                            <div className="menu-item-icon">
+                                <i class="bi bi-file-person"></i>
+                            </div>
+                            <div className="menu-item-title"><Link to="/admin/manage-users">Quản lý tài khoản</Link></div>
+                    </div>
+                }
                 <div className="menu-item">
                         <div className="menu-item-icon">
                            <i class="bi bi-gear"></i>

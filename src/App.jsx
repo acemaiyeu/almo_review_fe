@@ -54,9 +54,9 @@ function App() {
       axiosAuth.get('auth/profile')
         .then((res) => {      
           // Destructure data from the axios response
-          const { name, email, avatar, notification } = res.data; 
+          const { name, email, avatar, notification, role_code } = res.data; 
           
-          dispatch(updateProfile({ name, email, avatar, notification}));
+          dispatch(updateProfile({ name, email, avatar, notification, role_code}));
         })
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
@@ -66,7 +66,7 @@ function App() {
           }
         });
     }
-  }, [profile.email, dispatch]); // Only re-run if email changes or dispatch is ready
+  }, [profile.email]); // Only re-run if email changes or dispatch is ready
 
   useEffect(() => {
   if (window.self !== window.top) {

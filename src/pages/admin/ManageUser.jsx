@@ -136,7 +136,9 @@ const  ManageUser = () => {
                 return;
             }
             const data = await createUser(dispatch, user);
-
+            if(data?.status){
+                return;
+            }
                 setShowModal(false)
                 getUsers()
                 setUserDefault()

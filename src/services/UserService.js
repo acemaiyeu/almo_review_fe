@@ -90,6 +90,9 @@ export const createUser = async (dispatch, params) => {
     } catch (error) {
         // console.error("Lỗi khi tạo sản phẩm:", error);
         // throw error; 
+        return {
+            status: "error"
+        }
     }
 }
 export const updateUser = async (dispatch, params) => {
@@ -103,6 +106,9 @@ export const updateUser = async (dispatch, params) => {
     } catch (error) {
         // console.error("Lỗi khi cập nhật sản phẩm:", error);
         // throw error; 
+        return {
+            status: "error"
+        }
     }
 }
 export const deleteUser = async (dispatch, user_id) => {
@@ -115,5 +121,8 @@ export const deleteUser = async (dispatch, user_id) => {
     } catch (error) {
         // console.error("Lỗi khi xóa sản phẩm:", error);
         // throw error; 
+        return {
+            status: "error"
+        }
     }
 }
