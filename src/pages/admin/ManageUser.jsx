@@ -312,7 +312,12 @@ const  ManageUser = () => {
                                             Email:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={changeTextEmail(user.email)}/>
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={updateModal ? changeTextEmail(user.email) :user.email} onChange={(e) => {
+                                                setUser({
+                                                    ...user,
+                                                    email: e.target.value
+                                                })
+                                            }}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -320,7 +325,10 @@ const  ManageUser = () => {
                                             Số điện thoại:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={user.phone}/>
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={user.phone} onChange={(e) => setUser({
+                                                ...user,
+                                                phone: e.target.value
+                                            })}/>
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
@@ -362,9 +370,9 @@ const  ManageUser = () => {
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
                                             <input className="manage-box-modal-body-control-body-input" type="checkbox" checked={user.block === true} 
-                                            onChange={(e) => setUser({
+                                            onClick={() => setUser({
                                                 ...user,
-                                                block: !user.is_block
+                                                block: !user.block
                                             })}
                                             />
                                         </div>
