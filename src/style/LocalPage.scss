@@ -127,6 +127,15 @@
             }
         }
     }
+    ul li a{
+        color: var(--background-main);
+        padding: 0px 2px;
+        transition: all .5 linear;
+        &:hover{
+            background-color: var(--background-main);
+            color: white;
+        }
+    }
 
 @media (max-width: 768px) {
     .almo-container{

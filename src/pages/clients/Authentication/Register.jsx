@@ -34,7 +34,7 @@ const Login = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2>Đăng Nhập</h2>
+                <h2>Đăng ký</h2>
                 <form onSubmit={handleSubmit}>
                     
                     <div className="form-group">

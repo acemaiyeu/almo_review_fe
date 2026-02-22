@@ -53,9 +53,9 @@ const About = () => {
                             <br/>
                             <ul>
                                 <b><i>Kết nối với mình tại:</i></b>
-                                <li><b>TikTok:</b><a target="_blank" href="https://tiktok.com">Tiktok</a></li>
-                                <li><b>Facebook:</b> <a target="_blank" href="https://fb.com">Facebook.com</a></li>
-                                <li><b>Email:</b> AlmoAffilate82@gmail.com</li>
+                                <li><b>TikTok:</b> <a target="_blank" href="https://tiktok.com">Tiktok</a></li>
+                                <li><b>Facebook:</b> <a target="_blank" href="https://www.facebook.com/profile.php?id=61563139793742">Facebook.com</a></li>
+                                <li><b>Email:</b> <a target="_blank" href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJfrLZjFqLqlwFKkrksrNrnDnKFWBknPppKLfNzlvwsjxxczFsSzVVWkhWvzfThKVnNCmkL">almoreview@gmail.com</a></li>
                                 {/* <li><b>Địa chỉ: </b> Dù bạn mua máy giảm giá hay mua qua link affiliate, chúng mình luôn sẵn sàng tư vấn kỹ thuật bất cứ lúc nào.</li> */}
                             </ul>
                        </div>

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axiosAuth from '../../../services/axiosAuth';
 import { updateProfile } from '../../../app/features/profileSlice';
 import { showDynamic } from '../../../app/ComponentSupport/functions';
+import axiosClient from '../../../services/axiosClient';
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,9 +26,9 @@ const Profile = () => {
       await axiosAuth.get('auth/profile')
         .then((res) => {
           // Destructure data from the axios response
-          const { name, email, avatar } = res.data; 
+          const { name, email } = res.data; 
           
-          dispatch(updateProfile({ name, email, avatar }));
+          dispatch(updateProfile({ name, email }));
         })
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
@@ -38,7 +39,6 @@ const Profile = () => {
     setUserData({
         name: profile.name,
         email: profile.email,
-        avatar: profile.avatar
     })
   }, [profile.email])
     
@@ -50,6 +50,14 @@ const Profile = () => {
     }).then((res) => {
         console.log(res);
         showDynamic(dispatch, "Đã đổi mật khẩu thành công!")
+    }).catch()
+  }
+  const handleUpdateProfuile = () => {
+    axiosClient.put('user', {
+        name: userData.name, // State từ input
+    }).then((res) => {
+        console.log(res);
+        showDynamic(dispatch, "Cập nhật thành công!")
     }).catch()
   }
 
@@ -73,7 +81,7 @@ const Profile = () => {
         <input type="email" value={userData.email} disabled />
       </div>
 
-      <button className="btn-main">Cập nhật thông tin</button>
+      <button className="btn-main" onClick={() => handleUpdateProfuile()}>Cập nhật thông tin</button>
       
       <button 
         style={{ background: 'none', color: 'var(--background-main)', border: 'none', marginTop: '15px', cursor: 'pointer' }}
