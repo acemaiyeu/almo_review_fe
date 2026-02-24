@@ -31,6 +31,8 @@ import './style/responsive.scss'
 import Search from './pages/clients/Search.jsx'
 import ActivePassword from './pages/clients/Authentication/ActivePassword.jsx'
 import HomeAdmin from './pages/admin/HomeAdmin.jsx'
+import { getCookie, setCookie, showDynamic, useIp } from './app/ComponentSupport/functions.js'
+import { postIP } from './services/ipService.js'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -75,11 +77,17 @@ function App() {
   }
 }, []);
 
-  
+  if(!getCookie("new_device")){
+      const { ip, loading } = useIp();
+      if (!loading) {
+          postIP(ip)
+      }
+  }
 
 
   useEffect(() => {
-      toast.warning("Web hiện tại chỉ demo chưa vận hành trực tiếp!")
+      // toast.warning("Web hiện tại chỉ demo chưa vận hành trực tiếp!")
+      showDynamic(dispatch, "Web hiện tại chỉ demo chưa vận hành trực tiếp!")
   }, [])
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>

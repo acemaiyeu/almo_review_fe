@@ -11,7 +11,6 @@ export const getProductClientALl = async (params = [], page = 1, limit = 10) => 
         if(params?.category_name){
            params_text += `category_name=${params.category_name}`
         }
-        console.log("params", params)
         if(params?.product_name){
            params_text += `name=${params.product_name}`
         }
@@ -19,7 +18,7 @@ export const getProductClientALl = async (params = [], page = 1, limit = 10) => 
         const res = await axiosClient.get(`products?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {
-        console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
+        // console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
         // throw error; 
     }
 }

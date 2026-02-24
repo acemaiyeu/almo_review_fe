@@ -75,3 +75,28 @@ export const formatToCurrency = (num) => {
     // 3. Định dạng theo chuẩn vi-VN
     return amount.toLocaleString('vi-VN') + " ₫";
 };
+import { useState, useEffect } from 'react';
+
+export function useIp() {
+  const [ip, setIp] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchIp = async () => {
+      try {
+        // Sử dụng ipify (hoặc icanhazip.com)
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        setIp(data.ip);
+      } catch (error) {
+        console.error("Không thể lấy IP:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIp();
+  }, []);
+
+  return { ip, loading };
+}

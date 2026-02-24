@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getStatisticALl } from '../../services/StatisticService';
+import { updateStatistic } from '../../app/features/statisticSlice';
 
 const HomeAdmin = () => {
   const mainColor = '#f7175a';
-
+  const dispatch = useDispatch();
   // Style chung cho các khối
   const cardStyle = {
     backgroundColor: '#fff',
@@ -14,11 +17,39 @@ const HomeAdmin = () => {
     minWidth: '200px'
   };
 
-  const stats = [
-    { label: 'Người dùng mới', value: '450', growth: '+5%', icon: '⭐' },
-    { label: 'Lượt truy cập mới', value: '8,900', growth: '+18%', icon: '🔥' },
-    { label: 'Tỷ lệ chuyển đổi', value: '12.5%', growth: '+2%', icon: '💎' },
-  ];
+  // const stats = [
+  //   { label: 'Người dùng mới', value: '450', growth: '+5%', icon: '⭐' },
+  //   { label: 'Lượt truy cập mới', value: '8,900', growth: '+18%', icon: '🔥' }
+  // ];
+  const {data: stats, data_weekly} = useSelector((state) => state.statistic);
+
+  useEffect(() => {
+      getStatisticData()
+  }, [])
+  const getStatisticData = async () => {
+      const data = await getStatisticALl();
+     
+      if(data){
+         
+        // Sử dụng const một lần duy nhất cho kết quả map
+      let d_temp = data.data.map((item, index_item) => {
+          // Xử lý biến item.value từ "100.00" thành 100
+          // Math.round giúp làm tròn và ép về kiểu Number (mất .00)
+          const cleanValue = item.value ? Math.round(parseFloat(item.value)) : 0;
+
+          return {
+              ...item,
+              value: cleanValue, // Gán lại giá trị đã sạch sẽ
+              growth: item.growth + " %",
+              icon: index_item === 0 ? '⭐' : '🔥'
+          };
+      });
+          dispatch(updateStatistic({
+            data: d_temp,
+            data_weekly: data.data_weekly
+          }))
+      }
+  }
 
   return (
     <div style={{ backgroundColor: '#f4f7f6', minHeight: '100vh', padding: '30px', fontFamily: 'sans-serif' }}>
@@ -69,7 +100,8 @@ const HomeAdmin = () => {
             padding: '0 20px',
             borderBottom: '2px solid #f0f0f0'
           }}>
-            {[40, 55, 30, 85, 45, 100, 75].map((val, i) => (
+            {/* {[40, 55, 30, 85, 45, 100, 75].map((val, i) => ( */}
+            {data_weekly.map((val, i) => (
               <div key={i} style={{ 
                 flex: 1, 
                 display: 'flex', 
