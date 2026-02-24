@@ -81,6 +81,7 @@ function App() {
       const { ip, loading } = useIp();
       if (!loading) {
           postIP(ip)
+          setCookie("new_device", ip, 10000)
       }
   }
 

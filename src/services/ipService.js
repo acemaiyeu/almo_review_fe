@@ -7,7 +7,7 @@ export const postIP = async (ip) => {
         const res = await axiosClient.post(`ip`, {
             ip: ip
         });
-        setCookie("new_device", ip, 10000)
+
         return res.data; // Trả về dữ liệu từ API
     } catch (error) {
         // console.error("Lỗi khi tạo sản phẩm:", error);
