@@ -113,18 +113,18 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
       <div className="product-box">
        
         <h2 style={styles.title}>Sản phẩm mới nhất</h2>
-        <div style={styles.grid}>
+        <div className="grid">
           {products && products.map((item) => (
-            <div key={item.id} style={styles.card}>
+            <div key={item.id} className="card">
                <div className="product-item-modal">
                 {/* Sản phẩm không bán lại */}
             </div>
-              <div className="modal-img"><img src={logo} alt="logo"/></div>
+              <div className="modal-img"><img src={logo} alt="logo" /></div>
               <div style={styles.imageBox}>
-                  <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy'/>
+                  <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy' decoding="async"/>
               </div>
               <h3 style={styles.name}>{item.name}</h3>
-              <h3 style={styles.price}>Giá mua: {item.price}</h3>
+              <h3 className="price">Giá mua: {item.price}</h3>
               
               <Link to={`/product/${item.slug}`} className='button-submit'>
                 Xem chi tiết
@@ -150,24 +150,9 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
 const styles = {
   container: { padding: '20px 0', fontFamily: 'Arial, sans-serif', position: 'relative' },
   title: { fontSize: '22px', fontWeight: 'bold', marginBottom: '20px' },
-  grid: { 
-    display: 'grid', 
-    gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', 
-    gap: '20px',
-  },
-  card: { 
-    border: '1px solid #ddd', 
-    borderRadius: '12px', 
-    padding: '15px', 
-    textAlign: 'center',
-    background: '#fff',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-    position: 'relative'
-  },
   imageBox: { height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' },
   image: { maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' },
   name: { fontSize: '16px', fontWeight: '600', margin: '10px 0', height: '40px', overflow: 'hidden' },
-  price: { color: '#eb1c50', fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' },
   btn: { 
     display: 'inline-block', 
     background: '#0071e3', 
