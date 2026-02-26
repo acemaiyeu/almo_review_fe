@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import TikTokPlayer from '../../../app/ComponentSupport/TikTokPlayer.jsx';
 import YouTubePlayer from '../../../app/ComponentSupport/YouTubePlayer.jsx';
 import AnimatedCounter from '../../../app/ComponentSupport/AnimatedCounter.jsx';
+import CountdownTimer from '../../../app/ComponentSupport/CountdownTimer.jsx';
 
 const ProductDetail = () => {
     const profile = useSelector((state) => state.profile);
@@ -31,7 +32,7 @@ const ProductDetail = () => {
     const handlePrizeReceived = (prize) => {
     // console.log("Dữ liệu nhận được từ con:", prize);
     showDynamic(dispatch,`Bạn nhận được giảm giá ${prize.label} cho sản phẩm: ${product.name}`)
-    getProduct()
+    // getProduct()
   };
   const handleClose = (e) => {
   e.stopPropagation(); // Ngăn chặn sự kiện lan lên cha
@@ -48,7 +49,7 @@ const ProductDetail = () => {
   }
   useEffect(() => {
         getProduct()
-    }, [product.id])
+    }, [])
     if(loading){
         return <div className="spin">
                     <div class="spinner-grow text-almo" role="status"></div>Đang tải sản phẩm...
@@ -291,7 +292,10 @@ const ProductDetail = () => {
                         </div>
                        
                 </div>
-                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={product.total_lucky} join_lucky={product.join_lucky} discount_price={product.discount_price}/>
+                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={product.total_lucky} join_lucky={product.join_lucky} discount_price={product.discount_price} active={product.is_luck}/>
+                {product.is_luck === 1 && 
+                    <CountdownTimer startTime={product.start_time_luck} endTime={product.end_time_luck}/>
+                }
             </div>
            
     </div> : <div className="product-detail-container"><p>Không tìm thấy sản phẩm</p></div>)

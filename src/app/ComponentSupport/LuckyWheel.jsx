@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 // Giả sử bạn có action getDiscount từ store
 // import { getDiscount } from '../../redux/actions/productActions'; 
 
-const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, join_lucky = false, discount_price = 0}) => {
+const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, join_lucky = false, discount_price = 0, active = false}) => {
   const dispatch = useDispatch();
   // Lấy dữ liệu từ redux store
 
@@ -63,9 +63,9 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
   };    
 
   const sectorAngle = 360 / prizes.length;
-
   return (
     <div className="lucky-wheel-container">
+      {active === 1 && 
       <div className="wheel-wrapper">
         <div className="wheel-pointer"></div>
 
@@ -102,10 +102,17 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
         </div>
         <div className="wheel-center-dot"></div>
       </div>
-
+      }
+      {active === 1 && 
       <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || join_lucky}>
         {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (join_lucky ? `GIÁ KHI TRÚNG GIẢI ${discount_price}` : 'NHẬN GIẢM GIÁ'))}
       </button>
+      }
+      {active === 0 && 
+      <button className="spin-button" disabled={true}>
+        SẢN PHẨM KHÔNG BÁN LẠI
+      </button>
+      }
 
       {result && !spinning && (
         <div className="prize-msg">
@@ -113,9 +120,11 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
           <i style={{fontSize: "0.8rem"}}>Cùng chờ quay may mắn tại Tiktok #ALmo</i>
         </div>
       )}
+      {active === 1 && 
       <div className="total-user-complete">
           <span className="total-user-complete-number">{userComplete}</span> người đã tham gia
       </div>
+    }
     </div>
   );
 };

@@ -9,3 +9,32 @@
         opacity: .3;
     }
 }
+.product-item-modal{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--background-main);
+    color: white;
+    border: none;
+    outline: none;
+    box-shadow: 0px 0px 12px 0px rgb(241, 241, 241);
+    font-size: .8rem;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.sort-box{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px 2% 20px 10%;
+    .sort-box-select{
+        width: 50%;
+        text-align: center;
+        padding: 2%;
+        border: none;
+        box-shadow: 0px 0px 5px 0px var(--background-main);
+        font-size: 1rem;
+        color: var(--background-main)
+    }
+}

@@ -7,12 +7,22 @@ import axiosClient from "./axiosClient";
 export const getProductClientALl = async (params = [], page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
+        console.log(params)
         let params_text = "";
         if(params?.category_name){
            params_text += `category_name=${params.category_name}`
         }
         if(params?.product_name){
            params_text += `name=${params.product_name}`
+        }
+        if(params?.sort === "price-down"){
+           params_text += `sort[price]=asc`
+        }
+        if(params?.sort === "price-up"){
+           params_text += `sort[price]=desc`
+        }
+        if(params?.sort === "new-product"){
+           params_text += `sort[created_at]=desc`
         }
         
         const res = await axiosClient.get(`products?${params_text}&page=${page}&limit=${limit}`);

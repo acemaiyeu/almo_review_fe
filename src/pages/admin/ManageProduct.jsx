@@ -254,7 +254,7 @@ const  ManageProduct = () => {
                                             setUpdateModal(false)
                                             setShowModal(true)
                                         }}>
-                                Thêm
+                                Thêm sản phẩm
                             </div>
                             <div className="manage-box-content-modal-item" onClick={() => {
                                            handleModalLucky()
@@ -504,6 +504,55 @@ const  ManageProduct = () => {
                                                 setProduct({
                                                     ...product,
                                                     affilate_tiktok_link: e.target.value
+                                                })
+                                            }}/>
+                                        </div>
+                                    </div>
+                                     <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Quay thưởng:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            {!product.is_luck 
+                                            ? <i 
+                                            onClick={() => {
+                                                setProduct({
+                                                    ...product,
+                                                    is_luck: !product.is_luck
+                                                })
+                                            }} class="bi bi-toggle-off"></i> 
+                                            : <i class="bi bi-toggle-on"  
+                                            onClick={() => {
+                                                setProduct({
+                                                    ...product,
+                                                    is_luck: !product.is_luck
+                                                })
+                                            }}></i>}
+                                            
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Thời gian bắt đầu quay thưởng
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" disabled={!product.is_luck} type="datetime-local" value={product.start_time_luck} onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    start_time_luck: e.target.value
+                                                })
+                                            }}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Thời gian kết thúc quay thưởng
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" disabled={!product.is_luck} type="datetime-local" value={product.end_time_luck} onChange={(e) => {
+                                                setProduct({
+                                                    ...product,
+                                                    end_time_luck: e.target.value
                                                 })
                                             }}/>
                                         </div>

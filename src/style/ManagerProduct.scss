@@ -300,13 +300,18 @@ table{
 
             }
             .manage-box-modal-body-control-title{
-                width: 150px;
+                width: 200px;
                 text-align: left;
                 padding: 0px 2%;
                 box-sizing: border-box;
             }
             .manage-box-modal-body-control-body{
                 flex: 1;
+                .bi {
+                    font-size: 1.5rem;
+                    color: var(--background-main);
+                }
+                
                 .manage-box-modal-body-control-body-input{
                     width: 100%;
                     padding: 0px 10px;

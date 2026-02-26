@@ -39,7 +39,7 @@ const CategoryHome = ({sendToHome}) => {
   return (
     categories ? <section className={`category-container ${showFull ? 'active' : 'none-active'}`}>
       {/* <div className="category-container-modal-less"></div> */}
-      <div className={`category-container-modal`} onClick={() => setShowFull(!showFull)}>{showFull ? 'Thu gọn' : 'Hiển thị thêm'}</div> 
+      {/* <div className={`category-container-modal`} onClick={() => setShowFull(!showFull)}>{showFull ? 'Thu gọn' : 'Hiển thị thêm'}</div>  */}
      
       {/* <div className="category-container-modal">Thu gọn</div> */}
       <h2 className="category-title">Danh mục sản phẩm</h2>

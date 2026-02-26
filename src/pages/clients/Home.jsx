@@ -20,7 +20,9 @@ const [products, setProducts] = useState([]);
 const [currentPage, setCurrentPage] = useState(1);
 const [totalPage, setTotalPage] = useState(1);
 const [loading, setLoading] = useState(true);
-const [params, setParams] = useState({})
+const [params, setParams] = useState({
+    sort: "new-product"
+})
 const {items: products_headers, loading_header} = useSelector((state) => state.products)
     const showProductByCategory = async (category_name) => {
       setLoading(true)
@@ -45,16 +47,18 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
       setLoading(false)
     }
     useEffect(() => {
-      setLoading(true);
+     
         getProduct()
-         setLoading(false);
+         
     }, [])
     const getProduct = async () => {
+       setLoading(true);
         const data = await getProductClientALl(params, currentPage, 10);
         if(data){
           setProducts(data.data)
           setTotalPage(data.meta.pagination.total_pages)
         }
+        setLoading(false);
     }
     useEffect(() => {
         if(products_headers.length > 0){
@@ -92,16 +96,35 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
        <div className="category-box">
           <CategoryHome sendToHome={showProductByCategory}/>
         </div>
+        <div className="sort-box">
+            <select className="sort-box-select" onChange={(e) => 
+              {
+                setParams({
+              ...params,
+              sort: e.target.value
+            })
+            getProduct()
+              }}>
+                <option value="price-up" selected={params.sort === "price-up"}>Giá tăng dần</option>
+                <option value="price-down" selected={params.sort === "price-down"}>Giá giảm dần</option>
+                <option value="new-product" selected={params.sort === "new-product"}>Sản phẩm mới nhất</option>
+            </select>
+        </div>
       <div className="product-box">
+       
         <h2 style={styles.title}>Sản phẩm mới nhất</h2>
         <div style={styles.grid}>
           {products && products.map((item) => (
             <div key={item.id} style={styles.card}>
+               <div className="product-item-modal">
+                {/* Sản phẩm không bán lại */}
+            </div>
               <div className="modal-img"><img src={logo} alt="logo"/></div>
               <div style={styles.imageBox}>
                   <img src={item.thumbnail} alt={item.name} style={styles.image} loading='lazy'/>
               </div>
               <h3 style={styles.name}>{item.name}</h3>
+              <h3 style={styles.price}>Giá mua: {item.price}</h3>
               
               <Link to={`/product/${item.slug}`} className='button-submit'>
                 Xem chi tiết
@@ -144,7 +167,7 @@ const styles = {
   imageBox: { height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' },
   image: { maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' },
   name: { fontSize: '16px', fontWeight: '600', margin: '10px 0', height: '40px', overflow: 'hidden' },
-  price: { color: '#eb1c24', fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' },
+  price: { color: '#eb1c50', fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' },
   btn: { 
     display: 'inline-block', 
     background: '#0071e3', 
