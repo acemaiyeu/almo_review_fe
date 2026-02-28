@@ -65,7 +65,8 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
   const sectorAngle = 360 / prizes.length;
   return (
     <div className="lucky-wheel-container">
-      {active === 1 && 
+      
+      {active == 1 && 
       <div className="wheel-wrapper">
         <div className="wheel-pointer"></div>
 
@@ -103,7 +104,7 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
         <div className="wheel-center-dot"></div>
       </div>
       }
-      {active === 1 && 
+      {active == 1 && 
       <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || join_lucky}>
         {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (join_lucky ? `GIÁ KHI TRÚNG GIẢI ${discount_price}` : 'NHẬN GIẢM GIÁ'))}
       </button>
@@ -120,7 +121,7 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
           <i style={{fontSize: "0.8rem"}}>Cùng chờ quay may mắn tại Tiktok #ALmo</i>
         </div>
       )}
-      {active === 1 && 
+      {active == 1 && 
       <div className="total-user-complete">
           <span className="total-user-complete-number">{userComplete}</span> người đã tham gia
       </div>
