@@ -62,6 +62,7 @@
             
             .lucky-wheel-sterm-text{
                 color: var(--background-main);
+                cursor: pointer;
                 .lucky-wheel-sterm-modal{
                     width: 95%;
                     position: absolute;
@@ -84,6 +85,7 @@
                         justify-content: center;
                         font-weight: bold;
                         border-radius: 10px;
+                        cursor: pointer;
                     }
                     .lucky-wheel-sterm-modal-title{
                         font-size: 1.5rem;

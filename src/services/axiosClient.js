@@ -44,7 +44,7 @@ axiosClient.interceptors.response.use(
 
       switch (status) {
         case 401:
-          toast.error("Phiên đăng nhập hết hạn!");
+          toast.error("Bạn chưa đăng nhập hoặc Phiên đăng nhập hết hạn!");
           localStorage.multiRemove(['access_token', 'expires_in']); // Nếu dùng bộ nhớ chung
           break;
         case 403:

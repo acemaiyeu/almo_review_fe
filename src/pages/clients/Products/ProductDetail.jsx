@@ -11,6 +11,7 @@ import TikTokPlayer from '../../../app/ComponentSupport/TikTokPlayer.jsx';
 import YouTubePlayer from '../../../app/ComponentSupport/YouTubePlayer.jsx';
 import AnimatedCounter from '../../../app/ComponentSupport/AnimatedCounter.jsx';
 import CountdownTimer from '../../../app/ComponentSupport/CountdownTimer.jsx';
+import CommentComponent from './CommentComponent.jsx';
 
 const ProductDetail = () => {
     const profile = useSelector((state) => state.profile);
@@ -297,7 +298,10 @@ const ProductDetail = () => {
                     <CountdownTimer startTime={product.start_time_luck} endTime={product.end_time_luck}/>
                 }
             </div>
+           {product.id && 
            
+                <CommentComponent product_id={product.id} />
+           }
     </div> : <div className="product-detail-container"><p>Không tìm thấy sản phẩm</p></div>)
 }
 export default ProductDetail;
