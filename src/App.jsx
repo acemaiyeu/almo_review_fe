@@ -31,8 +31,9 @@ import './style/responsive.scss'
 import Search from './pages/clients/Search.jsx'
 import ActivePassword from './pages/clients/Authentication/ActivePassword.jsx'
 import HomeAdmin from './pages/admin/HomeAdmin.jsx'
-import { getCookie, setCookie, showDynamic, useIp } from './app/ComponentSupport/functions.js'
+import { deleteCookie, getCookie, setCookie, showDynamic, useIp } from './app/ComponentSupport/functions.js'
 import { postIP } from './services/ipService.js'
+import ClearCache from './app/ComponentSupport/ClearCache.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -90,6 +91,7 @@ function App() {
       // toast.warning("Web hiện tại chỉ demo chưa vận hành trực tiếp!")
       showDynamic(dispatch, "Web hiện tại chỉ demo chưa vận hành trực tiếp!")
   }, [])
+
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>
        <ToastContainer position="top-right" style={{ top: "50px" }}/>
@@ -134,7 +136,7 @@ function App() {
           <Route path="/admin/manage-products" element={<ManageProduct />} />
           <Route path="/admin/manage-categories" element={<ManageCategory />} />
           <Route path="/admin/manage-users" element={<ManageUser />} />
-
+         <Route path="/admin/clear-cache" element={<ClearCache />} />
           {/* Trang 404 nếu không tìm thấy route */}
           <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
         </Routes>

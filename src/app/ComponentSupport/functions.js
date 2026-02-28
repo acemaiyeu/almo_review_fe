@@ -50,6 +50,9 @@ export const getCookie = (cname) => {
   }
   return "";
 }
+export const deleteCookie = (cname) => {
+  document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
 export const formatToNumber = (str) => {
     // 1. Kiểm tra nếu đầu vào không có giá trị
     if (!str && str !== 0) return 0;

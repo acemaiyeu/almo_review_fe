@@ -513,19 +513,19 @@ const  ManageProduct = () => {
                                             Quay thưởng:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            {!product.is_luck 
+                                            {!product.is_luck === 0 || !product.is_luck
                                             ? <i 
                                             onClick={() => {
                                                 setProduct({
                                                     ...product,
-                                                    is_luck: !product.is_luck
+                                                    is_luck: true
                                                 })
                                             }} class="bi bi-toggle-off"></i> 
                                             : <i class="bi bi-toggle-on"  
                                             onClick={() => {
                                                 setProduct({
                                                     ...product,
-                                                    is_luck: !product.is_luck
+                                                    is_luck: false
                                                 })
                                             }}></i>}
                                             

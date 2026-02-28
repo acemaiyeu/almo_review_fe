@@ -249,7 +249,7 @@ const ProductDetail = () => {
                                             <div className="lucky-wheel-sterm-modal-content-title">3. YÊU CẦU TRƯỚC KHI QUAY GIẢI</div>
                                             <div className="lucky-wheel-sterm-modal-content-body">
                                                 <ul>
-                                                    <li>Số lượng tham gia: ít nhất 50 người đăng ký (hoặc chờ đủ 50 người)</li>
+                                                    <li>Chương trình sẽ được kích hoạt khi đạt tối thiểu 50 lượt đăng ký để đảm bảo tính sôi động và công bằng</li>
                                                 </ul>
                                             </div>
                                             <div className="lucky-wheel-sterm-modal-content-title">4. CÁC BƯỚC THAM GIA</div>
@@ -269,13 +269,14 @@ const ProductDetail = () => {
                                                     <li><b>Hình thức: </b> Livestream quay số ngẫu nhiên trên trang thứ 3 (như Wheel of Names hoặc Random.org)</li>
                                                     <li><b>Dữ liệu quay: </b> Dựa vào số thứ tự (STT) trong danh sách những người đã tham gia quay thưởng trên web</li>
                                                     <li><b>Thời gian công bố: </b> Được thể hiện rõ trong lúc livestream và được cập nhật sau đó tại trang chi tiết sản phẩm</li>
+                                                    <li>Kết quả quay số trên Wheel of Names hoặc Random.org được thực hiện trực tiếp (Live) và lưu lại bằng video để đối chiếu khi có khiếu nại</li>
                                                 </ul>
                                             </div>
                                             <div className="lucky-wheel-sterm-modal-content-title">6. QUY ĐỊNH VỀ TÍNH MINH BẠCH VÀ CHỐNG GIAN LẬN</div>
                                             <div className="lucky-wheel-sterm-modal-content-body">
                                                 <ul>
                                                     <li><b>Loại bỏ tài khoản ảo: </b>Chúng tôi sẽ dùng một số biện pháp để hạn chế người dùng spam tài khoản</li>
-                                                    <li><b>Xác minh người thắng cuộc: </b>Khi chọn được người may mắn, Ban tổ chức (BTC) sẽ liên hệ trực tiếp qua SĐT đã đăng ký tài khoản. Nếu sau 3 lần gọi (trong vòng 24h) không liên hệ được, BTC có quyền hủy kết quả và thực hiện quay số lại. (CÙng với việc chặn tài khoản để tránh mất thời gian cho các phiên live sau)</li>
+                                                    <li><b>Xác minh người thắng cuộc: </b>Khi chọn được người may mắn, Ban tổ chức (BTC) sẽ liên hệ trực tiếp qua SĐT đã đăng ký tài khoản. Nếu sau 3 lần gọi (trong vòng 24h) không liên hệ được, BTC có quyền hủy kết quả và thực hiện quay số lại. (Hệ thống sẽ tạm dừng quyền tham gia các chương trình may mắn tiếp theo đối với tài khoản không phản hồi sau 03 lần liên hệ)</li>
                                                     <li><b>Quyền quyết định: </b>Quyết định của BTC dựa trên dữ liệu hệ thống là quyết định cuối cùng</li>
                                                 </ul>
                                             </div>
