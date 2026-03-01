@@ -49,6 +49,10 @@ const Footer = () => {
                 <div className="footer-policy">
                         <h1>Chính sách</h1>
                         <Link to="/policy">Chính sách bảo mật</Link>
+
+                        
+                        <Link to="/shipping-delivery">Chính sách vận chuyển - trả hàng - hoàn tiền</Link>
+                        <Link to="/promotion">Thông tin và điều lệ Quay thưởng</Link>
                         <Link to="/terms">Điều khoản sử dụng & Thể lệ Quay thưởng</Link>
                         <Link to="/inspection-policy">Chính sách Kiểm hàng, Đổi trả & Bảo hành</Link>
                 </div>

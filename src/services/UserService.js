@@ -1,5 +1,6 @@
 import { showDynamic } from "../app/ComponentSupport/functions";
 import axiosAdmin from "./axiosAdmin";
+import axiosAuth from "./axiosAuth";
 import axiosClient from "./axiosClient";
 
 const uri_base_all = 'users' //get all
@@ -116,6 +117,24 @@ export const deleteUser = async (dispatch, user_id) => {
         // Thêm return ở đầu dòng này
         const res = await axiosAdmin.delete(`user/${user_id}`).then((res) => {
             showDynamic(dispatch, "Đã xóa tài khoản thành công!")
+        }).catch()
+        return res; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error("Lỗi khi xóa sản phẩm:", error);
+        // throw error; 
+        return {
+            status: "error"
+        }
+    }
+}
+export const logoutUser = async (dispatch) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosAuth.post(`/auth/logout`).then(() => {
+            showDynamic(dispatch, "Bạn đã đăng xuất thành công!")
+            setTimeout(() => {
+                window.location.reload();
+            },1000)
         }).catch()
         return res; // Trả về dữ liệu từ API
     } catch (error) {

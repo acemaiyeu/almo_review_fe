@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import '../../style/MenuAdmin.scss'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import icon from '../../assets/img/logo.png'
+import { logoutUser } from '../../services/UserService';
 
 const MenuAdmin = () => {
-
+    const dispatch = useDispatch();
     const profile = useSelector((state) => state.profile);
     return (
         <div className="menu-admin-container">
@@ -20,8 +21,17 @@ const MenuAdmin = () => {
                                 </div>
                     </div>
                     <div className="menu-user-fucntions">
-                         <Link to={'/admin/logout'}><p>Đăng xuất</p></Link>
+                         <Link onClick={() => {
+                            logoutUser(dispatch)
+                         }}><p>Đăng xuất</p></Link>
                     </div>
+                </div>
+                <div className="menu-item">
+                        <div className="menu-item-icon">
+                            <i class="bi bi-device-ssd"></i>
+                        </div>
+                        <div className="menu-item-title">
+                            <Link to="/admin/">Thống kê</Link></div>
                 </div>
                 <div className="menu-item">
                         <div className="menu-item-icon">

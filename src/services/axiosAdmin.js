@@ -47,7 +47,7 @@ axiosAdmin.interceptors.response.use(
       const message = data?.message || 'Lỗi hệ thống';
       
       // Lưu lại trang cuối để sau khi login quay lại cho đúng
-      localStorage.setItem('last-page-admin', window.location.pathname);
+      localStorage.setItem('last-page-admin', window.location.pathname ?? "/");
 
       switch (status) {
         case 401:

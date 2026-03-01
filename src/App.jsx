@@ -36,6 +36,8 @@ import { postIP } from './services/ipService.js'
 import ClearCache from './app/ComponentSupport/ClearCache.jsx'
 import MarqueeText from './pages/clients/Products/AutoHideNotification.jsx'
 import Feedback from './pages/clients/Feedback/Feedback.jsx'
+import Promotion from './components/Promotion.jsx'
+import ShippingDelivery from './components/ShippingDelivery.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -131,6 +133,10 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/inspection-policy" element={<InspectionPolicy />} />
           <Route path="/policy" element={<Policy />} />
+          <Route path="/promotion" element={<Promotion />} />
+          <Route path="/shipping-delivery" element={<ShippingDelivery />} />
+
+          
 
 
           <Route path="/inquiry-product" element={<Feedback />} />

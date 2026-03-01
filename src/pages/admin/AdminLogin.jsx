@@ -15,8 +15,8 @@ const AdminLogin = () => {
         ...formData
     }).then((res) => {
         localStorage.setItem('access_token_admin', res.access_token);
-        let last_page = localStorage.getItem('last-page');
-        localStorage.removeItem('last-page')
+        let last_page = localStorage.getItem('last-page-admin');
+        localStorage.removeItem('last-page-admin')
         if(last_page == 'null'){
           window.location.href = '/'
         }

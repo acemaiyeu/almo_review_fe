@@ -91,15 +91,8 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
         <div class="spinner-grow text-almo" role="status">
       </div>Không tìm thấy sản phẩm
       </div>;
-      const checkT = () => {
-        
-        dispatch(updateNotifi({
-          message: "Chào bạn"
-        }))
-      }
   return (
     <div style={styles.container}>
-        <button onClick={() => checkT()}>Click notifi</button>
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
        <div className="category-box">
           <CategoryHome sendToHome={showProductByCategory}/>
