@@ -34,6 +34,8 @@ import HomeAdmin from './pages/admin/HomeAdmin.jsx'
 import { deleteCookie, getCookie, setCookie, showDynamic, useIp } from './app/ComponentSupport/functions.js'
 import { postIP } from './services/ipService.js'
 import ClearCache from './app/ComponentSupport/ClearCache.jsx'
+import MarqueeText from './pages/clients/Products/AutoHideNotification.jsx'
+import Feedback from './pages/clients/Feedback/Feedback.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -94,6 +96,7 @@ function App() {
 
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>
+      <MarqueeText message="Chào mừng bạn đến với ALMO - REVIEW. Bạn đang có 1 mã giảm giá cho sản phẩm IP 15 PROMAX" />
        <ToastContainer position="top-right" style={{ top: "50px" }}/>
       {isAdminPage ? (!isLoginAdminPage ?  <MenuAdmin /> : <></>) : <Header />}
       {/* <Header /> */}
@@ -128,6 +131,11 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/inspection-policy" element={<InspectionPolicy />} />
           <Route path="/policy" element={<Policy />} />
+
+
+          <Route path="/inquiry-product" element={<Feedback />} />
+
+          
 
 
           {/* //Admin */}

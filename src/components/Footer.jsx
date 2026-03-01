@@ -44,6 +44,7 @@ const Footer = () => {
                 <div className="footer-about">
                         <h1>Về chúng tôi</h1>
                         <Link to="/about">Giới thiệu</Link>
+                        <Link to="/inquiry-product">Yêu cầu sản phẩm</Link>
                 </div>
                 <div className="footer-policy">
                         <h1>Chính sách</h1>

@@ -12,6 +12,7 @@ import { getProductClientALl } from '../../services/ProductService.js';
 import { toast } from 'react-toastify';
 import logo from '../../assets/img/logo.png'
 import '../../style/Home.scss'
+import { updateNotifi } from '../../app/features/notificationSlice.js';
 
 const Home = () => {
 
@@ -23,6 +24,7 @@ const [loading, setLoading] = useState(true);
 const [params, setParams] = useState({
     sort: "new-product"
 })
+const dispatch = useDispatch();
 const {items: products_headers, loading_header} = useSelector((state) => state.products)
     const showProductByCategory = async (category_name) => {
       setLoading(true)
@@ -50,7 +52,7 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
      
         getProduct()
          
-    }, [])
+    }, [params.sort])
     const getProduct = async () => {
        setLoading(true);
         const data = await getProductClientALl(params, currentPage, 10);
@@ -89,9 +91,15 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
         <div class="spinner-grow text-almo" role="status">
       </div>Không tìm thấy sản phẩm
       </div>;
+      const checkT = () => {
+        
+        dispatch(updateNotifi({
+          message: "Chào bạn"
+        }))
+      }
   return (
     <div style={styles.container}>
-      
+        <button onClick={() => checkT()}>Click notifi</button>
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
        <div className="category-box">
           <CategoryHome sendToHome={showProductByCategory}/>
@@ -99,11 +107,15 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
         <div className="sort-box">
             <select className="sort-box-select" onChange={(e) => 
               {
-                setParams({
+
+                setCurrentPage(1)
+
+
+            setParams({
               ...params,
               sort: e.target.value
             })
-            getProduct()
+            
               }}>
                 <option value="price-up" selected={params.sort === "price-up"}>Giá tăng dần</option>
                 <option value="price-down" selected={params.sort === "price-down"}>Giá giảm dần</option>

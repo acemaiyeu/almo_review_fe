@@ -16,10 +16,10 @@ export const getProductClientALl = async (params = [], page = 1, limit = 10) => 
            params_text += `name=${params.product_name}`
         }
         if(params?.sort === "price-down"){
-           params_text += `sort[price]=asc`
+           params_text += `sort[price]=desc`
         }
         if(params?.sort === "price-up"){
-           params_text += `sort[price]=desc`
+           params_text += `sort[price]=asc`
         }
         if(params?.sort === "new-product"){
            params_text += `sort[created_at]=desc`

@@ -16,6 +16,13 @@ const Login = () => {
                 if(res){
                     localStorage.setItem('access_token', res.access_token)
                     localStorage.setItem('expires_in', res.expires_in)
+                    localStorage.setItem('refresh_token', res.refresh_token);
+  
+                const currentTime = Date.now(); // Tính bằng miligiây
+                const expireTime = currentTime + res.expires_in * 1000; // Đổi 3600s thành miligiây
+
+                localStorage.setItem('access_token', res.access_token);
+                localStorage.setItem('expires_at', expireTime); // Lưu th
                     let last_page = localStorage.getItem('last-page_client');
                     localStorage.removeItem('last-page_client')
                     showDynamic(dispatch,"Đăng nhập thành công!");

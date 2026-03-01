@@ -1,0 +1,84 @@
+.feedback-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.feedback-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid #f0f0f0;
+}
+
+.feedback-card h3 {
+  margin: 0 0 10px 0;
+  color: #1a1a1a;
+  font-size: 22px;
+}
+
+.feedback-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff; /* Màu xanh công nghệ */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+
+.success-message {
+  padding: 20px;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
