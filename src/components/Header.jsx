@@ -1,16 +1,19 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, User } from 'lucide-react';
-import { useState } from 'react';
+import { ShoppingCart, Search, User, Settings } from 'lucide-react';
+import { use, useEffect, useState } from 'react';
 import '../style/Header.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import axiosAuth from '../services/axiosAuth';
-import { showDynamic } from '../app/ComponentSupport/functions';
+import { getCookie, setCookie, showDynamic } from '../app/ComponentSupport/functions';
 import { resetProfile, updateProfile } from '../app/features/profileSlice';
 import logo from '../assets/img/logo.png'
 import SettingModal from '../pages/clients/SettingModal';
 import { getProductClientALl } from '../services/ProductService';
 import { setProducts } from '../app/features/productSlice';
 import { toast } from 'react-toastify';
+import { getNotifiIsland, setNotifiEamil, setNotifiIsland } from '../services/SettingService';
+import { updateSetting } from '../app/features/settingSlice';
+import { updateUser, updateUserClient } from '../services/UserService';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,9 +21,10 @@ function Header() {
   const profile = useSelector((state) => state.profile)
   const dispatch =  useDispatch();
   const [showSetting, setShowSetting] = useState(false);
-
+  const [statusNotifiIsland, setStatusNotifiIsland] = useState("on");
+  const setting = useSelector((state) => state.setting);
    const getProductByName = async (product_name) => {
-      
+    
       if(!window.location.pathname.startsWith('/search/')){
           navigate(`/search/${searchTerm}`);
           return;
@@ -41,6 +45,33 @@ function Header() {
         toast.warning("Không tìm thấy sản phẩm!")
       }
   }
+  
+   const setNotificationIsland = (status) => {
+      setCookie("notifiisland",status, 10000);
+      getNotificationIsland()
+  }
+
+  const getNotificationIsland = () => {
+     const data = getCookie("notifiisland");
+     if(data === undefined || data === ""){
+        setNotificationIsland("on")
+        return;
+     }
+    
+     setStatusNotifiIsland(data)
+      dispatch(updateSetting({
+      notifiIsland: data
+     }))
+  }
+  const setNotificationEmail = async () => {
+      const data = await updateUserClient(dispatch, {
+          notification_email: !setting.notifiEmail
+      })
+  }
+  useState(() => {
+      getNotificationIsland()
+  }, [])
+ 
   const handleSearch = (e) => {
     e.preventDefault();
     // if (searchTerm.trim()) {
@@ -67,7 +98,6 @@ function Header() {
   const handleSetShowSetting = () => {
     setShowSetting(false);      // Cập nhật state
   }
-
   return (
     <nav style={styles.nav}>
       <div style={styles.container}>
@@ -143,7 +173,30 @@ function Header() {
               </span>
             </div>
           }
-
+          <Link to="#" style={styles.menuItem}>
+              {/* <Settings size={20} /> */}
+              <span>Cài đặt</span>
+              <div className="menu-item-popup">
+                <div className="menu-item-popup-title">Cài đặt</div>
+                <div className="menu-item-popup-body">
+                    <div className="menu-item-popup-body-item">
+                          <div className="menu-item-popup-body-item-title">Thông báo Island</div>
+                          <div className="menu-item-popup-body-item-value" onClick={() => {
+                                setNotificationIsland(statusNotifiIsland === "on" ? "off" : "on")
+                          }}>{statusNotifiIsland === "on" ? <i class="bi bi-toggle-on"></i> : <i class="bi bi-toggle-off"></i>}</div>
+                    </div>
+                    {profile.id && 
+                      <div className="menu-item-popup-body-item">
+                            <div className="menu-item-popup-body-item-title">Nhận thông báo qua email</div>
+                            <div className="menu-item-popup-body-item-value" onClick={() => {
+                              setNotificationEmail();
+                              dispatch(setNotifiEamil(dispatch, !setting.notifiEmail))
+                            }}>{setting.notifiEmail === 1 ? <i class="bi bi-toggle-on"></i> : <i class="bi bi-toggle-off"></i>}</div>
+                      </div>
+                    }
+                </div>
+              </div>
+            </Link> 
           {/* <Link to="/cart" style={styles.cartBtn}>
             <div style={{ position: 'relative' }}>
               <ShoppingCart size={24} />
@@ -166,7 +219,7 @@ const styles = {
   input: { flex: 1, border: 'none', padding: '8px 12px', outline: 'none' },
   searchBtn: { border: 'none', background: 'none', padding: '0 10px', cursor: 'pointer' },
   menu: { display: 'flex', gap: '20px', alignItems: 'center', width: "30%" },
-  menuItem: { textDecoration: 'none', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '1rem' },
+  menuItem: { textDecoration: 'none', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '1rem', position: 'relative' },
   cartBtn: { textDecoration: 'none', color: '#000', display: 'flex', alignItems: 'center', gap: '8px', background: '#fff', padding: '5px 12px', borderRadius: '4px' },
   badge: { position: 'absolute', top: '-8px', right: '-8px', background: 'red', color: '#fff', fontSize: '10px', borderRadius: '50%', padding: '2px 5px' }
 };

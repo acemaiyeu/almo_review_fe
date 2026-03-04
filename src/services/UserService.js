@@ -96,6 +96,22 @@ export const createUser = async (dispatch, params) => {
         }
     }
 }
+export const updateUserClient = async (dispatch, params) => {
+    try {
+        // Thêm return ở đầu dòng này
+        const res = await axiosClient.put(`user`, {
+            ...params
+        });
+        showDynamic(dispatch, "Cập nhật tài khoản thành công!")
+        return res.data; // Trả về dữ liệu từ API
+    } catch (error) {
+        // console.error("Lỗi khi cập nhật sản phẩm:", error);
+        // throw error; 
+        return {
+            status: "error"
+        }
+    }
+}
 export const updateUser = async (dispatch, params) => {
     try {
         // Thêm return ở đầu dòng này

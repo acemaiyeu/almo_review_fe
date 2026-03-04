@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const profileSlice = createSlice({
   name: 'profile',
   initialState: {
+    id: undefined,
     email: '',
     name: '',
     avatar: '',
@@ -12,10 +13,11 @@ const profileSlice = createSlice({
   reducers: {
     updateProfile: (state, action) => {
       // action.payload sẽ chứa dữ liệu mới bạn gửi lên
+      state.id = action.payload.id;
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.avatar = action.payload.avatar;
-      state.notification = action.payload.notification,
+      state.notification = action.payload.notification_email,
       state.role_code = action.payload.role_code
     },
     resetProfile: (state) => {

@@ -38,6 +38,7 @@ import MarqueeText from './pages/clients/Products/AutoHideNotification.jsx'
 import Feedback from './pages/clients/Feedback/Feedback.jsx'
 import Promotion from './components/Promotion.jsx'
 import ShippingDelivery from './components/ShippingDelivery.jsx'
+import { updateSetting } from './app/features/settingSlice.js'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -45,7 +46,7 @@ function App() {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isLoginAdminPage = location.pathname.startsWith('/admin/login');
   const dispatch = useDispatch();
-  
+    const setting = useSelector((state) => state.setting)
   // if(!profile.email || profile.email === ''){
   //   axiosAuth.get('auth/profile').then((res) => {
   //     useDispatch(updateProfile({
@@ -61,9 +62,12 @@ function App() {
       axiosAuth.get('auth/profile')
         .then((res) => {      
           // Destructure data from the axios response
-          const { name, email, avatar, notification, role_code } = res.data; 
+          const {id, name, email, avatar, notification_email, role_code } = res.data; 
           
-          dispatch(updateProfile({ name, email, avatar, notification, role_code}));
+          dispatch(updateProfile({id,  name, email, avatar, notification_email, role_code}));
+          dispatch(updateSetting({
+              notifiEmail: notification_email
+          }))
         })
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
@@ -106,7 +110,9 @@ function App() {
       // style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}
       style={{paddingLeft: '10px',paddingRight: '10px'}}
       >
-        <DynamicIsland />
+        {setting?.notifiIsland === "on" &&
+          <DynamicIsland />
+        }
         <Routes>
           {/* Home */}
           <Route path="/" element={<Home />} /> 
