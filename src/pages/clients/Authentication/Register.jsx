@@ -26,7 +26,7 @@ const Login = () => {
                 localStorage.setItem('access_token', res.access_token)
                 localStorage.setItem('expires_in', res.expires_in)
                 localStorage.setItem('sks-ksk', res.sks_ksk)
-                setCookie("sk", res.sks_ksk, 10000)
+                setCookie("sk", res.sks_ksk, 100000)
                 window.location.href = "/"
             }).catch()
     };

@@ -39,6 +39,7 @@ import Feedback from './pages/clients/Feedback/Feedback.jsx'
 import Promotion from './components/Promotion.jsx'
 import ShippingDelivery from './components/ShippingDelivery.jsx'
 import { updateSetting } from './app/features/settingSlice.js'
+import ManageFeedbackProduct from './pages/admin/ManageFeedbackProduct.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -156,6 +157,8 @@ function App() {
           <Route path="/admin/manage-products" element={<ManageProduct />} />
           <Route path="/admin/manage-categories" element={<ManageCategory />} />
           <Route path="/admin/manage-users" element={<ManageUser />} />
+          <Route path="/admin/manage-feedback-product" element={<ManageFeedbackProduct />} />
+          
          <Route path="/admin/clear-cache" element={<ClearCache />} />
           {/* Trang 404 nếu không tìm thấy route */}
           <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />

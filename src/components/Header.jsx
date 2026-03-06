@@ -99,37 +99,37 @@ function Header() {
     setShowSetting(false);      // Cập nhật state
   }
   return (
-    <nav style={styles.nav}>
-      <div style={styles.container}>
+    <nav className="nav">
+      <div className="container">
         {/* 1. Logo */}
-        <Link to="/" style={styles.logo}>
+        <Link to="/" className="logo">
           <img className="logo" src={logo} alt="logo"/>
           {/* <span style={{ fontWeight: 'bold', fontSize: '20px' }}>Home</span> */}
         </Link>
 
         {/* 2. Thanh tìm kiếm */}
-        <form onSubmit={handleSearch} style={styles.searchBox}>
+        <form onSubmit={handleSearch} className="search-box">
           <input 
             type="text" 
             placeholder="Bạn tìm điện thoại gì..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={styles.input}
+            className="input"
           />
-          <button type="submit" style={styles.searchBtn}>
+          <button type="submit" className="search-btn">
             <Search size={18} />
           </button>
         </form>
 
         {/* 3. Menu điều hướng */}
-        <div style={styles.menu}>
+        <div className="menu">
           {profile.email === '' ?
-            <Link to="/login" style={styles.menuItem}>
+            <Link to="/login" className="menu-item">
               {/* < size={20} /> */}
               <span>Đăng nhập</span>
             </Link> 
           : 
-            <div style={styles.menuItem} className="indentifi-position">
+            <div className="menu-item indentifi-position">
               <User size={20} />
               <span>Tài khoản của tôi
                 <div className="account-modal">
@@ -141,21 +141,21 @@ function Header() {
                     
                     <div className="account-list">
                         <div className="account-item">
-                          <Link to="/history-discounts" style={styles.menuItem}>
+                          <Link to="/history-discounts" className="menu-item">
                             <span>Lịch sử giảm giá</span>
                         </Link>
                         </div>
                     </div>
                     <div className="account-list">
                         <div className="account-item">
-                          <Link to="/my-orders" style={styles.menuItem}>
+                          <Link to="/my-orders" className="menu-item">
                             <span>Quản lý đơn hàng</span>
                         </Link>
                         </div>
                     </div>
                      <div className="account-list">
                         <div className="account-item" >
-                          <Link  style={styles.menuItem}>
+                          <Link  className="menu-item">
                             <span onClick={() => setShowSetting(true)}>Cài đặt</span>
                             {showSetting === true && <SettingModal setShowSetting={handleSetShowSetting} isNotification={profile.notification} profile={profile} dispatch={dispatch}/>}
                             
@@ -173,8 +173,8 @@ function Header() {
               </span>
             </div>
           }
-          <Link to="#" style={styles.menuItem}>
-              {/* <Settings size={20} /> */}
+          <Link to="#" className="menu-item">
+              <Settings size={20} />
               <span>Cài đặt</span>
               <div className="menu-item-popup">
                 <div className="menu-item-popup-title">Cài đặt</div>
@@ -210,18 +210,5 @@ function Header() {
   );
 }
 
-// CSS-in-JS cơ bản để bạn chạy được ngay
-const styles = {
-  nav: { background: 'var(--background-main)', padding: '10px 0', position: 'sticky', top: 0, zIndex: 100 },
-  container: { maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '20px', padding: '0 15px' },
-  logo: { display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#000' },
-  searchBox: { flex: 1, display: 'flex', background: '#fff', borderRadius: '4px', overflow: 'hidden' },
-  input: { flex: 1, border: 'none', padding: '8px 12px', outline: 'none' },
-  searchBtn: { border: 'none', background: 'none', padding: '0 10px', cursor: 'pointer' },
-  menu: { display: 'flex', gap: '20px', alignItems: 'center', width: "30%" },
-  menuItem: { textDecoration: 'none', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '1rem', position: 'relative' },
-  cartBtn: { textDecoration: 'none', color: '#000', display: 'flex', alignItems: 'center', gap: '8px', background: '#fff', padding: '5px 12px', borderRadius: '4px' },
-  badge: { position: 'absolute', top: '-8px', right: '-8px', background: 'red', color: '#fff', fontSize: '10px', borderRadius: '50%', padding: '2px 5px' }
-};
 
 export default Header;

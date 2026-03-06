@@ -11,7 +11,7 @@ const DynamicIsland = () => {
   useEffect(() => {
     if (content) {
       setIsActive(true);
-      audio.play();
+      audio.play().catch();
       // Sau 3 giây thì bắt đầu thu nhỏ lại
       const timer = setTimeout(() => {
         setIsActive(false);

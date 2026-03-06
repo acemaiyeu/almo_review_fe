@@ -65,7 +65,7 @@ const AdminLogin = () => {
             <label className="remember-me">
               <input type="checkbox" /> Ghi nhớ đăng nhập
             </label>
-            <a href="#forgot" className="forgot-link">Quên mật khẩu?</a>
+            <a href="/forgot-password" className="forgot-link">Quên mật khẩu?</a>
           </div>
 
           <button type="submit" className="login-button">

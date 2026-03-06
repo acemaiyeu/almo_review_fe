@@ -1,0 +1,348 @@
+import { useEffect, useState } from 'react';
+import WordEditor from '../../app/ComponentSupport/WordEditor';
+import '../../style/ManagerProduct.scss'
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { uploadImage } from '../../app/ComponentSupport/functions';
+import ExportExcelButton from '../../app/ComponentSupport/ExportButton';
+import { getCategoryALl } from '../../services/CategoryService';
+import axiosAdmin from '../../services/axiosAdmin';
+import { blockUser, createUser, deleteUser, getUserALl, unBlockUser, updateUser } from '../../services/UserService';
+import { getRoleALl } from '../../services/RoleService';
+import { getFeedbackProductALl } from '../../services/FeedbackProductService';
+const  ManageFeedbackProduct = () => {
+    const dispatch = useDispatch();
+    const [listUsers, setlistUsers] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
+    const [useParams, setUseParams] = useState({
+        product_name: ''
+    });
+    const [listRole, setListRole] = useState([]);
+    const [loadding, setLoadding] = useState(false);
+    const [limit, setLimit] = useState(7);
+    const [user, setUser] = useState({
+        id: undefined,
+        email: "",
+        name: "",
+        phone: "",
+        role_id: "",
+        block: false,
+    });
+    const [listCategories, setListCategories] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [updateModal, setUpdateModal] = useState(false);
+
+    const getDataWordToThumnail = (content) => {
+       user.thumbnail = content;
+       setUser(user)
+    }
+    const getDataWordToProperty = (content) => {
+       user.property = content;
+       setUser(user)
+    }
+    const getDataWordToRate = (content) => {
+       user.rate_descriptions = content;
+       setUser(user)
+    }
+    const [dataExport, setDataExport] = useState([])
+    const setUserDefault = () => {
+        setUser({
+            id: undefined,
+            email: "",
+            name: "",
+            phone: "",
+            role_id: "",
+            block: false,
+        })
+    }
+    const handleEdit = (user) => {
+        setUser({
+            ...user
+        })
+        setShowModal(true)
+        setUpdateModal(true)
+    }
+    const getFeedBackProducts = async () => {
+        setLoadding(true)
+        const users = await getFeedbackProductALl(useParams,page, limit); 
+        
+        if(users){
+            setlistUsers(users.data)
+            setTotalPage(users.meta.pagination.total_pages)
+        }
+        setLoadding(false)
+    }
+    const nextPage = () => {
+        if(page >= totalPage){
+            toast.error("Bạn đã ở trang cuối cùng!")
+            return;
+        }
+        setPage(page + 1)
+    }
+    const prevPage = () => {
+        if(page <= 1){
+            toast.error("Bạn đã ở trang đầu tiên!")
+            return;
+        }
+        setPage(page - 1)
+    }
+    const firstPage = () => {
+        setPage(1)
+    }
+    const lastPage = () => {
+        setPage(totalPage)
+    }
+
+
+    useEffect(() => {
+        getFeedBackProducts()
+    }, [listUsers?.length, page])
+
+    const changeTextEmail = (email) => {
+    if (!email || !email.includes('@')) return email;
+
+    // Tách email thành 2 phần: username và domain
+    const [username, domain] = email.split('@');
+
+    // Nếu username quá ngắn (dưới 3 ký tự), chỉ ẩn một phần hoặc hiện hết
+    if (username.length <= 2) {
+        return `${username[0]}***@${domain}`;
+    }
+
+    // Giữ lại 3 ký tự đầu và 2 ký tự cuối (giống ví dụ của bạn)
+    const firstPart = username.substring(0, 3);
+    const lastPart = username.substring(username.length - 2);
+    
+    // Tạo chuỗi sao ở giữa (độ dài tùy ý, ở đây mình để 8 dấu *)
+    const maskedUsername = `${firstPart}********${lastPart}`;
+
+    return `${maskedUsername}@${domain}`;
+};
+     const getRoles = async () => {
+        if(listRole.length <= 0){
+            const roles = await getRoleALl([],1, 1000); 
+        
+            if(roles){
+                setListRole(roles.data)
+            }
+        }
+       
+    }
+
+    //Create, Update, Delete
+        const create = async () => {
+            if(user.id){
+                toast.error("Chức năng không thể sử dụng")
+                return;
+            }
+            const data = await createUser(dispatch, user);
+            if(data?.status){
+                return;
+            }
+                setShowModal(false)
+                getFeedBackProducts()
+                setUserDefault()
+        }
+        const update = async () => {
+            if(!updateModal){
+                toast.error("Chức năng không thể sử dụng")
+                return;
+            }
+            const data = await updateUser(dispatch, user);
+                setShowModal(false)
+                getFeedBackProducts()
+                setUserDefault()
+        }
+        const deleteById = async (id) => {
+            await deleteUser(dispatch, id);
+                setShowModal(false)
+                getFeedBackProducts()
+        }
+   
+    // const updateBlockUser = async (user_id) => {
+    //    const re = await blockUser(dispatch, user_id);
+    //         // getFeedBackProducts()
+    // }
+    // const updateUnBlockUser = async (user_id) => {
+    //    await unBlockUser(dispatch, user_id);
+    //         // getFeedBackProducts()
+    // }
+    return (
+        <div className="manage-box">
+            <div className="manage-box-title">QUẢN LÝ TÀI KHOẢN</div>
+                <div className="manage-box-filter">
+                    <div className="manage-box-filter-control">
+                       
+                        <div className="manage-box-filter-control-item">
+                            <div className="manage-box-filter-control-item-title">
+                                ID:
+                            </div>
+                            <div className="manage-box-filter-control-item-input">
+                                <input type="text" placeholder='Vui lòng nhập id cần tìm' value={useParams.id} onChange={(e) => { setUseParams({ ...useParams, id: e.target.value}) }}/>
+                            </div>
+                        </div>
+                         <div className="manage-box-filter-control-item">
+                            <div className="manage-box-filter-control-item-title">
+                                Tên:
+                            </div>
+                            <div className="manage-box-filter-control-item-input">
+                                <input type="text" placeholder='Vui lòng nhập tên tài khoản cần tìm' value={useParams.name} onChange={(e) => { setUseParams({ ...useParams, name: e.target.value}) }}/>
+                            </div>
+                        </div>
+                        <div className="manage-box-filter-control-item">
+                            <div className="manage-box-filter-control-item-title">
+                                Email:
+                            </div>
+                            <div className="manage-box-filter-control-item-input">
+                                <input type="text" placeholder='Vui lòng nhập email sản phẩm cần tìm' value={useParams.email} onChange={(e) => { setUseParams({ ...useParams, email: e.target.value}) }}/>
+                            </div>
+                        </div>
+                        <div className="manage-box-filter-control-item">
+                            <div className="manage-box-filter-control-item-title">  
+                                Số điện thoại:
+                            </div>
+                            <div className="manage-box-filter-control-item-input">
+                                <input type="text" placeholder='Vui lòng nhập SĐT sản phẩm cần tìm' value={useParams.phone} onChange={(e) => { setUseParams({ ...useParams, phone: e.target.value}) }}/>
+                            </div>
+                        </div>
+                        <div className="manage-box-filter-control-item">
+                            <input className="btn-submit" type='submit' value={"Tìm kiếm"} onClick={() => getFeedBackProducts()}/>
+                        </div>
+                    </div>
+                </div>
+                <div className="manage-box-content">
+                        <div className="manage-box-title">Dữ liệu</div>
+                        <div className="manage-box-content-modal">
+                            <div className="manage-box-content-modal-item" onClick={() => {
+                                           setUserDefault()
+                                            setUpdateModal(false)
+                                            setShowModal(true)
+                                        }}>
+                                Thêm
+                            </div>
+                            <div className="manage-box-content-modal-item" onClick={() => getFeedBackProducts()}>
+                                Cập nhật lại dữ liệu
+                            </div>
+                            
+                            <div className="manage-box-content-modal-item">
+                                <select>
+                                    <option>10</option>
+                                    <option>100</option>
+                                    <option>1000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="manage-box-body">
+                            <table className="table table-bordered">
+                                 <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tiêu đề hoặc link sản phẩm</th>
+                                        <th>Ghi chú</th>
+                                        <th>Khách hàng</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                    <tbody>
+                                        {loadding && 
+                                            <tr>
+                                                <td>
+                                                    <button class="btn-spinner" type="button" disabled>
+                                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                         &nbsp; Đang tải ...
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }   
+                                        {listUsers && listUsers.length > 0 && listUsers.map((item, index_item) => {
+                                            return (
+                                                <tr>
+                                                    <td>{item.id}</td>
+                                                    <td><a target="_blank" href={item.title}>{item.title}</a></td>
+                                                    <td>{item.note}</td>
+                                                    <td>{item.created_by}</td>
+                                                    <td>
+                                                        <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>  
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
+                                        {listUsers.length === 0 && 
+                                            <div>Không tìm thấy dữ liệu</div>
+                                        }
+                                    </tbody>
+                            </table>
+                        </div>
+
+                        {/* Modal */}
+                        {showModal &&
+                            <div className="manage-box-modal">
+                                <div className="manage-box-modal-closed" onClick={() => {
+                                    setShowModal(false)
+                                }}>
+                                    <p>x</p>
+                                </div>
+                                <div className="manage-box-modal-title">Đọc dữ liệu</div>
+                                <div className="manage-box-modal-body">
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            ID:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={user.id} disabled/>
+                                        </div>
+                                    </div>
+
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Tiêu đề hoặc link sản phẩm
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={user.name} onChange={(e) => {
+                                                setUser({
+                                                    ...user,
+                                                    name: e.target.value
+                                                })
+                                            }}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Ghi chú:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input disabled={updateModal} className="manage-box-modal-body-control-body-input" type="text" value={updateModal ? changeTextEmail(user.email) :user.email} onChange={(e) => {
+                                                setUser({
+                                                    ...user,
+                                                    email: e.target.value
+                                                })
+                                            }}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                </div>
+                <div className="manage-box-paging">
+                    <div className={`manage-box-paging-item ${page == 1 ? 'disabled' : ''}`}  onClick={() => firstPage()}>
+                        Trang đầu
+                    </div>
+                    <div className={`manage-box-paging-item ${page == 1 ? 'disabled' : ''}`}  onClick={() => prevPage()}>
+                        Trang trước
+                    </div>
+                    <div className={`manage-box-paging-item`}>
+                        {page} / {totalPage}
+                    </div>
+                     <div className={`manage-box-paging-item ${page == totalPage ? 'disabled' : ''}`}  onClick={() => nextPage()}>
+                        Trang tiếp theo
+                    </div>
+                     <div className={`manage-box-paging-item ${page == totalPage ? 'disabled' : ''}`} onClick={() => lastPage()}>
+                        Trang cuối
+                    </div>
+                </div>
+        </div>
+    )
+}
+export default ManageFeedbackProduct;

@@ -14,7 +14,7 @@ export const getFeedbackProductALl = async (params = [], page = 1, limit = 10) =
         if(params?.length > 0){
 
         }
-        const res = await axiosAdmin.get(`${uri_base_all}?${params_text}&page=${page}&limit=${limit}`);
+        const res = await axiosAdmin.get(`${uri_base_all}?${params_text}&sort[created_at]=desc&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {
         // console.error("Lỗi khi lấy sản phẩm:", error);
