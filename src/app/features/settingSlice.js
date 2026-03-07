@@ -5,11 +5,13 @@ const settingSlice = createSlice({
   name: 'setting',
   initialState: {
     notifiIsland: "on",
+    soundnotifiIsland: "on",
     notifiEmail: false
   },
   reducers: {
     updateSetting: (state, action) => {
         state.notifiIsland = action.payload.notifiIsland ?? state.notifiIsland,
+        state.soundnotifiIsland = action.payload.soundnotifiIsland ?? state.soundnotifiIsland,
         state.notifiEmail = action.payload.notifiEmail ?? state.notifiEmail
     }
   }

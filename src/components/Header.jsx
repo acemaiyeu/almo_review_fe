@@ -22,6 +22,7 @@ function Header() {
   const dispatch =  useDispatch();
   const [showSetting, setShowSetting] = useState(false);
   const [statusNotifiIsland, setStatusNotifiIsland] = useState("on");
+  const [statusSoundNotifiIsland, setStatusSoundNotifiIsland] = useState("on");
   const setting = useSelector((state) => state.setting);
    const getProductByName = async (product_name) => {
     
@@ -50,7 +51,23 @@ function Header() {
       setCookie("notifiisland",status, 10000);
       getNotificationIsland()
   }
-
+  const setSoundNotificationIsland = (status) => {
+      setCookie("soundnotifiisland",status, 10000);
+      getSoundNotificationIsland()
+  }
+   const getSoundNotificationIsland = () => {
+     const data = getCookie("soundnotifiisland");
+     if(data === undefined || data === ""){
+        setSoundNotificationIsland("on")
+        return;
+     }
+    
+     setStatusSoundNotifiIsland(data)
+      dispatch(updateSetting({
+      soundnotifiIsland: data
+     }))
+  }
+  
   const getNotificationIsland = () => {
      const data = getCookie("notifiisland");
      if(data === undefined || data === ""){
@@ -70,6 +87,7 @@ function Header() {
   }
   useState(() => {
       getNotificationIsland()
+      getSoundNotificationIsland()
   }, [])
  
   const handleSearch = (e) => {
@@ -184,6 +202,12 @@ function Header() {
                           <div className="menu-item-popup-body-item-value" onClick={() => {
                                 setNotificationIsland(statusNotifiIsland === "on" ? "off" : "on")
                           }}>{statusNotifiIsland === "on" ? <i class="bi bi-toggle-on"></i> : <i class="bi bi-toggle-off"></i>}</div>
+                    </div>
+                    <div className="menu-item-popup-body-item">
+                          <div className="menu-item-popup-body-item-title">Âm thanh Thông báo Island</div>
+                          <div className="menu-item-popup-body-item-value" onClick={() => {
+                                setSoundNotificationIsland(statusSoundNotifiIsland === "on" ? "off" : "on")
+                          }}>{statusSoundNotifiIsland === "on" ? <i class="bi bi-toggle-on"></i> : <i class="bi bi-toggle-off"></i>}</div>
                     </div>
                     {profile.id && 
                       <div className="menu-item-popup-body-item">

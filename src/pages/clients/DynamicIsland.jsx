@@ -8,10 +8,15 @@ const DynamicIsland = () => {
   const { content, notifi } = useSelector((state) => state.dynamic);
   const [isActive, setIsActive] = useState(false);
   const audio = document.getElementById("audio");
+  const setting = useSelector((state) => state.setting);
   useEffect(() => {
     if (content) {
       setIsActive(true);
-      audio.play().catch();
+      
+      if(setting && setting?.soundnotifiIsland === "on"){
+        audio.play()
+      }
+      
       // Sau 3 giây thì bắt đầu thu nhỏ lại
       const timer = setTimeout(() => {
         setIsActive(false);
