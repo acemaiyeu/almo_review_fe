@@ -45,8 +45,10 @@ const CategoryHome = ({sendToHome}) => {
       <h2 className="category-title">Danh mục sản phẩm</h2>
       
       <div className="category-grid">
-        {categories.map((cat) => (
-          <div key={cat.code} className={`category-item ${categoryActive === cat.code ? 'active' : ''}`} onClick={() => hanleClickCategory(cat.name, cat.code)}>
+        {categories.map((cat) => {
+          if(cat.total_products > 0){
+            return (
+              <div key={cat.code} className={`category-item ${categoryActive === cat.code ? 'active' : ''}`} onClick={() => hanleClickCategory(cat.name, cat.code)}>
             <div className="category-info">
               {cat.code !== "ALL" && 
                 <span className="category-icon"><img src={cat.thumbnail} loading='lazy'></img></span> 
@@ -58,7 +60,10 @@ const CategoryHome = ({sendToHome}) => {
               {cat.total_products ?? 0}
             </span>
           </div>
-        ))}
+            )
+          }
+          
+})}
       </div>
     </section> : <div>Không tìm thấy loại sản phẩm</div>
   );
