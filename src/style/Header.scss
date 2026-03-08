@@ -1,0 +1,197 @@
+// Khai báo biến để dễ quản lý màu sắc
+$color-white: #fff;
+$color-black: #000;
+$color-red: red;
+$bg-main: var(--background-main);
+
+.nav {
+  background: $bg-main;
+  padding: 10px 0;
+  position: flex;
+  top: 0;
+  z-index: 100;
+
+  .container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 0 15px;
+    flex-direction: row;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: $color-black;
+  }
+
+  .search-box {
+    flex: 1;
+    display: flex;
+    background: $color-white;
+    border-radius: 4px;
+    overflow: hidden;
+
+    input {
+      flex: 1;
+      border: none;
+      padding: 8px 12px;
+      outline: none;
+      font-size: .8rem;
+    }
+
+    .search-btn {
+      border: none;
+      background: none;
+      color: var(--background-main);
+      padding: 0 10px;
+      cursor: pointer;
+    }
+  }
+
+  .menu {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    width: 30%;
+
+    .menu-item {
+      text-decoration: none;
+      color: $color-black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: .8rem;
+      position: relative;
+
+      .badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: $color-red;
+        color: $color-white;
+        font-size: 10px;
+        border-radius: 50%;
+        padding: 2px 5px;
+      }
+    }
+  }
+
+  .cart-btn {
+    text-decoration: none;
+    color: $color-black;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: $color-white;
+    padding: 5px 12px;
+    border-radius: 4px;
+  }
+}
+.indentifi-position:hover .account-modal{
+    display: block;
+}
+.account-modal{
+    position: absolute;
+    width: 200px;
+    height: fit-content;
+    background-color: #fff;
+    top: 100%;
+    right: -60%;
+    box-shadow: 0px 0px 12px 0px var(--background-main);
+    padding: 5px 10px;
+    border-radius: 10px;
+    display: none;
+    animation: slideInRight 0.3s ease-out forwards;
+    z-index: 10000;
+    .account-item{
+        padding: 10px;
+        position: relative;
+        *{
+            color: black;
+        }
+        *:hover{
+            color: var(--background-main)
+        }
+    }
+}
+
+.menu-item-popup{
+    width: 20vw;
+    position: absolute;
+    bottom: -100px;
+    min-height: 100px;
+    background-color: #fff;
+    box-shadow: 0px 0px 12px 0px rgb(194, 193, 193);
+    border-radius: 10px;
+    display: none;
+    z-index: 10000;
+    .menu-item-popup-title{
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .menu-item-popup-body{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        .menu-item-popup-body-item{
+            display: flex;
+            border-bottom: 1px solid grey;
+            padding: 10px;
+            &:hover{
+                background-color: var(--background-main-hover);
+            }
+            // &:first-child{
+            //     border-bottom: none;
+            // }
+            // &:last-child{
+            //     border-top: none;
+            // }
+            .menu-item-popup-body-item-title{
+                width: 60%;
+            }
+            .menu-item-popup-body-item-value{
+                flex: 1;
+                .bi-toggle-on{
+                    color: var(--background-main);
+                }
+            }
+        }
+    }
+}
+a:hover .menu-item-popup{
+    display: block;
+}
+@keyframes slideInRight {
+  0% {
+    /* Xuất phát từ ngoài màn hình bên phải */
+    transform: translateX(100%); 
+    opacity: 0;
+  }
+  100% {
+    /* Dừng lại ở vị trí ban đầu (right: 20px) */
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+.menu-item-popup{
+    width: 60vw;
+    right: -60px;
+    font-size: .8rem;
+}
+.account-modal{
+    right: -80%;
+}
+.search-btn{
+  display: none;
+}
+}

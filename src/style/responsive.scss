@@ -1,0 +1,48 @@
+@media (max-width: 1200px) {
+    .page-admin{
+        flex-direction: column;
+        .menu-admin-container{
+            width: 100%;
+        }
+    }
+    .manage-box .manage-box-filter {
+                width: 95%;
+                font-size: .8rem;
+            }
+    .manage-box .manage-box-filter .manage-box-filter-control .manage-box-filter-control-item .manage-box-filter-control-item-title {
+        width: 70px;
+    }
+    .manage-box .manage-box-title {
+        text-align: left;
+        margin-left: 2%;
+    }
+    .manage-box .manage-box-content .manage-box-content-modal {
+            max-width: 70%;
+            font-size: .6rem;   
+            .manage-box-content-modal-item{
+                display: flex;
+                align-items: center;
+            }
+    }
+    .manage-box-modal{
+        width: 100%;
+        font-size: .9rem;
+    }
+    table{
+        font-size: .8rem;
+    }
+    .manage-box-modal .manage-box-modal-body .manage-box-modal-body-control .manage-box-modal-body-control-title {
+        width: 100px;
+    }
+    .prize-msg{
+        font-size: 1.5rem;
+    }
+}
+table{
+        width: 100%;
+        table-layout: fixed;
+        overflow: auto;
+    }
+    .manage-box{
+        overflow: auto;
+    }

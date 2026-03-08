@@ -1,0 +1,77 @@
+.footer-container{
+    width: 100%;
+    display: flex;
+    .footer-auth, .footer-about, .footer-policy, .footer-connect{
+        flex: 1;
+        color: var(--background-main);
+        a{
+            color: black;
+            cursor: pointer;
+            &:hover{
+                color: var(--background-main);
+            }
+        }
+    }
+    .footer-policy, .footer-about{
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-connect
+    {
+        .facebook_link{
+            color: blue;
+            &:hover{
+                color: white;
+                background-color: blue;
+            }
+        }
+        .tiktok_link{
+            color: black;
+            &:hover{
+                color: white;
+                background-color: black;
+            }
+        }
+        .youtube_link{
+            color: red;
+            &:hover{
+                color: white;
+                background-color: red;
+            }
+        }
+
+    }
+    .footer-auth{
+        .footer-auth-logo{
+            font-size: 2rem;
+            color: var(--background-main);
+            font-weight: bold;
+        }
+        .footer-auth-bct{
+            width: 50%;
+            height: 100%;
+            margin: auto;
+            &>img{
+                width: 100%;
+            }
+        }
+        
+    }
+    .footer-connect{
+            display: flex;
+            flex-direction: column;
+            // text-align: left;
+        }
+}
+@media (max-width: 768px) {
+
+    .footer-container{
+        flex-direction: column;
+        gap: 10px;
+        padding: 0px 20px;
+        .footer-auth{
+            display: flex;
+            flex-direction: row;
+        }
+    }
+}
