@@ -1,0 +1,32 @@
+/* Container cố định vị trí thông báo */
+.notification-banner {
+  position: absolute;
+  top: 40px;
+  right: 0; /* Bắt đầu từ mép phải màn hình */
+  width: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 0;
+  z-index: 9999;
+  transition: all .5s linear;
+}
+
+/* Nội dung chữ chạy */
+.scrolling-text {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  padding-left: 100%; /* Đẩy chữ ra ngoài khung nhìn bên phải */
+  animation: run-and-exit 10s linear forwards; /* 'forwards' để giữ trạng thái cuối */
+}
+
+@keyframes run-and-exit {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Di chuyển sang trái cho đến khi khuất hoàn toàn chiều dài của chính nó */
+    transform: translateX(-100%); 
+  }
+}

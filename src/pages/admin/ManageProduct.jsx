@@ -670,27 +670,39 @@ const  ManageProduct = () => {
                                         <div className="manage-box-modal-body-control-title">
                                             Phí ship:  
                                         </div>
-                                        <div className="manage-box-modal-body-6-02-25 00:43:49:934   4200-5272/RunAdminPrivilege: [787] :GetCurrentUserToken failed
-2026-02-25 00:43:49:940   4200-5272/myDoWidthService: [942] :ShellExecute error : 183
-2026-03-07 22:01:23:339   ControlHandler 14
-2026-03-07 22:01:23:340   session change eventType:5, session:2
-2026-03-07 22:01:23:355   4200-5272/myDoWidthService: [901] :ldremote process not exist. remoteSession 2
-2026-03-07 22:01:23:362   4200-5272/myDoWidthService: [906] :it is pc start. v2  time: 2
-2026-03-07 22:01:23:371   4200-5272/myDoWidthService: [910] :run width normal admin privilege
-2026-03-07 22:01:23:378   4200-5272/GetCurrentUserToken: [729] :emu dwCount:2, pWinStationName:Services, SessionId:0, State:4
-2026-03-07 22:01:23:388   4200-5272/GetCurrentUserToken: [729] :emu dwCount:2, pWinStationName:Console, SessionId:2, State:0
-2026-03-07 22:01:23:397   4200-5272/GetCurrentUserToken: [736] :dwCount:2, pWinStationName:Console
-2026-03-07 22:01:23:407   4200-5272/RunAdminPrivilege: [813] :CreateProcessAsUser command:"E:\LDPlayer\OSLink\bin\ldremote.exe" --fromserver 
-2026-03-07 22:01:24:639   4200-5272/myDoWidthService: [945] :run ldremote process success
-2026-03-07 22:01:27:133   ControlHandler 200
-2026-03-07 22:01:27:133   detecting start
-2026-03-07 22:05:02:307   ControlHandler 4
-2026-03-07 22:33:17:266   4200-5272/myDoWidthService: [901] :ldremote process not exist. remoteSession 2
-2026-03-07 22:33:17:275   4200-5272/myDoWidthService: [934] :it is check 0
-2026-03-07 22:33:17:285   4200-5272/GetCurrentUserToken: [729] :emu dwCount:2, pWinStationName:Services, SessionId:0, State:4
-2026-03-07 22:33:17:294   4200-5272/GetCurrentUserToken: [729] :emu dwCount:2, pWinStationName:Console, SessionId:2, State:1
-2026-03-07 22:33:17:302   4200-5272/GetCurrentUserToken: [743] :WTSQueryUserToken error:1008
-2026-03-07 22:33:17:310   4200-5272/RunAdminPrivilege: [787] :GetCurrentUserToken failed
-2026-03-07 22:33:17:317   4200-5272/myDoWidthService: [942] :ShellExecute error : 183
-2026-03-07 22:33:17:329   4200-5272/myDoWidthService: [965] :run event
-2026-03-07 22:33:17:333   4200-5272/RunUnderWinLogon: [563] :physicalConsoleSession
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={formatToCurrency(productLucky.fee_ship ?? 0)} onChange={(e) => setProductLucky({
+                                                ...productLucky,
+                                                fee_ship: formatToNumber(e.target.value)
+                                            })}/>
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className={`manage-box-modal-btn ${product.id ? 'disabled' : ''}`} onClick={() => handleCreateOrder()}>Tạo mới</div>
+                                        <div className={`manage-box-modal-btn ${updateModal ? '' : 'disabled'}`} onClick={() => update()}>Cập nhật</div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                </div>
+                <div className="manage-box-paging">
+                    <div className={`manage-box-paging-item ${page == 1 ? 'disabled' : ''}`}  onClick={() => firstPage()}>
+                        Trang đầu
+                    </div>
+                    <div className={`manage-box-paging-item ${page == 1 ? 'disabled' : ''}`}  onClick={() => prevPage()}>
+                        Trang trước
+                    </div>
+                    <div className={`manage-box-paging-item`}>
+                        {page} / {totalPage}
+                    </div>
+                     <div className={`manage-box-paging-item ${page == totalPage ? 'disabled' : ''}`}  onClick={() => nextPage()}>
+                        Trang tiếp theo
+                    </div>
+                     <div className={`manage-box-paging-item ${page == totalPage ? 'disabled' : ''}`} onClick={() => lastPage()}>
+                        Trang cuối
+                    </div>
+                </div>
+        </div>
+    )
+}
+export default ManageProduct;
