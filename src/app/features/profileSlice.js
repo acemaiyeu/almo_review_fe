@@ -8,7 +8,8 @@ const profileSlice = createSlice({
     name: '',
     avatar: '',
     notification: false,
-    role_code: 'GUEST'
+    role_code: 'GUEST',
+    reason_block: "2"
   },
   reducers: {
     updateProfile: (state, action) => {
@@ -18,7 +19,8 @@ const profileSlice = createSlice({
       state.email = action.payload.email;
       state.avatar = action.payload.avatar;
       state.notification = action.payload.notification_email,
-      state.role_code = action.payload.role_code
+      state.role_code = action.payload.role_code,
+      state.reason_block = action.payload.reason_block
     },
     resetProfile: (state) => {
        state.name = undefined;

@@ -18,7 +18,9 @@ const Profile = () => {
     avatar: profile.avatar,
     old_password: '',
     password: '',
-    confirm_password: ''
+    confirm_password: '',
+    is_block: false,
+    reason_block: ""
   });
     async () => {
     // Check if email is missing
@@ -26,9 +28,8 @@ const Profile = () => {
       await axiosAuth.get('auth/profile')
         .then((res) => {
           // Destructure data from the axios response
-          const { name, email } = res.data; 
-          
-          dispatch(updateProfile({ name, email }));
+          const { name, email, reason_block } = res.data; 
+          dispatch(updateProfile({ name, email, reason_block }));
         })
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
@@ -39,6 +40,8 @@ const Profile = () => {
     setUserData({
         name: profile.name,
         email: profile.email,
+        is_block: profile.is_block === 0 ? false : true,
+        reason_block: profile.reason_block
     })
   }, [profile.email])
     
@@ -79,6 +82,10 @@ const Profile = () => {
       <div className="input-group">
         <label>Email</label>
         <input type="email" value={userData.email} disabled />
+      </div>
+
+       <div className="input-group">
+        <label>Trạng thái:  {userData.is_block === true ? <span style={{color: "red"}} title={`${userData.reason_block}`}>Đang khóa</span> : <span style={{color: "green"}}>Bình thường</span>}  </label>
       </div>
 
       <button className="btn-main" onClick={() => handleUpdateProfuile()}>Cập nhật thông tin</button>

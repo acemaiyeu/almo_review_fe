@@ -40,6 +40,7 @@ import Promotion from './components/Promotion.jsx'
 import ShippingDelivery from './components/ShippingDelivery.jsx'
 import { updateSetting } from './app/features/settingSlice.js'
 import ManageFeedbackProduct from './pages/admin/ManageFeedbackProduct.jsx'
+import TikTokLivePanel from './pages/clients/Tiktok/TikTokLivePanel.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
@@ -63,16 +64,15 @@ function App() {
       axiosAuth.get('auth/profile')
         .then((res) => {      
           // Destructure data from the axios response
-          const {id, name, email, avatar, notification_email, role_code } = res.data; 
+          const {id, name, email, avatar, notification_email, role_code, reason_block } = res.data; 
           
-          dispatch(updateProfile({id,  name, email, avatar, notification_email, role_code}));
+          dispatch(updateProfile({id,  name, email, avatar, notification_email, role_code, reason_block}));
           dispatch(updateSetting({
               notifiEmail: notification_email
           }))
         })
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
-          // alert(isAdminPage)
           if(isAdminPage){
               window.location.href = "/admin/login"
           }
@@ -127,6 +127,9 @@ function App() {
 
          {/* DiscountHistory */}
          <Route path="/search/:product_name" element={<Search/>} />
+
+         <Route path="/tiktok" element={<TikTokLivePanel />} />
+
 
          {/* Authentication */}
           <Route path="/login" element={<Login />} />

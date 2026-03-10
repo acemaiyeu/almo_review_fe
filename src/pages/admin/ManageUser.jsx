@@ -26,7 +26,7 @@ const  ManageUser = () => {
         name: "",
         phone: "",
         role_id: "",
-        block: false,
+        is_block: false,
     });
     const [listCategories, setListCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -371,10 +371,23 @@ const  ManageUser = () => {
                                             Chặn tài khoản:
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" type="checkbox" checked={user.block === true} 
+                                            <input className="manage-box-modal-body-control-body-input" type="checkbox" checked={user.is_block === 1} 
                                             onClick={() => setUser({
                                                 ...user,
-                                                block: !user.block
+                                                is_block: user.is_block === 1 ? 0 : 1
+                                            })}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
+                                            Lý do chặn tài khoản:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            <input className="manage-box-modal-body-control-body-input" type="text" value={user.reason_block}
+                                            onChange={(e) => setUser({
+                                                ...user,
+                                                reason_block: e.target.value
                                             })}
                                             />
                                         </div>

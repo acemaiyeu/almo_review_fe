@@ -62,9 +62,9 @@ const AdminLogin = () => {
           </div>
 
           <div className="form-actions">
-            <label className="remember-me">
+            {/* <label className="remember-me">
               <input type="checkbox" /> Ghi nhớ đăng nhập
-            </label>
+            </label> */}
             <a href="/forgot-password" className="forgot-link">Quên mật khẩu?</a>
           </div>
 
