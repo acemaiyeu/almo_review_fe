@@ -45,7 +45,7 @@ const Footer = () => {
                         <h1>Về chúng tôi</h1>
                         <Link to="/about">Giới thiệu</Link>
                         <Link to="/inquiry-product">Yêu cầu sản phẩm</Link>
-                        <h3>Giấy phép kinh doanh: <b><i>Đang cập nhật...</i></b></h3>
+                        <h3>Mã số thuế: <b><i>Đang cập nhật...</i></b></h3>
                 </div>
                 <div className="footer-policy">
                         <h1>Chính sách</h1>
