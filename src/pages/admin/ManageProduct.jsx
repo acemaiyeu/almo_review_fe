@@ -537,7 +537,7 @@ const  ManageProduct = () => {
                                             Thời gian bắt đầu quay thưởng
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" disabled={!product.is_luck} type="datetime-local" value={product.start_time_luck} onChange={(e) => {
+                                            <input className="manage-box-modal-body-control-body-input" disabled={product.is_luck === 0} type="datetime-local" value={product.start_time_luck} onChange={(e) => {
                                                 setProduct({
                                                     ...product,
                                                     start_time_luck: e.target.value
@@ -550,7 +550,7 @@ const  ManageProduct = () => {
                                             Thời gian kết thúc quay thưởng
                                         </div>
                                         <div className="manage-box-modal-body-control-body">
-                                            <input className="manage-box-modal-body-control-body-input" disabled={!product.is_luck} type="datetime-local" value={product.end_time_luck} onChange={(e) => {
+                                            <input className="manage-box-modal-body-control-body-input" disabled={product.is_luck === 0} type="datetime-local" value={product.end_time_luck} onChange={(e) => {
                                                 setProduct({
                                                     ...product,
                                                     end_time_luck: e.target.value
