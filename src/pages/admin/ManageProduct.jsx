@@ -36,6 +36,7 @@ const  ManageProduct = () => {
         affilate_tiktok_link: "",
         affilate_shopee_link: "",
         affilate_lazada_link: "",
+        is_luck: 0
     });
     const [userLucky,setUserLucky] = useState({
         user_id: undefined
@@ -518,14 +519,14 @@ const  ManageProduct = () => {
                                             onClick={() => {
                                                 setProduct({
                                                     ...product,
-                                                    is_luck: false
+                                                    is_luck: 0
                                                 })
                                             }}></i>
                                             :<i 
                                             onClick={() => {
                                                 setProduct({
                                                     ...product,
-                                                    is_luck: true
+                                                    is_luck: 1
                                                 })
                                             }} class="bi bi-toggle-off"></i> 
                                             }
