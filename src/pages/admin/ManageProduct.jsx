@@ -530,7 +530,7 @@ const  ManageProduct = () => {
                                                 })
                                             }} class="bi bi-toggle-off"></i> 
                                             }
-                                            
+                                             
                                         </div>
                                     </div>
                                     <div className="manage-box-modal-body-control">
