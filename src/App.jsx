@@ -98,7 +98,7 @@ function App() {
 
   useEffect(() => {
       // toast.warning("Web hiện tại chỉ demo chưa vận hành trực tiếp!")
-      showDynamic(dispatch, "Web hiện tại chỉ demo chưa vận hành trực tiếp!")
+      showDynamic(dispatch, "Dự kiến hoạt động chính thức vào ngày 25/03/2026")
   }, [])
 
   return (
