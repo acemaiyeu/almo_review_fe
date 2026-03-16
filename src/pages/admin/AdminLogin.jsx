@@ -4,7 +4,7 @@ import axiosAuth from '../../services/axiosAuth';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-
+  const [showPass, setShowPass] = useState(false);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -51,7 +51,8 @@ const AdminLogin = () => {
           <div className="input-group">
             <label htmlFor="password">Mật khẩu</label>
             <input
-              type="password"
+
+              type={`${showPass ? 'text' : 'password'}`}
               id="password"
               name="password"
               placeholder="••••••••"
@@ -59,6 +60,11 @@ const AdminLogin = () => {
               onChange={handleChange}
               required
             />
+            <div className="show_pass" onClick={() => setShowPass(
+              !showPass
+            )}>
+              {showPass ?  <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+            </div>
           </div>
 
           <div className="form-actions">

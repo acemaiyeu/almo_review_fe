@@ -535,6 +535,30 @@ const  ManageProduct = () => {
                                     </div>
                                     <div className="manage-box-modal-body-control">
                                         <div className="manage-box-modal-body-control-title">
+                                            Hiển thị web:
+                                        </div>
+                                        <div className="manage-box-modal-body-control-body">
+                                            {product.is_show === 1
+                                            ? <i class="bi bi-toggle-on"  
+                                            onClick={() => {
+                                                setProduct({
+                                                    ...product,
+                                                    is_show: 0
+                                                })
+                                            }}></i>
+                                            :<i 
+                                            onClick={() => {
+                                                setProduct({
+                                                    ...product,
+                                                    is_show: 1
+                                                })
+                                            }} class="bi bi-toggle-off"></i> 
+                                            }
+                                             
+                                        </div>
+                                    </div>
+                                    <div className="manage-box-modal-body-control">
+                                        <div className="manage-box-modal-body-control-title">
                                             Thời gian bắt đầu quay thưởng
                                         </div>
                                         <div className="manage-box-modal-body-control-body">

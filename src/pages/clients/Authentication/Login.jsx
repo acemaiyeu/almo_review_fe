@@ -8,6 +8,7 @@ import { showDynamic } from '../../../app/ComponentSupport/functions';
 const Login = () => {
    const [formData, setFormData] = useState({ email: '', password: ''});
     const dispatch = useDispatch();
+    const [showPass, setShowPass] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
             await axiosAuth.post('/login', {
@@ -56,7 +57,7 @@ const Login = () => {
                     <div className="form-group">
                         <label>Mật khẩu</label>
                         <input 
-                            type="password" 
+                            type={`${showPass ? 'text' : 'password'}`} 
                             required 
                             onChange={(e) => {
 
@@ -66,6 +67,11 @@ const Login = () => {
                                 }
                             }}
                         />
+                       <div className="show_pass" onClick={() => setShowPass(
+                        !showPass
+                        )}>
+                        {showPass ?  <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+                        </div>
                     </div>
                     <button className="button-submit" type="submit">Đăng Nhập</button>
                 </form>

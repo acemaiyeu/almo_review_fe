@@ -1,4 +1,5 @@
 
+import { toast } from "react-toastify";
 import axiosAdmin from "../../services/axiosAdmin";
 import { updateDynamic } from "../features/dynamicIslandSlice"
 
@@ -103,3 +104,57 @@ export function useIp() {
 
   return { ip, loading };
 }
+
+const CACHE_NAME = 'my-product-cache';
+
+// Hàm để lưu dữ liệu vào cache
+export const setCache = async (key, data) => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const response = new Response(JSON.stringify(data));
+    await cache.put(key, response);
+  } catch (error) {
+    console.error('Lỗi khi lưu vào cache:', error);
+  }
+};
+
+// Hàm để lấy dữ liệu từ cache
+export const getCache = async (key) => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const response = await cache.match(key);
+    if (response) {
+      const data = await response.json();
+      return data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Lỗi khi lấy từ cache:', error);
+    return null;
+  }
+};
+
+export const removeCache = async (key) => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const deleted = await cache.delete(key);
+    if(deleted){
+      toast.success("Bạn đã xóa cache thành công. Vui lòng tải lại trang để cập nhật dữ liệu mới!")
+    }
+    return deleted; // Trả về true nếu xóa thành công, false nếu không tìm thấy key
+  } catch (error) {
+    console.error('Lỗi khi xóa item trong cache:', error);
+    return false;
+  }
+};
+
+// 2. Hàm xóa sạch toàn bộ kho Cache (CACHE_NAME)
+export const clearAllCache = async () => {
+  try {
+    const success = await caches.delete(CACHE_NAME);
+    return success; // Trả về true nếu xóa thành công
+  } catch (error) {
+    console.error('Lỗi khi xóa toàn bộ cache:', error);
+    return false;
+  }
+};

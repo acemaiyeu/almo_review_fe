@@ -30,6 +30,17 @@
 .form-group {
   margin-bottom: 20px;
   text-align: left;
+  position: relative;
+}
+.form-group .show_pass{
+  position: absolute;
+  top: 48%;
+  right: 10%;
+  font-size: 1.5rem;
+}
+.form-group .show_pass:hover{
+  cursor: pointer;
+  color: var(--background-main);
 }
 
 .form-group label {

@@ -4,7 +4,7 @@ import { use, useEffect, useState } from 'react';
 import '../style/Header.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import axiosAuth from '../services/axiosAuth';
-import { getCookie, setCookie, showDynamic } from '../app/ComponentSupport/functions';
+import { getCookie, removeCache, setCookie, showDynamic } from '../app/ComponentSupport/functions';
 import { resetProfile, updateProfile } from '../app/features/profileSlice';
 import logo from '../assets/img/logo.png'
 import SettingModal from '../pages/clients/SettingModal';
@@ -208,6 +208,10 @@ function Header() {
                           <div className="menu-item-popup-body-item-value" onClick={() => {
                                 setSoundNotificationIsland(statusSoundNotifiIsland === "on" ? "off" : "on")
                           }}>{statusSoundNotifiIsland === "on" ? <i class="bi bi-toggle-on"></i> : <i class="bi bi-toggle-off"></i>}</div>
+                    </div>
+                    <div className="menu-item-popup-body-item">
+                          <div className="menu-item-popup-body-item-title" onClick={() => removeCache("products")}>Xóa Cache</div>
+                          <div className="menu-item-popup-body-item-value" ></div>
                     </div>
                     {profile.id && 
                       <div className="menu-item-popup-body-item">

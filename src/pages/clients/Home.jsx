@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useFetch } from '../../services/useFetch.js';
 import homeService from '../../services/homeService.js'
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import WordEditor from '../../app/ComponentSupport/WordEditor.jsx';
 import DisplayContent from '../../app/ComponentSupport/DisplayContent.jsx';
 import DynamicIsland from './DynamicIsland.jsx';
@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import logo from '../../assets/img/logo.png'
 import '../../style/Home.scss'
 import { updateNotifi } from '../../app/features/notificationSlice.js';
+import echo from '../../app/ComponentSupport/Echo.js';
+
 
 const Home = () => {
 
@@ -24,7 +26,30 @@ const [loading, setLoading] = useState(true);
 const [params, setParams] = useState({
     sort: "new-product"
 })
-const dispatch = useDispatch();
+const loadData = useCallback(async () => {
+        const data = await getProductClientALl(); // Hàm này giờ đã có cache logic
+        if (data) setProducts(data.data);
+    }, []);
+window.Pusher = Pusher;
+const useProductSocket = (refreshCallback) => {
+    useEffect(() => {
+        const channel = echo.channel('products') // Channel 'products' từ Laravel
+            .listen('.ProductCreated', async (e) => {
+                console.log("🔔 Có sản phẩm mới từ Server!", e);
+                
+                // 1. Xóa cache cũ (Xóa toàn bộ cache sản phẩm để đảm bảo data mới nhất)
+                await caches.delete('my-product-cache'); 
+                
+                // 2. Gọi callback để component fetch lại dữ liệu mới từ API
+                refreshCallback();
+            });
+
+        return () => {
+            channel.stopListening('.ProductCreated');
+        };
+    }, [refreshCallback]);
+};
+
 const {items: products_headers, loading_header} = useSelector((state) => state.products)
     const showProductByCategory = async (category_name) => {
       setLoading(true)
@@ -83,6 +108,13 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
         setLoading(false)
     }
 
+
+    useProductSocket(loadData);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
     if (loading && products?.data?.length === 0) return <div className="spin">
         <div class="spinner-grow text-almo" role="status">
       </div>Đang tải sản phẩm...
@@ -91,6 +123,7 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
         <div class="spinner-grow text-almo" role="status">
       </div>Không tìm thấy sản phẩm
       </div>;
+    console.log("Ce", products)
   return (
     <div style={styles.container}>
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}
