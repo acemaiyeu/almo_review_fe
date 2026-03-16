@@ -97,7 +97,7 @@ const ProductDetail = () => {
                             <div className="product-affilate-link-item-logo">
                                 <img className="product-affilate-link-item-img" src="https://image.sggp.org.vn/w1000/Uploaded/2026/yfsgf/2019_06_20/3_BIXQ.png.webp" alt="logo-lazada" loading='lazy'></img>
                             </div>
-                            <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-lazada">Mua hàng tại Lazada</a>
+                            <a  href={product.affilate_lazada_link} target="_blank" className="product-affilate-link-item-title" alt="affilate-link-lazada">Mua hàng tại Lazada</a>
                         </div>
                     }
                     {product.affilate_tiktok_link && 
@@ -105,7 +105,7 @@ const ProductDetail = () => {
                             <div className="product-affilate-link-item-logo">
                                 <img className="product-affilate-link-item-img" src="https://cloud.shopback.com/c_fit,h_750,w_750/store-service-vn/assets/258709/2d508ce0-8522-11ee-bcea-33e49e1b1414.png" alt="logo-tiktok" loading='lazy'></img>
                             </div>
-                            <a href="" target="_blank" className="product-affilate-link-item-title" alt="affilate-link-tiktok">Mua hàng tại TiktokShop</a>
+                            <a  href={product.affilate_tiktok_link} target="_blank" className="product-affilate-link-item-title" alt="affilate-link-tiktok">Mua hàng tại TiktokShop</a>
                         </div>
                     }
                     {product.affilate_shopee_link && 
