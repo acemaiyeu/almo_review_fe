@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { use, useEffect, useRef, useState } from 'react';
 import '../../../style/MyOrders.scss';
 import { getOrderClientALl } from '../../../services/OrderService';
 import { toast } from 'react-toastify';
@@ -8,8 +8,8 @@ const MyOrders = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
   
-  const getMyOrders = async () => {
-        const data = await getOrderClientALl([], 1, 10);
+  const getMyOrders = async (params = {}) => {
+        const data = await getOrderClientALl(params, 1, 10);
         if(data){
             setOrders(data.data)
         }
@@ -25,6 +25,26 @@ const MyOrders = () => {
         }
         setCurrentPage(currentPage + 1)
   }
+  const typingTimeoutRef = useRef(null);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    // 1. Xóa timeout cũ nếu người dùng vẫn đang gõ
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // 2. Thiết lập timeout mới (chờ 500ms sau khi ngừng gõ mới thực thi)
+    typingTimeoutRef.current = setTimeout(() => {
+      getMyOrders({product_name: e.target.value, shipping_code: e.target.value, unit_shipping: e.target.value, created_at: e.target.value})
+      setSearchTerm(value);
+      
+      // Ở đây bạn có thể gọi API hoặc checkTimeCache
+      // const data = await checkTimeCache(value);
+    }, 700);
+  }; 
+
   return (
     <div className="my-orders-container">
       <div className="content-wrapper">
@@ -34,7 +54,7 @@ const MyOrders = () => {
         </header>
         <div className="search-box">
                 {/* <div className="search-box-remove-text"></div> */}
-                <input type='text' className="search-box-input" placeholder='Mã đơn hàng, tên sản phẩm, ngày tạo, đơn vị vận chuyển,...'></input>
+                <input type='text' className="search-box-input" placeholder='Mã đơn hàng, tên sản phẩm, ngày tạo, đơn vị vận chuyển,...' onChange={(e) => handleSearchChange(e)}></input>
                 <button className="search-box-btn">Tìm kiếm</button>
         </div>
         <div className="order-list">

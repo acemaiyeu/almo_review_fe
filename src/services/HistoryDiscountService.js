@@ -7,10 +7,14 @@ const uri_base_local = 'history-discount' //create update delete
 const label_notification = 'lịch sử vòng quay' //get all
 
 
-export const getHistoryDiscountClientALl = async ([],page = 1, limit = 10) => {
+export const getHistoryDiscountClientALl = async (params = {},page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
-        const res = await axiosClient.get(`${uri_base_all}?page=${page}&limit=${limit}`);
+        let params_text = "";
+        if(params?.product_name){
+            params_text += `product_name=${params.product_name}`
+        }
+        const res = await axiosClient.get(`${uri_base_all}?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API
     } catch (error) {
         console.error("Lỗi khi lấy chi tiết sản phẩm:", error);

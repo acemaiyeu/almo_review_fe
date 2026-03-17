@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import '../../../style/DiscountHistory.scss';
 import { getHistoryDiscountClientALl } from '../../../services/HistoryDiscountService';
 
@@ -43,8 +43,8 @@ const DiscountHistory = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
   
-  const getHistoryData = async () => {
-        const data = await getHistoryDiscountClientALl([], 1, 10);
+  const getHistoryData = async (params = {}) => {
+        const data = await getHistoryDiscountClientALl(params, 1, 10);
         if(data){
             setHistoryData(data.data)
         }
@@ -61,6 +61,26 @@ const DiscountHistory = () => {
         setCurrentPage(currentPage => currentPage + 1)
   }
 
+const typingTimeoutRef = useRef(null);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    // 1. Xóa timeout cũ nếu người dùng vẫn đang gõ
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // 2. Thiết lập timeout mới (chờ 500ms sau khi ngừng gõ mới thực thi)
+    typingTimeoutRef.current = setTimeout(() => {
+      getHistoryData({product_name: e.target.value})
+      setSearchTerm(value);
+      
+      // Ở đây bạn có thể gọi API hoặc checkTimeCache
+      // const data = await checkTimeCache(value);
+    }, 700);
+  };
+
   return (
     <div className="discount-history-container">
       <header>
@@ -70,8 +90,8 @@ const DiscountHistory = () => {
           <input 
             type="text" 
             placeholder="Tìm theo tên sản phẩm..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            defaultValuevalue={searchTerm}
+            onChange={(e) => handleSearchChange(e)}
           />
         </div>
       </header>

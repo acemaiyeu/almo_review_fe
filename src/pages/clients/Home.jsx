@@ -35,7 +35,6 @@ const useProductSocket = (refreshCallback) => {
     useEffect(() => {
         const channel = echo.channel('products') // Channel 'products' từ Laravel
             .listen('.ProductCreated', async (e) => {
-                console.log("🔔 Có sản phẩm mới từ Server!", e);
                 
                 // 1. Xóa cache cũ (Xóa toàn bộ cache sản phẩm để đảm bảo data mới nhất)
                 await caches.delete('my-product-cache'); 
@@ -60,7 +59,6 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
       const data = await getProductClientALl({category_name}, 1, 10);
       if(data){
         if(data?.data.length > 0){
-          // console.log("check", products.meta.pagination.total_pages)
           setLoading(true);
             setProducts(data.data)
             setTotalPage(data.meta.pagination.total_pages)
@@ -123,7 +121,6 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
         <div class="spinner-grow text-almo" role="status">
       </div>Không tìm thấy sản phẩm
       </div>;
-    console.log("Ce", products)
   return (
     <div style={styles.container}>
       {/* <button onClick={(() => handleNotifiDynamic())}>Test notifi Dynamic Island</button> */}

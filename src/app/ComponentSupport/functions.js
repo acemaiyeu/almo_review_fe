@@ -112,6 +112,7 @@ export const setCache = async (key, data) => {
   try {
     const cache = await caches.open(CACHE_NAME);
     const response = new Response(JSON.stringify(data));
+    setTimeCache(key, data)
     await cache.put(key, response);
   } catch (error) {
     console.error('Lỗi khi lưu vào cache:', error);
@@ -156,5 +157,49 @@ export const clearAllCache = async () => {
   } catch (error) {
     console.error('Lỗi khi xóa toàn bộ cache:', error);
     return false;
+  }
+};
+
+export const setTimeCache = async (key, data) => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    
+    // Thiết lập thời gian hết hạn: Hiện tại + 1 giờ (tính bằng milliseconds)
+    const ONE_HOUR = 60 * 60 * 1000;
+    const expireAt = Date.now() + ONE_HOUR;
+
+    const cacheData = {
+      data: data,
+      expireAt: expireAt
+    };
+
+    const response = new Response(JSON.stringify(cacheData));
+    await cache.put(key, response);
+  } catch (error) {
+    console.error('Lỗi khi setTimeCache:', error);
+  }
+};
+
+export const checkTimeCache = async (key) => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const response = await cache.match(key);
+
+    if (!response) return null; // Không có cache
+
+    const cachedContent = await response.json();
+    const currentTime = Date.now();
+
+    // Kiểm tra nếu thời gian hiện tại > thời gian hết hạn
+    if (currentTime > cachedContent.expireAt) {
+      console.log(`Cache của key "${key}" đã hết hạn. Đang tiến hành xóa...`);
+      await removeCache(key); 
+      return null; // Trả về null vì cache đã hỏng/hết hạn
+    }
+
+    return cachedContent.data; // Trả về dữ liệu gốc nếu vẫn còn hạn
+  } catch (error) {
+    console.error('Lỗi khi checkTimeCache:', error);
+    return null;
   }
 };

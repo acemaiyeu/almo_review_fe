@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { getCache, setCache, showDynamic } from "../app/ComponentSupport/functions";
+import { checkTimeCache, getCache, setCache, showDynamic } from "../app/ComponentSupport/functions";
 import axiosAdmin from "./axiosAdmin";
 import axiosClient from "./axiosClient";
 
@@ -15,13 +15,16 @@ export const getProductClientALl = async (params = {}, page = 1, limit = 10) => 
         if (params?.sort === "new-product") params_text += `&sort[created_at]=desc`;
 
         const cacheKey = `products?page=${page}&limit=${limit}${params_text}`;
+        
         const cachedData = await getCache("products");
-        if(!params.category_name && !params.product_name){
-            
-        if (cachedData) {
-            return cachedData;
+        if(checkTimeCache !== null){
+            if(!params.category_name && !params.product_name){
+            if (cachedData) {
+                return cachedData.data;
+            }
+            }
         }
-        }
+        
         // 2. Kiểm tra Cache trước
         
 
