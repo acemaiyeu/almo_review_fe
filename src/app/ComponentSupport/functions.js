@@ -191,6 +191,7 @@ export const checkTimeCache = async (key) => {
     const currentTime = Date.now();
 
     // Kiểm tra nếu thời gian hiện tại > thời gian hết hạn
+    console.log("currentTime > cachedContent.expireAt", currentTime > cachedContent.expireAt)
     if (currentTime > cachedContent.expireAt) {
       console.log(`Cache của key "${key}" đã hết hạn. Đang tiến hành xóa...`);
       await removeCache(key); 

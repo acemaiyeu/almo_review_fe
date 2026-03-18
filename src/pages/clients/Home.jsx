@@ -23,6 +23,9 @@ const [products, setProducts] = useState([]);
 const [currentPage, setCurrentPage] = useState(1);
 const [totalPage, setTotalPage] = useState(1);
 const [loading, setLoading] = useState(true);
+      const now = new Date().getTime();
+      const start = new Date().getTime();
+      const end = new Date().getTime();
 const [params, setParams] = useState({
     sort: "new-product"
 })
@@ -150,9 +153,10 @@ const {items: products_headers, loading_header} = useSelector((state) => state.p
         <h2 style={styles.title}>Sản phẩm mới nhất</h2>
         <div className="grid">
           {products && products.map((item) => (
-            <div key={item.id} className="card">
-               <div className="product-item-modal">
-                {/* Sản phẩm không bán lại */}
+            
+            <div key={item.id} className={`card`}>
+               <div className={`product-item-modal ${item.is_luck == 0 ? 'no-active' : ''} ${new Date(item?.start_time_luck?.replace(' ', 'T')).getTime() < now && new Date(item?.end_time_luck?.replace(' ', 'T')).getTime() > now ? 'working' : 'not-working'}`}>
+                {item.is_luck == 0 ? "Sản phẩm không bán lại" : (new Date(item?.start_time_luck?.replace(' ', 'T')).getTime() > now ? "Khuyến mãi sắp diễn ra" : (new Date(item?.start_time_luck?.replace(' ', 'T')).getTime() < now && new Date(item?.end_time_luck?.replace(' ', 'T')).getTime() >= now ? 'Khuyến mãi đang diễn ra' : ''))}
             </div>
               <div className="modal-img"><img src={logo} alt="logo" /></div>
               <div style={styles.imageBox}>

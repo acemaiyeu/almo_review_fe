@@ -294,10 +294,7 @@ const ProductDetail = () => {
                         </div>
                        
                 </div>
-                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={product.total_lucky} join_lucky={product.join_lucky} discount_price={product.discount_price} active={product.is_luck}/>
-                {product.is_luck === 1 && 
-                    <CountdownTimer startTime={product.start_time_luck} endTime={product.end_time_luck}/>
-                }
+                <LuckyWheel onResult={handlePrizeReceived} product_id={product.id} isLogin={profile.email !== ''} userComplete={product.total_lucky} join_lucky={product.join_lucky} discount_price={product.discount_price} active={product.is_luck} startTime={product.start_time_luck} endTime={product.end_time_luck}/>
             </div>
            {product.id && 
            

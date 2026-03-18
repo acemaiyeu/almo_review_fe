@@ -5,7 +5,6 @@ const CountdownTimer = ({ startTime, endTime }) => {
     status: 'IDLE', // IDLE, COUNTING, RUNNING, EXPIRED
     timeLeft: null
   });
-
   useEffect(() => {
     const calculateStatus = () => {
       const now = new Date().getTime();
@@ -49,7 +48,6 @@ const CountdownTimer = ({ startTime, endTime }) => {
     color: '#f7175a',
     fontWeight: 'bold',
     padding: '10px 15px',
-    border: '1px solid #f7175a',
     borderRadius: '6px',
     display: 'inline-block',
     fontFamily: 'system-ui, -apple-system, sans-serif'
@@ -75,7 +73,7 @@ const CountdownTimer = ({ startTime, endTime }) => {
   return (
     <div style={containerStyle}>
       Sự kiện sẽ bắt đầu sau{' '}
-      <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+      <span style={{ fontVariantNumeric: 'tabular-nums', fontSize: "1rem" }}>
         {displayData.timeLeft?.hours} giờ {displayData.timeLeft?.minutes} phút {displayData.timeLeft?.seconds} giây
       </span>
     </div>

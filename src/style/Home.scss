@@ -23,6 +23,18 @@
     border-radius: 5px;
 }
 
+.product-item-modal.working{
+    background-color: var(--background-main);
+    animation: color-loop 1s linear;
+}
+.product-item-modal.not-working{
+    background-color: var(--background-main-hover);
+    // color: var(--background-main);
+}
+.product-item-modal.no-active{
+    background-color: rgba(226, 225, 225, 0.404);
+    color: var(--background-main);
+}
 .sort-box{
     width: 100%;
     display: flex;
@@ -51,7 +63,8 @@
     text-align: center;
     background: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: relative
+    position: relative;
+    overflow: hidden;
 }
 .price{
     color: #eb1c50;
@@ -76,5 +89,13 @@
     }
     .sort-box .sort-box-select {
         width: 50%;
+    }
+}
+@keyframes color-loop {
+    0%{
+        background-color: var(--background-main);
+    }
+    100%{
+        background-color: whitesmoke;
     }
 }

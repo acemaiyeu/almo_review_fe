@@ -4,12 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDiscount } from '../features/productSlice';
 import axiosClient from '../../services/axiosClient';
 import { toast } from 'react-toastify';
+import CountdownTimer from './CountdownTimer';
 // Giả sử bạn có action getDiscount từ store
 // import { getDiscount } from '../../redux/actions/productActions'; 
 
-const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, join_lucky = false, discount_price = 0, active = false}) => {
+const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, join_lucky = false, discount_price = 0, active = false, startTime = null, endTime = null}) => {
   const dispatch = useDispatch();
   // Lấy dữ liệu từ redux store
+  const now = new Date().getTime();
+  const start = new Date(startTime.replace(' ', 'T')).getTime();
+  const end = new Date(endTime.replace(' ', 'T')).getTime();
 
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -105,8 +109,10 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
       </div>
       }
       {active == 1 && 
-      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || join_lucky}>
-        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (join_lucky ? `GIÁ KHI TRÚNG GIẢI ${discount_price}` : 'NHẬN GIẢM GIÁ'))}
+      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || join_lucky || start > now || end < now}>
+        {
+         start > now || end < now ? <CountdownTimer startTime={startTime} endTime={endTime}/> :
+        (spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (join_lucky ? `GIÁ KHI TRÚNG GIẢI ${discount_price}` : 'NHẬN GIẢM GIÁ')))}
       </button>
       }
       {active === 0 && 

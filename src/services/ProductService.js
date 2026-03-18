@@ -17,7 +17,7 @@ export const getProductClientALl = async (params = {}, page = 1, limit = 10) => 
         const cacheKey = `products?page=${page}&limit=${limit}${params_text}`;
         
         const cachedData = await getCache("products");
-        if(checkTimeCache !== null){
+        if(checkTimeCache("products") !== null){
             if(!params.category_name && !params.product_name){
             if (cachedData) {
                 return cachedData.data;
@@ -38,7 +38,7 @@ export const getProductClientALl = async (params = {}, page = 1, limit = 10) => 
 
         return res;
     } catch (error) {
-        console.error("Lỗi:", error);
+        // console.error("Lỗi:", error);
         return null;
     }
 }
