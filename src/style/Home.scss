@@ -25,7 +25,7 @@
 
 .product-item-modal.working{
     background-color: var(--background-main);
-    animation: color-loop 1s linear;
+    animation: color-loop 1s linear infinite;
 }
 .product-item-modal.not-working{
     background-color: var(--background-main-hover);
