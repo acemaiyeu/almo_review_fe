@@ -2,48 +2,44 @@ import React, { useState, useEffect } from 'react';
 
 const CountdownTimer = ({ startTime, endTime }) => {
   const [displayData, setDisplayData] = useState({
-    status: 'IDLE', // IDLE, COUNTING, RUNNING, EXPIRED
+    status: 'IDLE',
     timeLeft: null
   });
+
   useEffect(() => {
     const calculateStatus = () => {
       const now = new Date().getTime();
+      // Chuyển đổi format date để tương thích tốt hơn trên các trình duyệt
       const start = new Date(startTime.replace(' ', 'T')).getTime();
       const end = new Date(endTime.replace(' ', 'T')).getTime();
 
-      // 1. Đã kết thúc
       if (now > end) {
         return { status: 'EXPIRED', timeLeft: null };
       }
 
-      // 2. Đang diễn ra (Ẩn component)
       if (now >= start && now <= end) {
         return { status: 'RUNNING', timeLeft: null };
       }
 
-      // 3. Đang đếm ngược tới lúc bắt đầu
       const diff = start - now;
+      
+      // LOGIC MỚI: Tách thêm đơn vị Ngày (days)
       return {
         status: 'COUNTING',
         timeLeft: {
-          hours: Math.floor(diff / (1000 * 60 * 60)),
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
           minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((diff % (1000 * 60)) / 1000),
         }
       };
     };
 
-    // Cập nhật ngay lập tức
     setDisplayData(calculateStatus());
-
-    const timer = setInterval(() => {
-      setDisplayData(calculateStatus());
-    }, 1000);
-
+    const timer = setInterval(() => setDisplayData(calculateStatus()), 1000);
     return () => clearInterval(timer);
   }, [startTime, endTime]);
 
-  // Style chủ đạo #f7175a
   const containerStyle = {
     color: '#f7175a',
     fontWeight: 'bold',
@@ -53,28 +49,26 @@ const CountdownTimer = ({ startTime, endTime }) => {
     fontFamily: 'system-ui, -apple-system, sans-serif'
   };
 
-  // LOGIC HIỂN THỊ
-  
-  // Nếu đang diễn ra (RUNNING), trả về null để ẩn component
-  if (displayData.status === 'RUNNING') {
-    return null; 
-  }
+  if (displayData.status === 'RUNNING') return null;
 
-  // Nếu đã kết thúc
   if (displayData.status === 'EXPIRED') {
     return (
-      <div style={{ ...containerStyle, opacity: 0.7, borderColor: '#ccc', color: '#666' }}>
-        Sự kiện đã hết hạn
+      <div style={{ ...containerStyle, opacity: 0.7, color: '#666' }}>
+        Sự kiện đã kết thúc
       </div>
     );
   }
 
-  // Nếu đang đếm ngược
+  // Render logic linh hoạt
+  const { days, hours, minutes, seconds } = displayData.timeLeft || {};
+
   return (
     <div style={containerStyle}>
       Sự kiện sẽ bắt đầu sau{' '}
-      <span style={{ fontVariantNumeric: 'tabular-nums', fontSize: "1rem" }}>
-        {displayData.timeLeft?.hours} giờ {displayData.timeLeft?.minutes} phút {displayData.timeLeft?.seconds} giây
+      <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+        {/* Chỉ hiện "Ngày" nếu days > 0 */}
+        {days > 0 && `${days} ngày `}
+        {hours} giờ {minutes} phút {seconds} giây
       </span>
     </div>
   );
