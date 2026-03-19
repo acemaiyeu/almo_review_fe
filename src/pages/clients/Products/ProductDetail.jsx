@@ -12,6 +12,8 @@ import YouTubePlayer from '../../../app/ComponentSupport/YouTubePlayer.jsx';
 import AnimatedCounter from '../../../app/ComponentSupport/AnimatedCounter.jsx';
 import CountdownTimer from '../../../app/ComponentSupport/CountdownTimer.jsx';
 import CommentComponent from './CommentComponent.jsx';
+import ZoomableImage from '../../../app/ComponentSupport/ZoomableImage.jsx';
+import ImageMagnifier from '../../../app/ComponentSupport/ImageMagnifier.jsx';
 
 const ProductDetail = () => {
     const profile = useSelector((state) => state.profile);
@@ -61,7 +63,12 @@ const ProductDetail = () => {
             <div className="product-detail-header">{product?.name}</div>
             <hr/>
             <div className="product-detail-thumbnail">
-                <img src={product?.thumbnail} loading='lazy' alt="thumbnail"/>
+                {/* <img src={product?.thumbnail} loading='lazy' alt="thumbnail"/> */}
+                <ImageMagnifier src={product?.thumbnail} width="100%"  // Kích thước ảnh hiển thị trên web
+        height="400px" // Kích thước ảnh hiển thị trên web
+        zoomLevel={2.5} // Phóng to gấp 2.5 lần
+        magnifierHeight={200} // Ô kính lúp to hơn (200px)
+        magnifierWidth={200}/>
             </div>
             <div className="product-price">GIÁ SẢN PHẨM (đã mua): {product.price}</div>
             <div className="product-box">

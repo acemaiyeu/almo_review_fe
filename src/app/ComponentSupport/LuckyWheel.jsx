@@ -12,8 +12,8 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
   const dispatch = useDispatch();
   // Lấy dữ liệu từ redux store
   const now = new Date().getTime();
-  const start = new Date(startTime.replace(' ', 'T')).getTime();
-  const end = new Date(endTime.replace(' ', 'T')).getTime();
+  const start = new Date(startTime?.replace(' ', 'T')).getTime();
+  const end = new Date(endTime?.replace(' ', 'T')).getTime();
 
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);

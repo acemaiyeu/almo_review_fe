@@ -6,10 +6,9 @@
         font-weight: bold;
     }
     .product-detail-thumbnail{
-        width: 30%;
-        height: 375px;
+        width: 100%;
     &>img{
-        height: 100%;
+        width: 100%;
     }
     }
     .product-price{

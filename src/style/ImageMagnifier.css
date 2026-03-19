@@ -1,0 +1,37 @@
+.magnifier-container {
+  position: relative;
+  display: inline-block;
+  line-height: 0; /* Khử khoảng trống thừa dưới ảnh */
+  cursor: none; /* Ẩn chuột để dùng kính lúp làm con trỏ */
+}
+
+.magnifier-lens {
+  position: absolute;
+  pointer-events: none; /* Rất quan trọng: để chuột xuyên qua lens xuống ảnh */
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  background-repeat: no-repeat;
+  
+  /* ANIMATION CỐT LÕI */
+  opacity: 0;
+  transform: scale(0.5); /* Bắt đầu từ kích thước nhỏ */
+  transition: 
+    opacity 0.25s ease-out, 
+    transform 0.25s ease-out,
+    border-color 0.3s;
+  
+  /* Nếu muốn kính lúp "trôi" theo chuột mượt hơn, 
+     có thể thêm transition cho top/left nhưng cực ngắn (0.05s) */
+  /* transition: top 0.05s linear, left 0.05s linear; */
+}
+
+.magnifier-lens.visible {
+  opacity: 1;
+  transform: scale(1); /* Nở ra kích thước thật khi hiện */
+}
+
+/* Thêm hiệu ứng viền màu chủ đạo của bạn khi hover */
+.magnifier-container:hover .magnifier-lens {
+  border-color: #f7175a; 
+}

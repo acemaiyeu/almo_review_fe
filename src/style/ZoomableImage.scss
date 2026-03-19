@@ -1,0 +1,94 @@
+/* --- Style cho Component chính --- */
+.image-zoom-component {
+  display: inline-block; /* Hoặc tùy chỉnh theo bố cục của bạn */
+  width: 100%;
+}
+
+/* --- Style cho Hình ảnh bình thường (Thumbnail) --- */
+.image-thumbnail-container {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden; /* Giữ hiệu ứng trong khung */
+  border: 2px solid transparent; /* Khung mặc định ẩn */
+  transition: border-color 0.3s ease;
+  width: 100%; /* Bạn có thể tùy chỉnh kích thước này */
+  height: auto;
+}
+
+.image-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Giữ tỷ lệ ảnh */
+  display: block;
+}
+
+/* --- Hiệu ứng Hover: Hiện khung và lớp phủ --- */
+.image-thumbnail-container:hover {
+  border-color: #3498db; /* Màu khung khi hover (xanh dương) */
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Lớp phủ mờ đen */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; /* Mặc định ẩn */
+  transition: opacity 0.3s ease;
+}
+
+.image-thumbnail-container:hover .hover-overlay {
+  opacity: 1; /* Hiện khi hover */
+}
+
+.zoom-icon {
+  font-size: 2rem;
+}
+
+/* --- Style cho Modal/Popup --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85); /* Nền mờ tối */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Đảm bảo Modal nằm trên cùng */
+  cursor: zoom-out; /* Click ra ngoài để đóng */
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  cursor: default; /* Click vào ảnh không đóng modal */
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Đảm bảo toàn bộ ảnh hiển thị */
+  border: 5px solid white;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.close-button {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}

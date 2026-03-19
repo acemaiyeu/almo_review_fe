@@ -74,21 +74,23 @@
   // overflow: hidden;
   // max-height: 60px;
   position: relative;
-  box-shadow: 0px 0px 12px 0px rgba(248, 7, 108, 0.877);
+  // box-shadow: 0px 0px 12px 0px rgba(248, 7, 108, 0.877);
   border-radius: 5px;
-  overflow-y: auto;
-  width: 100vw;
+  // overflow-y: auto;
+  width: 100%;
   padding: 0px;
-  overflow: unset;
+  
+  // overflow: unset;
   .category-grid{
     display: flex;
     flex-wrap: wrap;
   }
-  &:hover{
-      max-height: 50vh;
-  }
+  // &:hover{
+  //     max-height: 50vh;
+  // }
   .category-item{
-    min-width: 100px;
+    max-width: 155px;
+    min-width: 155px;
   }
   .category-container-modal{
       color: white;
