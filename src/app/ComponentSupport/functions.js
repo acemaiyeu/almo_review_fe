@@ -135,12 +135,12 @@ export const getCache = async (key) => {
   }
 };
 
-export const removeCache = async (key) => {
+export const removeCache = async (key, notifi = false) => {
   try {
     const cache = await caches.open(CACHE_NAME);
     const deleted = await cache.delete(key);
     if(deleted){
-      toast.success("Bạn đã xóa cache thành công. Vui lòng tải lại trang để cập nhật dữ liệu mới!")
+      if(notifi = true) toast.success("Bạn đã xóa cache thành công. Vui lòng tải lại trang để cập nhật dữ liệu mới!");
     }
     return deleted; // Trả về true nếu xóa thành công, false nếu không tìm thấy key
   } catch (error) {

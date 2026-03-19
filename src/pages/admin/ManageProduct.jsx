@@ -281,6 +281,10 @@ const  ManageProduct = () => {
                                         <th>#</th>
                                         <th>Slug</th>
                                         <th>Tên sản phẩm</th>
+                                        <th>Hiển thị trên web</th>
+                                        <th>Vòng quay</th>
+                                         <th>Số lượng click vào affilate</th>
+                                         <th>Số lượng tham gia vòng quay</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -301,6 +305,33 @@ const  ManageProduct = () => {
                                                     <td>{item.id}</td>
                                                     <td>{item.slug}</td>
                                                     <td>{item.name}</td>
+                                                    <td style={{display: 'flex', justifyContent: 'center', color: 'var(--background-main)'}}>{item.is_show === 1 ? <i class="bi bi-toggle-on"  
+                                                            onClick={() => {
+                                                                updateProduct(dispatch, {...item, is_show: 0})
+                                                            }}></i>
+                                                            :<i 
+                                                            onClick={() => {
+                                                                updateProduct(dispatch, {...item, is_show: 1})
+                                                            }} class="bi bi-toggle-off"></i>  }
+                                                    </td>
+                                                    <td style={{display: 'flex', justifyContent: 'center', color: 'var(--background-main)'}}>{item.is_luck === 1 ? <i class="bi bi-toggle-on"  
+                                                            onClick={() => {
+                                                                updateProduct(dispatch, {...item, is_luck: 0})
+                                                                setTimeout(() => {
+                                                                    getProduct()
+                                                                }, 2000)
+                                                                
+                                                            }}></i>
+                                                            :<i 
+                                                            onClick={() => {
+                                                                updateProduct(dispatch, {...item, is_luck: 1})
+                                                                setTimeout(() => {
+                                                                    getProduct()
+                                                                }, 2000)
+                                                            }} class="bi bi-toggle-off"></i>  }
+                                                    </td>
+                                                    <td>10000</td>
+                                                    <td>{item.lucky_wheel_users ? item.lucky_wheel_users?.length : 0 }</td>
                                                     <td>
                                                         <div className="btn-table-item" onClick={() => handleEdit(item)}> <i class="bi bi-pencil-square"></i> </div>
                                                         <div className="btn-table-item" onClick={() => deleteById(item.id)}><i class="bi bi-x-circle"></i></div>

@@ -42,11 +42,12 @@ import { updateSetting } from './app/features/settingSlice.js'
 import ManageFeedbackProduct from './pages/admin/ManageFeedbackProduct.jsx'
 import TikTokLivePanel from './pages/clients/Tiktok/TikTokLivePanel.jsx'
 
+
 function App() {
   const profile = useSelector((state) => state.profile)
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith('/admin');
-  const isLoginAdminPage = location.pathname.startsWith('/admin/login');
+  const isAdminPage = location.pathname.startsWith('/1204/admin');
+  const isLoginAdminPage = location.pathname.startsWith('/1204/admin/login');
   const dispatch = useDispatch();
     const setting = useSelector((state) => state.setting)
   // if(!profile.email || profile.email === ''){
@@ -74,7 +75,7 @@ function App() {
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
           if(isAdminPage){
-              window.location.href = "/admin/login"
+              window.location.href = "/1204/admin/login"
           }
         });
     }
@@ -155,14 +156,14 @@ function App() {
 
 
           {/* //Admin */}
-          <Route path="/admin/" element={<HomeAdmin/>} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/manage-products" element={<ManageProduct />} />
-          <Route path="/admin/manage-categories" element={<ManageCategory />} />
-          <Route path="/admin/manage-users" element={<ManageUser />} />
-          <Route path="/admin/manage-feedback-product" element={<ManageFeedbackProduct />} />
+          <Route path="/1204/admin/" element={<HomeAdmin/>} />
+          <Route path="/1204/admin/login" element={<AdminLogin />} />
+          <Route path="/1204/admin/manage-products" element={<ManageProduct />} />
+          <Route path="/1204/admin/manage-categories" element={<ManageCategory />} />
+          <Route path="/1204/admin/manage-users" element={<ManageUser />} />
+          <Route path="/1204/admin/manage-feedback-product" element={<ManageFeedbackProduct />} />
           
-         <Route path="/admin/clear-cache" element={<ClearCache />} />
+         <Route path="/1204/admin/clear-cache" element={<ClearCache />} />
           {/* Trang 404 nếu không tìm thấy route */}
           <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
         </Routes>

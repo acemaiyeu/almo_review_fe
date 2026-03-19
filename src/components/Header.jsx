@@ -210,7 +210,7 @@ function Header() {
                           }}>{statusSoundNotifiIsland === "on" ? <i class="bi bi-toggle-on"></i> : <i class="bi bi-toggle-off"></i>}</div>
                     </div>
                     <div className="menu-item-popup-body-item">
-                          <div className="menu-item-popup-body-item-title" onClick={() => removeCache("products")}>Xóa Cache</div>
+                          <div className="menu-item-popup-body-item-title" onClick={() => removeCache("products", true)}>Xóa Cache</div>
                           <div className="menu-item-popup-body-item-value" ></div>
                     </div>
                     {profile.id && 

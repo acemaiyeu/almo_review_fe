@@ -145,7 +145,7 @@ const  ManageRole = () => {
     };
     return (
         <div className="manage-box">
-            <div className="manage-box-title">QUẢN LÝ SẢN PHẨM</div>
+            <div className="manage-box-title">QUẢN LÝ QUYỀN TÀI KHOẢN</div>
                 <div className="manage-box-filter">
                     <div className="manage-box-filter-control">
                        

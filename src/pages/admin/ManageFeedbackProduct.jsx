@@ -170,7 +170,7 @@ const  ManageFeedbackProduct = () => {
     // }
     return (
         <div className="manage-box">
-            <div className="manage-box-title">QUẢN LÝ TÀI KHOẢN</div>
+            <div className="manage-box-title">QUẢN LÝ GÓP Ý SẢN PHẨM</div>
                 <div className="manage-box-filter">
                     <div className="manage-box-filter-control">
                        

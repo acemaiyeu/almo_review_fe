@@ -17,7 +17,7 @@ const MenuAdmin = () => {
                                     <img className="avatar" alt='avatar' src={icon} loading='lazy'/>
                                 </div>
                                 <div className='menu-user-title'>
-                                    <Link to={"/admin/"}>{profile.name}</Link>
+                                    <Link to={"/1204/admin/"}>{profile.name}</Link>
                                 </div>
                     </div>
                     <div className="menu-user-fucntions">
@@ -31,28 +31,28 @@ const MenuAdmin = () => {
                             <i class="bi bi-device-ssd"></i>
                         </div>
                         <div className="menu-item-title">
-                            <Link to="/admin/">Thống kê</Link></div>
+                            <Link to="/1204/admin/">Thống kê</Link></div>
                 </div>
                 <div className="menu-item">
                         <div className="menu-item-icon">
                             <i class="bi bi-device-ssd"></i>
                         </div>
                         <div className="menu-item-title">
-                            <Link to="/admin/manage-products">Quản lý sản phẩm</Link></div>
+                            <Link to="/1204/admin/manage-products">Quản lý sản phẩm</Link></div>
                 </div>
                 <div className="menu-item">
                         <div className="menu-item-icon">
                             <i class="bi bi-device-ssd"></i>
                         </div>
                         <div className="menu-item-title">
-                            <Link to="/admin/manage-categories">Quản lý loại sản phẩm</Link></div>
+                            <Link to="/1204/admin/manage-categories">Quản lý loại sản phẩm</Link></div>
                 </div>
                 <div className="menu-item">
                         <div className="menu-item-icon">
                             <i class="bi bi-device-ssd"></i>
                         </div>
                         <div className="menu-item-title">
-                            <Link to="/admin/manage-promotions">Quản lý chương trình khuyến mãi</Link>
+                            <Link to="/1204/admin/manage-promotions">Quản lý chương trình khuyến mãi</Link>
                         </div>
                 </div>
                  <div className="menu-item">
@@ -60,7 +60,7 @@ const MenuAdmin = () => {
                             <i class="bi bi-device-ssd"></i>
                         </div>
                         <div className="menu-item-title">
-                            <Link to="/admin/manage-feedback-product">Quản lý góp ý sản phẩm</Link>
+                            <Link to="/1204/admin/manage-feedback-product">Quản lý góp ý sản phẩm</Link>
                         </div>
                 </div>
                 {(profile.role_code).toLowerCase() === 'super_admin' &&
@@ -68,14 +68,14 @@ const MenuAdmin = () => {
                             <div className="menu-item-icon">
                                 <i class="bi bi-file-person"></i>
                             </div>
-                            <div className="menu-item-title"><Link to="/admin/manage-users">Quản lý tài khoản</Link></div>
+                            <div className="menu-item-title"><Link to="/1204/admin/manage-users">Quản lý tài khoản</Link></div>
                     </div>
                 }
                 <div className="menu-item">
                         <div className="menu-item-icon">
                            <i class="bi bi-gear"></i>
                         </div>
-                        <div className="menu-item-title"><Link to="/admin/manage-settings">Quản lý cài đặt</Link></div>
+                        <div className="menu-item-title"><Link to="/1204/admin/manage-settings">Quản lý cài đặt</Link></div>
                 </div>
                 </>
                 }
