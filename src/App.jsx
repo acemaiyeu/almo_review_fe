@@ -41,6 +41,8 @@ import ShippingDelivery from './components/ShippingDelivery.jsx'
 import { updateSetting } from './app/features/settingSlice.js'
 import ManageFeedbackProduct from './pages/admin/ManageFeedbackProduct.jsx'
 import TikTokLivePanel from './pages/clients/Tiktok/TikTokLivePanel.jsx'
+import ProductNotFound from './pages/clients/NotFound.jsx'
+import NotFound from './pages/clients/NotFound.jsx'
 
 
 function App() {
@@ -165,7 +167,8 @@ function App() {
           
          <Route path="/1204/admin/clear-cache" element={<ClearCache />} />
           {/* Trang 404 nếu không tìm thấy route */}
-          <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
+          {/* <Route path="*" element={<div>404 - Không tìm thấy trang</div>} /> */}
+          <Route path="*" element={<NotFound/>} />
         </Routes>
         <audio controls id="audio" style={{opacity: '0'}}>
             <source  src={notifi_sound} type="audio/ogg"/>

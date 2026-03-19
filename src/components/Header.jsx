@@ -149,7 +149,7 @@ function Header() {
           : 
             <div className="menu-item indentifi-position">
               <User size={20} />
-              <span>Tài khoản của tôi
+              <span>Tài khoản
                 <div className="account-modal">
                     <div className="account-list">
                         <div className="account-item">

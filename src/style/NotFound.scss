@@ -1,0 +1,187 @@
+$primary: #f7175a;
+// Tạo một màu gradient nhẹ từ màu chính
+$primary-grad-start: #ff407d; 
+$primary-grad-end: #f7175a;
+
+$text-dark: #0f172a; // Xanh đen than - sang trọng
+$text-body: #64748b; // Xám xanh nhẹ
+$bg-white: #ffffff;
+
+.v2-error-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $bg-white;
+  padding: 30px 20px;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Poppins', sans-serif; // Khuyên dùng font này
+
+  .v2-error-wrapper {
+    display: flex;
+    flex-direction: column; // Mặc định Mobile: Ảnh trên, Chữ dưới
+    align-items: center;
+    max-width: 1100px;
+    width: 100%;
+    gap: 40px;
+
+    // Desktop: Ảnh trái, Chữ phải
+    @media (min-width: 992px) {
+      flex-direction: row-reverse; // Đảo vị trí để chữ sang trái, ảnh sang phải
+      gap: 80px;
+    }
+  }
+
+  // --- AREA: IMAGE SECTION ---
+  .v2-image-section {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media (min-width: 992px) {
+      width: 55%;
+    }
+
+    .main-illustration {
+      z-index: 5;
+      position: relative;
+      img {
+        width: 100%;
+        max-width: 350px; // Mobile
+        height: auto;
+
+        @media (min-width: 768px) {
+          max-width: 450px;
+        }
+        @media (min-width: 992px) {
+          max-width: 550px;
+        }
+      }
+    }
+
+    // Trang trí nền
+    .bg-blur-circle {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      background-color: rgba($primary, 0.1);
+      border-radius: 50%;
+      filter: blur(60px); // Làm mờ
+      z-index: 1;
+    }
+
+    // Các phần tử trang trí
+    .decor-element {
+      position: absolute;
+      z-index: 6;
+      border-radius: 50%;
+    }
+
+    .dot-1 {
+      width: 12px;
+      height: 12px;
+      background-color: $primary;
+      top: 10%;
+      left: 15%;
+    }
+
+    .star-1 {
+      width: 20px;
+      height: 20px;
+      background-color: transparent;
+      border: 3px solid rgba($primary, 0.3);
+      border-radius: 4px; // Hình vuông bo góc
+      bottom: 20%;
+      right: 10%;
+    }
+  }
+
+  // --- AREA: TEXT SECTION ---
+  .v2-text-section {
+    flex: 1;
+    text-align: center;
+    z-index: 10;
+
+    @media (min-width: 992px) {
+      text-align: left; // Căn trái trên Desktop
+    }
+
+    .code-label {
+      display: inline-block;
+      padding: 6px 15px;
+      background-color: rgba($primary, 0.08); // Hồng rất nhạt
+      color: $primary;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 6vw, 3.2rem); // Chữ rất to, ấn tượng
+      font-weight: 800;
+      color: $text-dark;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+
+      br {
+        display: none; // Không xuống hàng trên Mobile
+        @media (min-width: 576px) {
+          display: block;
+        }
+      }
+    }
+
+    p {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      color: $text-body;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+
+      @media (min-width: 992px) {
+        margin-left: 0; // Căn trái trên Desktop
+      }
+    }
+
+    .v2-actions {
+      display: flex;
+      justify-content: center;
+
+      @media (min-width: 992px) {
+        justify-content: flex-start; // Căn trái nút bấm trên Desktop
+      }
+
+      .btn-v2-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        padding: 16px 35px;
+        background: linear-gradient(135deg, $primary-grad-start 0%, $primary-grad-end 100%);
+        color: white;
+        border-radius: 12px; // Góc vuông hơn, hiện đại
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 25px rgba($primary, 0.25); // Bóng đậm nhưng mềm
+
+        &:hover {
+          transform: translateY(-4px) scale(1.02);
+          box-shadow: 0 15px 35px rgba($primary, 0.35);
+        }
+
+        &:active {
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}
