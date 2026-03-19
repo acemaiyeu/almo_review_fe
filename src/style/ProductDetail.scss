@@ -6,7 +6,7 @@
         font-weight: bold;
     }
     .product-detail-thumbnail{
-        width: 100%;
+        width: 30%;
     &>img{
         width: 100%;
     }
@@ -232,6 +232,9 @@
   }
   .product-affilate-link-list{
     margin: 20px auto;
+  }
+  .product-detail-thumbnail{
+    width: 100%;
   }
 }
 
