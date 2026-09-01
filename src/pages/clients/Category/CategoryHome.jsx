@@ -42,18 +42,32 @@ const [loading, setLoading] = useState(true);
       <h2 className="category-title">Danh mục sản phẩm</h2>
       
       <div className="category-grid">
-        {categories.map((cat) => (
-          <div key={cat.id} className="category-item" onClick={() => hanleClickCategory(cat.name)}>
-            <div className="category-info">
-              <span className="category-icon"><img src={cat.thumbnail} loading='lazy'></img></span>
-              <span className="category-name">{cat.name}</span>
-            </div>
-            
-            <span className="category-count">
-              {cat.total_products ?? 0}
-            </span>
-          </div>
-        ))}
+        <div className="category-item" onClick={() => hanleClickCategory("")}>
+                <div className="category-info">
+                  <span className="category-icon"></span>
+                  <span className="category-name">Tất cả</span>
+                </div>
+                
+                <span className="category-count">
+                  {categories.reduce((sum, i) => sum + (i.total_products ?? 0), 0)}
+                </span>
+              </div>
+        {categories.map((cat) => {
+          if(cat.total_products > 0){
+            return (
+              <div key={cat.id} className="category-item" onClick={() => hanleClickCategory(cat.name)}>
+                <div className="category-info">
+                  <span className="category-icon"><img src={cat.thumbnail} loading='lazy'></img></span>
+                  <span className="category-name">{cat.name}</span>
+                </div>
+                
+                <span className="category-count">
+                  {cat.total_products ?? 0}
+                </span>
+              </div>
+            )
+          }
+      })}
       </div>
     </section> : <div>Không tìm thấy loại sản phẩm</div>
   );

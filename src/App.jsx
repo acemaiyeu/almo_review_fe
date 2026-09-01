@@ -25,9 +25,16 @@ import About from './components/About.jsx'
 import Terms from './components/Terms.jsx'
 import InspectionPolicy from './components/InspectionPolicy.jsx'
 import Policy from './components/Policy.jsx'
+import ServerCheckGuard from './pages/clients/ServerCheckGuard.jsx'
+import SplashCheck from './pages/clients/SplashCheck.jsx'
+import ErrorPage from './pages/clients/ErrorPage.jsx'
+import NotFound from './pages/clients/NotFound.jsx'
+import { updatePublic } from './app/features/publicSlice.js'
+import Search from './pages/clients/Search.jsx'
 
 function App() {
   const profile = useSelector((state) => state.profile)
+  const {check_server} = useSelector((state) => state.public)
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
   const isLoginAdminPage = location.pathname.startsWith('/admin/login');
@@ -64,6 +71,22 @@ function App() {
   useEffect(() => {
       toast.warning("Web hiện tại chỉ demo chưa vận hành trực tiếp!")
   }, [])
+
+    const checkServer = async () => {
+    try {
+      // Gọi API health check
+      const response = await fetch("http://192.168.31.81:8000/api/client/check-server", { method: 'GET' });
+
+      if (response.ok) {
+        dispatch(updatePublic({check_server: true}))
+      }
+    } catch (error) {
+      console.error('Lỗi kết nối server:', error);
+    }
+  };
+  useEffect(() => {
+    checkServer()
+  }, [])
   return (
     <div className={`${isAdminPage ? 'page-admin' : ''}`}>
        <ToastContainer position="top-right" style={{ top: "50px" }}/>
@@ -75,10 +98,15 @@ function App() {
       >
         <DynamicIsland />
         <Routes>
-          <Route path="/" element={<Home />} />
+          {check_server ?
+          <>
+          <Route path="/" element={<SplashCheck/>} />
+          <Route path="/home" element={<Home />} />
+          
+          
           {/* <Route path="/cart" element={<CartPage />} /> */}
           <Route path="/orders" element={<div>Trang lịch sử đơn hàng</div>} />
-          <Route path="/search" element={<div>Trang kết quả tìm kiếm</div>} />
+          <Route path="/search" element={<Search />} />
           <Route path="/product/:slug" element={<ProductDetail/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -99,7 +127,15 @@ function App() {
           <Route path="/admin/manage-products" element={<ManageProduct />} />
           <Route path="/admin/manage-categories" element={<ManageCategory />} />
           <Route path="/admin/manage-users" element={<ManageUser />} />
-          <Route path="*" element={<div>404 - Không tìm thấy trang</div>} />
+          
+          </> : 
+          <>
+          <Route path="/" element={<SplashCheck  checkUrl={'http://192.168.31.81:8000/api/client/check-server'}/>} />
+          <Route path="/error" element={<ErrorPage/>} />
+          </>
+          }
+          
+          <Route path="*" element={<NotFound lastpage={window.location.pathname} /> } />
         </Routes>
         <audio controls id="audio" style={{opacity: '0'}}>
             <source  src={notifi_sound} type="audio/ogg"/>

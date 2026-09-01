@@ -3,107 +3,85 @@ import Quill from 'quill';
 import DOMPurify from 'dompurify';
 import 'quill/dist/quill.snow.css'; // Giao diện chuẩn
 
+// Bảng HTML mẫu chuẩn kiểu thông số kỹ thuật điện thoại
+const DEFAULT_SPEC_TABLE = ``;
+
 class WordEditor extends Component {
   constructor(props) {
     super(props);
-    this.editorRef = createRef(); // Dùng Ref thay vì findDOMNode
+    this.editorRef = createRef();
     this.quill = null;
     this.state = {
       content: ''
     };
   }
 
-  
-
-  // componentDidMount() {
-  //   // Khởi tạo Quill thủ công sau khi component mount
-  //   if (this.editorRef.current) {
-  //     this.quill = new Quill(this.editorRef.current, {
-  //       theme: 'snow',
-  //       modules: {
-  //         toolbar: [
-  //           [{ header: [1, 2, false] }],
-  //           ['bold', 'italic', 'underline'],
-  //           [{ list: 'ordered' }, { list: 'bullet' }],
-  //           ['link', 'image'],
-  //           ['clean']
-  //         ]
-  //       },
-  //       placeholder: 'Bắt đầu soạn thảo văn bản...'
-  //     });
-  //     // Lắng nghe sự kiện thay đổi nội dung
-  //     this.quill.on('text-change', () => {
-  //       this.setState({
-  //         // content: this.quill.root.innerHTML
-  //         content: this.props.content ?? this.quill.root.innerHTML
-  //       });
-  //     });
-  //   }
-  // }
   componentDidMount() {
-  if (this.editorRef.current) {
-    this.quill = new Quill(this.editorRef.current, {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          [{ header: [1, 2, false] }],
-          ['bold', 'italic', 'underline'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['link', 'image'],
-          ['clean']
-        ]
-      },
-      placeholder: 'Bắt đầu soạn thảo văn bản...'
-    });
+    if (this.editorRef.current) {
+      this.quill = new Quill(this.editorRef.current, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+          ]
+        },
+        placeholder: 'Bắt đầu soạn thảo văn bản...'
+      });
 
-    // Thiết lập nội dung ban đầu từ props (nếu có)
-    if (this.props.content) {
-      this.quill.root.innerHTML = this.props.content;
-    }
+      // Kiểm tra nếu props.content rỗng/không có thì dùng bảng thông số mặc định
+      const initialContent = (this.props.content && this.props.content.trim() !== '') 
+        ? this.props.content 
+        : DEFAULT_SPEC_TABLE;
 
-    // Lắng nghe sự kiện thay đổi
-    this.quill.on('text-change', () => {
-      const html = this.quill.root.innerHTML;
+      // Đưa nội dung vào Quill
+      this.quill.root.innerHTML = initialContent;
       
-      // Cập nhật state nội bộ
-      this.setState({ content: html });
-
-      // Gửi nội dung lên component cha (nếu cần)
-      if (this.props.onChange) {
-        this.props.onChange(html);
+      // Cập nhật state ban đầu
+      this.setState({ content: initialContent });
+      if (this.props.getDataWord) {
+        this.props.getDataWord(initialContent);
       }
-    });
+
+      // Lắng nghe sự kiện thay đổi
+      this.quill.on('text-change', () => {
+        const html = this.quill.root.innerHTML;
+        this.setState({ content: html });
+
+        if (this.props.onChange) {
+          this.props.onChange(html);
+        }
+      });
+    }
   }
-}
+
+  componentDidUpdate(prevProps, prevState) {
+    // Sửa lỗi: so sánh prevState với this.state hiện tại
+    if (prevState.content !== this.state.content) {
+      if (typeof this.props.getDataWord === 'function') {
+        this.props.getDataWord(this.state.content);
+      }
+    }
+  }
 
   handleSave = () => {
-    // Làm sạch HTML bằng DOMPurify trước khi xuất
     const cleanHTML = DOMPurify.sanitize(this.state.content);
     console.log("HTML an toàn để lưu:", cleanHTML);
     alert("Đã lưu HTML! Kiểm tra Console.");
   };
 
-
-  componentDidUpdate = (prevState) => {
-    if (this.state.content !== prevState.content) {
-      this.props.getDataWord(this.state.content)
-    }
-  }
   render() {
-    
     return (
-  <div style={{ width: "100%" }}>
-    <h2 style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
-      {/* Tên tiêu đề  */}
-      {/* <span className="work-x-modal">
-        <i className="bi bi-x-circle"></i>
-      </span> */}
-    </h2> 
-    <div style={{ marginBottom: "20px" }}>
-      <div ref={this.editorRef} style={{ height: "300px" }} />
-    </div>
-  </div>
-);
+      <div style={{ width: "100%" }}>
+        <h2 style={{ fontSize: "1.1rem", fontWeight: "bold" }}></h2> 
+        <div style={{ marginBottom: "20px" }}>
+          <div ref={this.editorRef} style={{ height: "300px" }} />
+        </div>
+      </div>
+    );
   }
 }
 

@@ -1,21 +1,19 @@
 import { Link } from 'react-router-dom';
-import img_bct from '../assets/img/logo-da-thong-bao-bo-cong-thuong-mau-xanh.png'
 import '../style/Footer.scss'
 const Footer = () => {
 
 
     return (
         <footer className="footer-container">
-                <div className="footer-auth">
-                    <div className="footer-auth-logo">
-                        Almo Review
-                    </div>
+                {/* <div className="footer-auth">
+                   
                     <div className="footer-auth-bct">
                         <img className="img-bct" src={img_bct} ></img>
                     </div>
-                </div>
+                </div> */}
                 <div className="footer-about">
-                        <h1>Về chúng tôi</h1>
+                    <h1> Almo Review</h1>
+                        {/* <h1>Về chúng tôi</h1> */}
                         <Link to="/about">Giới thiệu</Link>
                 </div>
                 <div className="footer-policy">

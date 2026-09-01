@@ -5,7 +5,7 @@ import '../style/Header.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import axiosAuth from '../services/axiosAuth';
 import { showDynamic } from '../app/ComponentSupport/functions';
-import { resetProfile, updateProfile } from '../app/features/profileSlice';
+import { resetProfile } from '../app/features/profileSlice';
 import logo from '../assets/img/logo.png'
 
 function Header() {
@@ -59,10 +59,11 @@ function Header() {
         {/* 3. Menu điều hướng */}
         <div style={styles.menu}>
           {profile.email === '' ?
-            <Link to="/login" style={styles.menuItem}>
-              {/* < size={20} /> */}
-              <span>Đăng nhập</span>
-            </Link> 
+            // <Link to="/login" style={styles.menuItem}>
+            //   {/* < size={20} /> */}
+            //   <span>Đăng nhập</span>
+            // </Link> 
+            <></>
           : 
             <div style={styles.menuItem} className="indentifi-position">
               <User size={20} />

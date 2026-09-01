@@ -7,12 +7,13 @@ import { toast } from 'react-toastify';
 // Giả sử bạn có action getDiscount từ store
 // import { getDiscount } from '../../redux/actions/productActions'; 
 
-const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, join_lucky = false, discount_price = 0}) => {
-  const dispatch = useDispatch();
+const LuckyWheel = ({ onResult, product_id, product, isLogin = false , userComplete = 0, join_lucky = false, discount_price = 0}) => {
+  const [modal, setModal] = useState(false)
   // Lấy dữ liệu từ redux store
-
+  const [tiktokid, setTiktokid] = useState("")
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [newPrice, setNewPrice] = useState(0);
   const [result, setResult] = useState(null);
 
   const prizes = [
@@ -25,11 +26,17 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
   ];
   const terms = `<div className=''></div>`;
   const handleSpin = () => {
+    if(!tiktokid.startsWith("@") || tiktokid.length < 2){
+      toast.error("ID tiktok chưa đúng. Phải bắt đầu bằng @ theo sau là id tiktok")
+      return;
+    }
+    setModal(false)
       axiosClient.post('/get-discount-product', {
-        product_id
+        product_id,
+        tiktok_id: tiktokid
       }).then((res) => {
         if (spinning) return;
-
+        setNewPrice(res.new_price)
     setSpinning(true);
     setResult(null);
 
@@ -66,6 +73,13 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
 
   return (
     <div className="lucky-wheel-container">
+    {modal && 
+    <div className="lucky-wheel-container-modal">
+        <div className="lucky-wheel-container-modal-form">
+            <input className="lucky-wheel-container-modal-form-input" placeholder='@Id tiktok' value={tiktokid} onChange={(e) => setTiktokid(e.target.value)}/>
+            <div className="btn btn-primary" style={{backgroundColor: '#f7175a', border:  ' 1px solid #f7175a'}} onClick={handleSpin}>Xác nhận</div>
+        </div>
+    </div>}
       <div className="wheel-wrapper">
         <div className="wheel-pointer"></div>
 
@@ -102,19 +116,22 @@ const LuckyWheel = ({ onResult, product_id, isLogin = false , userComplete = 0, 
         </div>
         <div className="wheel-center-dot"></div>
       </div>
-
-      <button className="spin-button" onClick={handleSpin} disabled={spinning || !isLogin || join_lucky}>
-        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'ĐĂNG NHẬP ĐỂ QUAY' : (join_lucky ? `GIÁ KHI TRÚNG GIẢI ${discount_price}` : 'NHẬN GIẢM GIÁ'))}
+      
+      <button className="spin-button" disabled={spinning || join_lucky} onClick={() => setModal(true)}>
+        {spinning ? 'ĐANG QUAY...' : (!isLogin ? 'BẮT ĐẦU QUAY' : (join_lucky ? `GIÁ KHI TRÚNG GIẢI ${discount_price}` : 'NHẬN GIẢM GIÁ'))}
       </button>
 
       {result && !spinning && (
-        <div className="prize-msg">
-          Chúc mừng! Bạn nhận được <strong>{result.label} <br/></strong>
-          <i style={{fontSize: "0.8rem"}}>Cùng chờ quay may mắn tại Tiktok #ALmo</i>
+        <div className="prize-msg-container">
+          <div className="prize-msg">
+            Chúc mừng! Bạn nhận được <strong>{result.label} <br/></strong>
+            Còn lại <strong>{newPrice.toLocaleString('vi-VN')} đ <br/></strong>
+            <i style={{fontSize: "0.8rem"}}>Cùng chờ quay may mắn tại Tiktok #ALmo</i>
+          </div>
         </div>
       )}
       <div className="total-user-complete">
-          <span className="total-user-complete-number">{userComplete}</span> người đã tham gia
+          <span className="total-user-complete-number">{product.total_users}</span> người đã tham gia
       </div>
     </div>
   );

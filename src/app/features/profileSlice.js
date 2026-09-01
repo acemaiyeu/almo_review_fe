@@ -5,7 +5,7 @@ const profileSlice = createSlice({
   initialState: {
     email: '',
     name: '',
-    avatar: ''
+    avatar: '',
   },
   reducers: {
     updateProfile: (state, action) => {

@@ -4,12 +4,15 @@ import axiosAdmin from "./axiosAdmin";
 import axiosClient from "./axiosClient";
 
 
-export const getProductClientALl = async (params = [], page = 1, limit = 10) => {
+export const getProductClientALl = async (params = {}, page = 1, limit = 10) => {
     try {
         // Thêm return ở đầu dòng này
         let params_text = "";
         if(params?.category_name){
            params_text += `category_name=${params.category_name}`
+        }
+        if(params?.name){
+           params_text += `name=${params.name}`
         }
         const res = await axiosClient.get(`products?${params_text}&page=${page}&limit=${limit}`);
         return res; // Trả về dữ liệu từ API

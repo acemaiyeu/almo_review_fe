@@ -8,7 +8,6 @@ const ExportExcelButton = ({ data, fileName = 'export_data', title = 'Xuất Exc
       alert("Không có dữ liệu để xuất!");
       return;
     }
-    alert(title)
     // 1. Lấy danh sách tất cả các key từ object đầu tiên để làm header
     // Ví dụ: { name: 'A', age: 20 } -> ["name", "age"]
     const headings = [Object.keys(data[0])];
