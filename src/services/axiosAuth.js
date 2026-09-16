@@ -7,6 +7,8 @@ const axiosAuth = axios.create({
   baseURL: 'https://uninferential-uriel-unfanatical.ngrok-free.dev/api/', // Thay bằng URL thật của bạn
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
+    'Accept': 'application/json',
   },
   timeout: 10000, // Sau 10 giây mà không phản hồi thì sẽ báo lỗi
 });
