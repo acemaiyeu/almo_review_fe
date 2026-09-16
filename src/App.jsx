@@ -73,17 +73,22 @@ function App() {
   }, [])
 
     const checkServer = async () => {
-    try {
-      // Gọi API health check
-      const response = await fetch("https://uninferential-uriel-unfanatical.ngrok-free.dev/api/client/check-server", { method: 'GET' });
-
-      if (response.ok) {
-        dispatch(updatePublic({check_server: true}))
+  try {
+    const response = await fetch("https://uninferential-uriel-unfanatical.ngrok-free.dev/api/client/check-server", { 
+      method: 'GET',
+      headers: {
+        'ngrok-skip-browser-warning': 'true', // Bỏ qua trang warning của Ngrok
+        'Accept': 'application/json',
       }
-    } catch (error) {
-      console.error('Lỗi kết nối server:', error);
+    });
+
+    if (response.ok) {
+      dispatch(updatePublic({ check_server: true }));
     }
-  };
+  } catch (error) {
+    console.error('Lỗi kết nối server:', error);
+  }
+};
   useEffect(() => {
     checkServer()
   }, [])
