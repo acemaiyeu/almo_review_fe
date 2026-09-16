@@ -75,7 +75,7 @@ function App() {
     const checkServer = async () => {
     try {
       // Gọi API health check
-      const response = await fetch("http://192.168.31.81:8000/api/client/check-server", { method: 'GET' });
+      const response = await fetch("https://uninferential-uriel-unfanatical.ngrok-free.dev/api/client/check-server", { method: 'GET' });
 
       if (response.ok) {
         dispatch(updatePublic({check_server: true}))
