@@ -68,9 +68,6 @@ function App() {
     }
   }, [profile.email, dispatch]); // Only re-run if email changes or dispatch is ready
 
-  useEffect(() => {
-      toast.warning("Web hiện tại chỉ demo chưa vận hành trực tiếp!")
-  }, [])
 
     const checkServer = async () => {
   try {
@@ -103,8 +100,6 @@ function App() {
       >
         <DynamicIsland />
         <Routes>
-          {check_server ?
-          <>
           <Route path="/" element={<SplashCheck/>} />
           <Route path="/home" element={<Home />} />
           
@@ -133,12 +128,8 @@ function App() {
           <Route path="/admin/manage-categories" element={<ManageCategory />} />
           <Route path="/admin/manage-users" element={<ManageUser />} />
           
-          </> : 
-          <>
           <Route path="/" element={<SplashCheck  checkUrl={'https://uninferential-uriel-unfanatical.ngrok-free.dev/api/client/check-server'}/>} />
           <Route path="/error" element={<ErrorPage/>} />
-          </>
-          }
           
           <Route path="*" element={<NotFound lastpage={window.location.pathname} /> } />
         </Routes>
