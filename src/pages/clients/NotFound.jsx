@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 
 const NotFound = (props) => {
-    
+    // alert(2);
     if (props.lastpage === '/home') {
         return <Navigate to="/" replace />;
     }

@@ -135,7 +135,7 @@ function App() {
           
           </> : 
           <>
-          <Route path="/" element={<SplashCheck  checkUrl={'http://192.168.31.81:8000/api/client/check-server'}/>} />
+          <Route path="/" element={<SplashCheck  checkUrl={'https://uninferential-uriel-unfanatical.ngrok-free.dev/api/client/check-server'}/>} />
           <Route path="/error" element={<ErrorPage/>} />
           </>
           }
